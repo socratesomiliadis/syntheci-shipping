@@ -1,0 +1,227 @@
+[
+  {
+    "person_id": "PER-001",
+    "name": "Elena Markou",
+    "role": "Fleet Operations Manager",
+    "department": "Operations",
+    "location": "Athens",
+    "email": "elena.markou@aegeanmeridian.example",
+    "phone": "+30 210 555 0101"
+  },
+  {
+    "person_id": "PER-002",
+    "name": "Nikos Vardas",
+    "role": "Chartering Lead",
+    "department": "Commercial",
+    "location": "Athens",
+    "email": "nikos.vardas@aegeanmeridian.example",
+    "phone": "+30 210 555 0102"
+  },
+  {
+    "person_id": "PER-003",
+    "name": "Maya Conti",
+    "role": "Voyage Coordinator",
+    "department": "Operations",
+    "location": "Piraeus",
+    "email": "maya.conti@aegeanmeridian.example",
+    "phone": "+30 210 555 0103"
+  },
+  {
+    "person_id": "PER-004",
+    "name": "Andreas Solakis",
+    "role": "Marine Superintendent",
+    "department": "Technical",
+    "location": "Piraeus",
+    "email": "andreas.solakis@aegeanmeridian.example",
+    "phone": "+30 210 555 0104"
+  },
+  {
+    "person_id": "PER-005",
+    "name": "Sofia Demetriou",
+    "role": "Crewing Manager",
+    "department": "Crew",
+    "location": "Limassol",
+    "email": "sofia.demetriou@aegeanmeridian.example",
+    "phone": "+357 25 555 010"
+  },
+  {
+    "person_id": "PER-006",
+    "name": "Luca Romano",
+    "role": "Port Captain",
+    "department": "Operations",
+    "location": "Taranto",
+    "email": "luca.romano@aegeanmeridian.example",
+    "phone": "+39 099 555 0106"
+  },
+  {
+    "person_id": "PER-007",
+    "name": "Iris Papathanasiou",
+    "role": "Claims Analyst",
+    "department": "Legal",
+    "location": "Athens",
+    "email": "iris.papathanasiou@aegeanmeridian.example",
+    "phone": "+30 210 555 0107"
+  },
+  {
+    "person_id": "PER-008",
+    "name": "Omar Haddad",
+    "role": "Bunker Procurement Specialist",
+    "department": "Procurement",
+    "location": "Malta",
+    "email": "omar.haddad@aegeanmeridian.example",
+    "phone": "+356 2777 0108"
+  },
+  {
+    "person_id": "PER-009",
+    "name": "Petra Kovac",
+    "role": "Agency Liaison",
+    "department": "Port Services",
+    "location": "Split",
+    "email": "petra.kovac@aegeanmeridian.example",
+    "phone": "+385 21 555 109"
+  },
+  {
+    "person_id": "PER-010",
+    "name": "Yannis Mylonas",
+    "role": "HSQE Officer",
+    "department": "HSQE",
+    "location": "Athens",
+    "email": "yannis.mylonas@aegeanmeridian.example",
+    "phone": "+30 210 555 0110"
+  },
+  {
+    "person_id": "PER-011",
+    "name": "Amira Fahmy",
+    "role": "Canal Transit Coordinator",
+    "department": "Operations",
+    "location": "Alexandria",
+    "email": "amira.fahmy@aegeanmeridian.example",
+    "phone": "+20 3 555 0111"
+  },
+  {
+    "person_id": "PER-012",
+    "name": "Theo Angelis",
+    "role": "Disbursement Accountant",
+    "department": "Finance",
+    "location": "Athens",
+    "email": "theo.angelis@aegeanmeridian.example",
+    "phone": "+30 210 555 0112"
+  },
+  {
+    "person_id": "PER-013",
+    "name": "Carla Benitez",
+    "role": "Ro-Ro Cargo Planner",
+    "department": "Commercial",
+    "location": "Valencia",
+    "email": "carla.benitez@aegeanmeridian.example",
+    "phone": "+34 96 555 0113"
+  },
+  {
+    "person_id": "PER-014",
+    "name": "Mehmet Arslan",
+    "role": "Breakbulk Superintendent",
+    "department": "Technical",
+    "location": "Izmir",
+    "email": "mehmet.arslan@aegeanmeridian.example",
+    "phone": "+90 232 555 0114"
+  },
+  {
+    "person_id": "PER-015",
+    "name": "Daria Leone",
+    "role": "Container Line Coordinator",
+    "department": "Operations",
+    "location": "Malta",
+    "email": "daria.leone@aegeanmeridian.example",
+    "phone": "+356 2777 0115"
+  },
+  {
+    "person_id": "PER-016",
+    "name": "Kostas Rallis",
+    "role": "Dry Dock Planner",
+    "department": "Technical",
+    "location": "Piraeus",
+    "email": "kostas.rallis@aegeanmeridian.example",
+    "phone": "+30 210 555 0116"
+  },
+  {
+    "person_id": "PER-017",
+    "name": "Leila Mansour",
+    "role": "Chemical Cargo Specialist",
+    "department": "Commercial",
+    "location": "Limassol",
+    "email": "leila.mansour@aegeanmeridian.example",
+    "phone": "+357 25 555 117"
+  },
+  {
+    "person_id": "PER-018",
+    "name": "Marco Bellini",
+    "role": "Grain Chartering Broker",
+    "department": "Commercial",
+    "location": "Bari",
+    "email": "marco.bellini@aegeanmeridian.example",
+    "phone": "+39 080 555 0118"
+  },
+  {
+    "person_id": "PER-019",
+    "name": "Georgia Stavrou",
+    "role": "Reefer Operations Lead",
+    "department": "Operations",
+    "location": "Limassol",
+    "email": "georgia.stavrou@aegeanmeridian.example",
+    "phone": "+357 25 555 119"
+  },
+  {
+    "person_id": "PER-020",
+    "name": "Samir El Amrani",
+    "role": "Fertilizer Cargo Contact",
+    "department": "Customer Success",
+    "location": "Casablanca",
+    "email": "samir.elamrani@aegeanmeridian.example",
+    "phone": "+212 522 555 120"
+  },
+  {
+    "person_id": "PER-021",
+    "name": "Rhea Nikolaidou",
+    "role": "Vessel Performance Analyst",
+    "department": "Analytics",
+    "location": "Athens",
+    "email": "rhea.nikolaidou@aegeanmeridian.example",
+    "phone": "+30 210 555 0121"
+  },
+  {
+    "person_id": "PER-022",
+    "name": "Ivan Petrovic",
+    "role": "Port Cost Controller",
+    "department": "Finance",
+    "location": "Split",
+    "email": "ivan.petrovic@aegeanmeridian.example",
+    "phone": "+385 21 555 122"
+  },
+  {
+    "person_id": "PER-023",
+    "name": "Mina Theodorou",
+    "role": "Marine Insurance Coordinator",
+    "department": "Legal",
+    "location": "Athens",
+    "email": "mina.theodorou@aegeanmeridian.example",
+    "phone": "+30 210 555 0123"
+  },
+  {
+    "person_id": "PER-024",
+    "name": "Adrian Vella",
+    "role": "Terminal Relationship Manager",
+    "department": "Port Services",
+    "location": "Malta",
+    "email": "adrian.vella@aegeanmeridian.example",
+    "phone": "+356 2777 0124"
+  },
+  {
+    "person_id": "PER-025",
+    "name": "Selin Kaya",
+    "role": "Customs Documentation Lead",
+    "department": "Documentation",
+    "location": "Istanbul",
+    "email": "selin.kaya@aegeanmeridian.example",
+    "phone": "+90 212 555 0125"
+  }
+]

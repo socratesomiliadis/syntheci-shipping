@@ -1,0 +1,542 @@
+[
+  {
+    "flag_id": "CFL-2026-0001",
+    "voyage_id": "VOY-2026-0501",
+    "vessel_name": "AMS Eirini",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": true,
+    "risk_score": 100,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0002",
+    "voyage_id": "VOY-2026-0502",
+    "vessel_name": "AMS Orion Star",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": true,
+    "risk_score": 62,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0003",
+    "voyage_id": "VOY-2026-0503",
+    "vessel_name": "AMS Meltemi",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 56,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0004",
+    "voyage_id": "VOY-2026-0504",
+    "vessel_name": "AMS Pelagos",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0005",
+    "voyage_id": "VOY-2026-0505",
+    "vessel_name": "AMS Nisos",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 56,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0006",
+    "voyage_id": "VOY-2026-0506",
+    "vessel_name": "AMS Thalassa",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0007",
+    "voyage_id": "VOY-2026-0507",
+    "vessel_name": "AMS Kallisto",
+    "eu_ets_exposure": true,
+    "fueleu_risk": false,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 38,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch not triggered by current synthetic fuel mix",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0008",
+    "voyage_id": "VOY-2026-0508",
+    "vessel_name": "AMS Notos",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0009",
+    "voyage_id": "VOY-2026-0509",
+    "vessel_name": "AMS Helios",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": true,
+    "risk_score": 100,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0010",
+    "voyage_id": "VOY-2026-0510",
+    "vessel_name": "AMS Zephyr",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0011",
+    "voyage_id": "VOY-2026-0511",
+    "vessel_name": "AMS Dorian",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 56,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0012",
+    "voyage_id": "VOY-2026-0512",
+    "vessel_name": "AMS Asteria",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0013",
+    "voyage_id": "VOY-2026-0513",
+    "vessel_name": "AMS Eirini",
+    "eu_ets_exposure": true,
+    "fueleu_risk": false,
+    "mrv_missing_data": false,
+    "cii_risk": true,
+    "risk_score": 58,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch not triggered by current synthetic fuel mix",
+      "MRV fuel data appears complete in structured records",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0014",
+    "voyage_id": "VOY-2026-0514",
+    "vessel_name": "AMS Orion Star",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": true,
+    "risk_score": 62,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0015",
+    "voyage_id": "VOY-2026-0515",
+    "vessel_name": "AMS Meltemi",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 56,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0016",
+    "voyage_id": "VOY-2026-0516",
+    "vessel_name": "AMS Pelagos",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0017",
+    "voyage_id": "VOY-2026-0517",
+    "vessel_name": "AMS Nisos",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": false,
+    "risk_score": 80,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0018",
+    "voyage_id": "VOY-2026-0518",
+    "vessel_name": "AMS Thalassa",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0019",
+    "voyage_id": "VOY-2026-0519",
+    "vessel_name": "AMS Kallisto",
+    "eu_ets_exposure": true,
+    "fueleu_risk": false,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 38,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch not triggered by current synthetic fuel mix",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0020",
+    "voyage_id": "VOY-2026-0520",
+    "vessel_name": "AMS Notos",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 50,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0021",
+    "voyage_id": "VOY-2026-0521",
+    "vessel_name": "AMS Helios",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": true,
+    "risk_score": 84,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0022",
+    "voyage_id": "VOY-2026-0522",
+    "vessel_name": "AMS Zephyr",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 50,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0023",
+    "voyage_id": "VOY-2026-0523",
+    "vessel_name": "AMS Dorian",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 64,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0024",
+    "voyage_id": "VOY-2026-0524",
+    "vessel_name": "AMS Asteria",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": false,
+    "cii_risk": false,
+    "risk_score": 42,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data appears complete in structured records",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0025",
+    "voyage_id": "VOY-2026-0525",
+    "vessel_name": "AMS Eirini",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": true,
+    "risk_score": 100,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0026",
+    "voyage_id": "VOY-2026-0526",
+    "vessel_name": "AMS Orion Star",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": true,
+    "risk_score": 86,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk watch due to vessel size, type, or higher fuel consumption"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0027",
+    "voyage_id": "VOY-2026-0527",
+    "vessel_name": "AMS Meltemi",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": false,
+    "risk_score": 80,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0028",
+    "voyage_id": "VOY-2026-0528",
+    "vessel_name": "AMS Pelagos",
+    "eu_ets_exposure": false,
+    "fueleu_risk": false,
+    "mrv_missing_data": true,
+    "cii_risk": false,
+    "risk_score": 48,
+    "risk_level": "low",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch not triggered by current synthetic fuel mix",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0029",
+    "voyage_id": "VOY-2026-0529",
+    "vessel_name": "AMS Thalassa",
+    "eu_ets_exposure": true,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": false,
+    "risk_score": 80,
+    "risk_level": "high",
+    "rationale": [
+      "EU ETS exposure likely for synthetic Mediterranean routing",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  },
+  {
+    "flag_id": "CFL-2026-0030",
+    "voyage_id": "VOY-2026-0530",
+    "vessel_name": "AMS Zephyr",
+    "eu_ets_exposure": false,
+    "fueleu_risk": true,
+    "mrv_missing_data": true,
+    "cii_risk": false,
+    "risk_score": 66,
+    "risk_level": "medium",
+    "rationale": [
+      "EU ETS exposure limited in this synthetic route",
+      "FuelEU watch due to fuel mix or higher VLSFO quantity",
+      "MRV fuel data requires follow-up or voyage is not yet closed",
+      "CII risk remains low in this synthetic precheck"
+    ],
+    "last_evaluated_at": "2026-05-28T09:00:00Z"
+  }
+]

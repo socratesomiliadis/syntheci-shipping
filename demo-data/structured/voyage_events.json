@@ -1,0 +1,1262 @@
+[
+  {
+    "event_id": "EVT-2026-00001",
+    "voyage_id": "VOY-2026-0501",
+    "vessel_name": "AMS Eirini",
+    "event_type": "port_call",
+    "event_time": "2026-05-02T12:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "info",
+    "description": "AMS Eirini completed pre-departure port call formalities for Ultra-low sulfur diesel."
+  },
+  {
+    "event_id": "EVT-2026-00002",
+    "voyage_id": "VOY-2026-0501",
+    "vessel_name": "AMS Eirini",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-02T03:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "watch",
+    "description": "Synthetic bunker stop recorded before sailing from Ionia Liquid Terminal; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00003",
+    "voyage_id": "VOY-2026-0501",
+    "vessel_name": "AMS Eirini",
+    "event_type": "weather_event",
+    "event_time": "2026-05-03T09:00:00Z",
+    "location": "At sea",
+    "severity": "medium",
+    "description": "Weather routing update issued for AMS Eirini; speed may be adjusted to protect ETA at Thalassa Gate Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00004",
+    "voyage_id": "VOY-2026-0501",
+    "vessel_name": "AMS Eirini",
+    "event_type": "delay_event",
+    "event_time": "2026-05-04T19:00:00Z",
+    "location": "Thalassa Gate Terminal",
+    "severity": "high",
+    "description": "Potential delay exposure at Thalassa Gate Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00005",
+    "voyage_id": "VOY-2026-0501",
+    "vessel_name": "AMS Eirini",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-03T21:00:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Eirini reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00006",
+    "voyage_id": "VOY-2026-0501",
+    "vessel_name": "AMS Eirini",
+    "event_type": "port_call",
+    "event_time": "2026-05-05T03:00:00Z",
+    "location": "Thalassa Gate Terminal",
+    "severity": "info",
+    "description": "AMS Eirini arrival or expected arrival at Thalassa Gate Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00007",
+    "voyage_id": "VOY-2026-0502",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "port_call",
+    "event_time": "2026-05-03T05:30:00Z",
+    "location": "Sirocco Bulk Terminal",
+    "severity": "info",
+    "description": "AMS Orion Star completed pre-departure port call formalities for Milling wheat."
+  },
+  {
+    "event_id": "EVT-2026-00008",
+    "voyage_id": "VOY-2026-0502",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "port_call",
+    "event_time": "2026-05-07T12:00:00Z",
+    "location": "Maris Grain Pier",
+    "severity": "info",
+    "description": "AMS Orion Star arrival or expected arrival at Maris Grain Pier for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00009",
+    "voyage_id": "VOY-2026-0503",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "port_call",
+    "event_time": "2026-05-03T17:00:00Z",
+    "location": "Azure Strait Terminal",
+    "severity": "info",
+    "description": "AMS Meltemi completed pre-departure port call formalities for Containerized consumer goods."
+  },
+  {
+    "event_id": "EVT-2026-00010",
+    "voyage_id": "VOY-2026-0503",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "weather_event",
+    "event_time": "2026-05-04T22:00:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Meltemi; speed may be adjusted to protect ETA at Kydonia Container Quay."
+  },
+  {
+    "event_id": "EVT-2026-00011",
+    "voyage_id": "VOY-2026-0503",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "delay_event",
+    "event_time": "2026-05-05T20:30:00Z",
+    "location": "Kydonia Container Quay",
+    "severity": "medium",
+    "description": "Potential delay exposure at Kydonia Container Quay due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00012",
+    "voyage_id": "VOY-2026-0503",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "port_call",
+    "event_time": "2026-05-06T04:30:00Z",
+    "location": "Kydonia Container Quay",
+    "severity": "info",
+    "description": "AMS Meltemi arrival or expected arrival at Kydonia Container Quay for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00013",
+    "voyage_id": "VOY-2026-0504",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "port_call",
+    "event_time": "2026-05-04T09:45:00Z",
+    "location": "Minoa Cement Wharf",
+    "severity": "info",
+    "description": "AMS Pelagos completed pre-departure port call formalities for Bagged cement."
+  },
+  {
+    "event_id": "EVT-2026-00014",
+    "voyage_id": "VOY-2026-0504",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-04T00:45:00Z",
+    "location": "Minoa Cement Wharf",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Minoa Cement Wharf; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00015",
+    "voyage_id": "VOY-2026-0504",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "weather_event",
+    "event_time": "2026-05-05T18:45:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Pelagos; speed may be adjusted to protect ETA at Anemos Marine Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00016",
+    "voyage_id": "VOY-2026-0504",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "port_call",
+    "event_time": "2026-05-08T06:15:00Z",
+    "location": "Anemos Marine Terminal",
+    "severity": "info",
+    "description": "AMS Pelagos arrival or expected arrival at Anemos Marine Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00017",
+    "voyage_id": "VOY-2026-0505",
+    "vessel_name": "AMS Nisos",
+    "event_type": "port_call",
+    "event_time": "2026-05-05T06:00:00Z",
+    "location": "Eurus Auto Quay",
+    "severity": "info",
+    "description": "AMS Nisos completed pre-departure port call formalities for Passenger vehicles."
+  },
+  {
+    "event_id": "EVT-2026-00018",
+    "voyage_id": "VOY-2026-0505",
+    "vessel_name": "AMS Nisos",
+    "event_type": "delay_event",
+    "event_time": "2026-05-08T06:30:00Z",
+    "location": "Vela Ro-Ro Berth",
+    "severity": "medium",
+    "description": "Potential delay exposure at Vela Ro-Ro Berth due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00019",
+    "voyage_id": "VOY-2026-0505",
+    "vessel_name": "AMS Nisos",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-07T19:00:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Nisos reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00020",
+    "voyage_id": "VOY-2026-0505",
+    "vessel_name": "AMS Nisos",
+    "event_type": "port_call",
+    "event_time": "2026-05-08T14:30:00Z",
+    "location": "Vela Ro-Ro Berth",
+    "severity": "info",
+    "description": "AMS Nisos arrival or expected arrival at Vela Ro-Ro Berth for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00021",
+    "voyage_id": "VOY-2026-0506",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "port_call",
+    "event_time": "2026-05-06T16:00:00Z",
+    "location": "Daphne Fertilizer Jetty",
+    "severity": "info",
+    "description": "AMS Thalassa completed pre-departure port call formalities for Liquid fertilizer additive."
+  },
+  {
+    "event_id": "EVT-2026-00022",
+    "voyage_id": "VOY-2026-0506",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-06T07:00:00Z",
+    "location": "Daphne Fertilizer Jetty",
+    "severity": "watch",
+    "description": "Synthetic bunker stop recorded before sailing from Daphne Fertilizer Jetty; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00023",
+    "voyage_id": "VOY-2026-0506",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "weather_event",
+    "event_time": "2026-05-08T09:00:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Thalassa; speed may be adjusted to protect ETA at Ionia Liquid Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00024",
+    "voyage_id": "VOY-2026-0506",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "port_call",
+    "event_time": "2026-05-11T07:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "info",
+    "description": "AMS Thalassa arrival or expected arrival at Ionia Liquid Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00025",
+    "voyage_id": "VOY-2026-0507",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "port_call",
+    "event_time": "2026-05-06T23:00:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "info",
+    "description": "AMS Kallisto completed pre-departure port call formalities for LNG bunkers."
+  },
+  {
+    "event_id": "EVT-2026-00026",
+    "voyage_id": "VOY-2026-0507",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-06T14:00:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Argos Bunkering Station; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00027",
+    "voyage_id": "VOY-2026-0507",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "weather_event",
+    "event_time": "2026-05-07T20:00:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Kallisto; speed may be adjusted to protect ETA at Caldera Energy Port."
+  },
+  {
+    "event_id": "EVT-2026-00028",
+    "voyage_id": "VOY-2026-0507",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "delay_event",
+    "event_time": "2026-05-08T08:00:00Z",
+    "location": "Caldera Energy Port",
+    "severity": "high",
+    "description": "Potential delay exposure at Caldera Energy Port due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00029",
+    "voyage_id": "VOY-2026-0507",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "port_call",
+    "event_time": "2026-05-08T16:00:00Z",
+    "location": "Caldera Energy Port",
+    "severity": "info",
+    "description": "AMS Kallisto arrival or expected arrival at Caldera Energy Port for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00030",
+    "voyage_id": "VOY-2026-0508",
+    "vessel_name": "AMS Notos",
+    "event_type": "port_call",
+    "event_time": "2026-05-08T07:00:00Z",
+    "location": "Pontus Steel Dock",
+    "severity": "info",
+    "description": "AMS Notos completed pre-departure port call formalities for Steel coils."
+  },
+  {
+    "event_id": "EVT-2026-00031",
+    "voyage_id": "VOY-2026-0508",
+    "vessel_name": "AMS Notos",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-10T06:00:00Z",
+    "location": "Synthetic Strait Transit",
+    "severity": "info",
+    "description": "AMS Notos reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00032",
+    "voyage_id": "VOY-2026-0508",
+    "vessel_name": "AMS Notos",
+    "event_type": "port_call",
+    "event_time": "2026-05-10T20:30:00Z",
+    "location": "Ormos Multipurpose Dock",
+    "severity": "info",
+    "description": "AMS Notos arrival or expected arrival at Ormos Multipurpose Dock for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00033",
+    "voyage_id": "VOY-2026-0509",
+    "vessel_name": "AMS Helios",
+    "event_type": "port_call",
+    "event_time": "2026-05-09T17:45:00Z",
+    "location": "Helike Oil Terminal",
+    "severity": "info",
+    "description": "AMS Helios completed pre-departure port call formalities for Light sweet crude."
+  },
+  {
+    "event_id": "EVT-2026-00034",
+    "voyage_id": "VOY-2026-0509",
+    "vessel_name": "AMS Helios",
+    "event_type": "weather_event",
+    "event_time": "2026-05-10T22:45:00Z",
+    "location": "At sea",
+    "severity": "medium",
+    "description": "Weather routing update issued for AMS Helios; speed may be adjusted to protect ETA at Ionia Liquid Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00035",
+    "voyage_id": "VOY-2026-0509",
+    "vessel_name": "AMS Helios",
+    "event_type": "delay_event",
+    "event_time": "2026-05-12T17:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "medium",
+    "description": "Potential delay exposure at Ionia Liquid Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00036",
+    "voyage_id": "VOY-2026-0509",
+    "vessel_name": "AMS Helios",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-11T23:45:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Helios reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00037",
+    "voyage_id": "VOY-2026-0509",
+    "vessel_name": "AMS Helios",
+    "event_type": "port_call",
+    "event_time": "2026-05-13T01:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "info",
+    "description": "AMS Helios arrival or expected arrival at Ionia Liquid Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00038",
+    "voyage_id": "VOY-2026-0510",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "port_call",
+    "event_time": "2026-05-10T10:20:00Z",
+    "location": "Selene Container Yard",
+    "severity": "info",
+    "description": "AMS Zephyr completed pre-departure port call formalities for Containerized electronics."
+  },
+  {
+    "event_id": "EVT-2026-00039",
+    "voyage_id": "VOY-2026-0510",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-10T01:20:00Z",
+    "location": "Selene Container Yard",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Selene Container Yard; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00040",
+    "voyage_id": "VOY-2026-0510",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "weather_event",
+    "event_time": "2026-05-11T19:20:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Zephyr; speed may be adjusted to protect ETA at Azure Strait Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00041",
+    "voyage_id": "VOY-2026-0510",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "port_call",
+    "event_time": "2026-05-13T16:00:00Z",
+    "location": "Azure Strait Terminal",
+    "severity": "info",
+    "description": "AMS Zephyr arrival or expected arrival at Azure Strait Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00042",
+    "voyage_id": "VOY-2026-0511",
+    "vessel_name": "AMS Dorian",
+    "event_type": "port_call",
+    "event_time": "2026-05-11T03:00:00Z",
+    "location": "Maris Grain Pier",
+    "severity": "info",
+    "description": "AMS Dorian completed pre-departure port call formalities for Corn gluten meal."
+  },
+  {
+    "event_id": "EVT-2026-00043",
+    "voyage_id": "VOY-2026-0511",
+    "vessel_name": "AMS Dorian",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-10T18:00:00Z",
+    "location": "Maris Grain Pier",
+    "severity": "watch",
+    "description": "Synthetic bunker stop recorded before sailing from Maris Grain Pier; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00044",
+    "voyage_id": "VOY-2026-0511",
+    "vessel_name": "AMS Dorian",
+    "event_type": "delay_event",
+    "event_time": "2026-05-15T01:00:00Z",
+    "location": "Nereid Bay Port",
+    "severity": "medium",
+    "description": "Potential delay exposure at Nereid Bay Port due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00045",
+    "voyage_id": "VOY-2026-0511",
+    "vessel_name": "AMS Dorian",
+    "event_type": "port_call",
+    "event_time": "2026-05-15T09:00:00Z",
+    "location": "Nereid Bay Port",
+    "severity": "info",
+    "description": "AMS Dorian arrival or expected arrival at Nereid Bay Port for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00046",
+    "voyage_id": "VOY-2026-0512",
+    "vessel_name": "AMS Asteria",
+    "event_type": "port_call",
+    "event_time": "2026-05-12T13:00:00Z",
+    "location": "Koralia Fruit Terminal",
+    "severity": "info",
+    "description": "AMS Asteria completed pre-departure port call formalities for Chilled citrus pallets."
+  },
+  {
+    "event_id": "EVT-2026-00047",
+    "voyage_id": "VOY-2026-0512",
+    "vessel_name": "AMS Asteria",
+    "event_type": "weather_event",
+    "event_time": "2026-05-14T06:00:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Asteria; speed may be adjusted to protect ETA at Lykos Cold Port."
+  },
+  {
+    "event_id": "EVT-2026-00048",
+    "voyage_id": "VOY-2026-0512",
+    "vessel_name": "AMS Asteria",
+    "event_type": "port_call",
+    "event_time": "2026-05-15T00:30:00Z",
+    "location": "Lykos Cold Port",
+    "severity": "info",
+    "description": "AMS Asteria arrival or expected arrival at Lykos Cold Port for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00049",
+    "voyage_id": "VOY-2026-0513",
+    "vessel_name": "AMS Eirini",
+    "event_type": "port_call",
+    "event_time": "2026-05-13T15:00:00Z",
+    "location": "Thalassa Gate Terminal",
+    "severity": "info",
+    "description": "AMS Eirini completed pre-departure port call formalities for Marine gasoil."
+  },
+  {
+    "event_id": "EVT-2026-00050",
+    "voyage_id": "VOY-2026-0513",
+    "vessel_name": "AMS Eirini",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-13T06:00:00Z",
+    "location": "Thalassa Gate Terminal",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Thalassa Gate Terminal; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00051",
+    "voyage_id": "VOY-2026-0513",
+    "vessel_name": "AMS Eirini",
+    "event_type": "weather_event",
+    "event_time": "2026-05-14T12:00:00Z",
+    "location": "At sea",
+    "severity": "medium",
+    "description": "Weather routing update issued for AMS Eirini; speed may be adjusted to protect ETA at Argos Bunkering Station."
+  },
+  {
+    "event_id": "EVT-2026-00052",
+    "voyage_id": "VOY-2026-0513",
+    "vessel_name": "AMS Eirini",
+    "event_type": "delay_event",
+    "event_time": "2026-05-14T03:30:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "high",
+    "description": "Potential delay exposure at Argos Bunkering Station due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00053",
+    "voyage_id": "VOY-2026-0513",
+    "vessel_name": "AMS Eirini",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-15T14:00:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Eirini reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00054",
+    "voyage_id": "VOY-2026-0513",
+    "vessel_name": "AMS Eirini",
+    "event_type": "port_call",
+    "event_time": "2026-05-14T11:30:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "info",
+    "description": "AMS Eirini arrival or expected arrival at Argos Bunkering Station for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00055",
+    "voyage_id": "VOY-2026-0514",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "port_call",
+    "event_time": "2026-05-14T04:30:00Z",
+    "location": "Nereid Bay Port",
+    "severity": "info",
+    "description": "AMS Orion Star completed pre-departure port call formalities for Bulk barley."
+  },
+  {
+    "event_id": "EVT-2026-00056",
+    "voyage_id": "VOY-2026-0514",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "port_call",
+    "event_time": "2026-05-19T06:00:00Z",
+    "location": "Daphne Fertilizer Jetty",
+    "severity": "info",
+    "description": "AMS Orion Star arrival or expected arrival at Daphne Fertilizer Jetty for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00057",
+    "voyage_id": "VOY-2026-0515",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "port_call",
+    "event_time": "2026-05-15T17:15:00Z",
+    "location": "Kydonia Container Quay",
+    "severity": "info",
+    "description": "AMS Meltemi completed pre-departure port call formalities for Containerized foodstuffs."
+  },
+  {
+    "event_id": "EVT-2026-00058",
+    "voyage_id": "VOY-2026-0515",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "weather_event",
+    "event_time": "2026-05-16T22:15:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Meltemi; speed may be adjusted to protect ETA at Selene Container Yard."
+  },
+  {
+    "event_id": "EVT-2026-00059",
+    "voyage_id": "VOY-2026-0515",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "delay_event",
+    "event_time": "2026-05-17T21:00:00Z",
+    "location": "Selene Container Yard",
+    "severity": "medium",
+    "description": "Potential delay exposure at Selene Container Yard due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00060",
+    "voyage_id": "VOY-2026-0515",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-18T06:15:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Meltemi reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00061",
+    "voyage_id": "VOY-2026-0515",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "port_call",
+    "event_time": "2026-05-18T05:00:00Z",
+    "location": "Selene Container Yard",
+    "severity": "info",
+    "description": "AMS Meltemi arrival or expected arrival at Selene Container Yard for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00062",
+    "voyage_id": "VOY-2026-0516",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "port_call",
+    "event_time": "2026-05-16T09:30:00Z",
+    "location": "Anemos Marine Terminal",
+    "severity": "info",
+    "description": "AMS Pelagos completed pre-departure port call formalities for Limestone aggregates."
+  },
+  {
+    "event_id": "EVT-2026-00063",
+    "voyage_id": "VOY-2026-0516",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-16T00:30:00Z",
+    "location": "Anemos Marine Terminal",
+    "severity": "watch",
+    "description": "Synthetic bunker stop recorded before sailing from Anemos Marine Terminal; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00064",
+    "voyage_id": "VOY-2026-0516",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "weather_event",
+    "event_time": "2026-05-17T18:30:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Pelagos; speed may be adjusted to protect ETA at Minoa Cement Wharf."
+  },
+  {
+    "event_id": "EVT-2026-00065",
+    "voyage_id": "VOY-2026-0516",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "port_call",
+    "event_time": "2026-05-20T06:00:00Z",
+    "location": "Minoa Cement Wharf",
+    "severity": "info",
+    "description": "AMS Pelagos arrival or expected arrival at Minoa Cement Wharf for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00066",
+    "voyage_id": "VOY-2026-0517",
+    "vessel_name": "AMS Nisos",
+    "event_type": "port_call",
+    "event_time": "2026-05-17T02:45:00Z",
+    "location": "Vela Ro-Ro Berth",
+    "severity": "info",
+    "description": "AMS Nisos completed pre-departure port call formalities for Agricultural machinery."
+  },
+  {
+    "event_id": "EVT-2026-00067",
+    "voyage_id": "VOY-2026-0517",
+    "vessel_name": "AMS Nisos",
+    "event_type": "delay_event",
+    "event_time": "2026-05-20T03:00:00Z",
+    "location": "Eurus Auto Quay",
+    "severity": "medium",
+    "description": "Potential delay exposure at Eurus Auto Quay due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00068",
+    "voyage_id": "VOY-2026-0517",
+    "vessel_name": "AMS Nisos",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-18T18:45:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Nisos reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00069",
+    "voyage_id": "VOY-2026-0517",
+    "vessel_name": "AMS Nisos",
+    "event_type": "port_call",
+    "event_time": "2026-05-20T11:00:00Z",
+    "location": "Eurus Auto Quay",
+    "severity": "info",
+    "description": "AMS Nisos arrival or expected arrival at Eurus Auto Quay for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00070",
+    "voyage_id": "VOY-2026-0518",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "port_call",
+    "event_time": "2026-05-18T06:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "info",
+    "description": "AMS Thalassa completed pre-departure port call formalities for Base oils."
+  },
+  {
+    "event_id": "EVT-2026-00071",
+    "voyage_id": "VOY-2026-0518",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "weather_event",
+    "event_time": "2026-05-19T23:00:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Thalassa; speed may be adjusted to protect ETA at Helike Oil Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00072",
+    "voyage_id": "VOY-2026-0518",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "port_call",
+    "event_time": "2026-05-21T14:00:00Z",
+    "location": "Helike Oil Terminal",
+    "severity": "info",
+    "description": "AMS Thalassa arrival or expected arrival at Helike Oil Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00073",
+    "voyage_id": "VOY-2026-0519",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "port_call",
+    "event_time": "2026-05-18T22:30:00Z",
+    "location": "Caldera Energy Port",
+    "severity": "info",
+    "description": "AMS Kallisto completed pre-departure port call formalities for Return LNG heel."
+  },
+  {
+    "event_id": "EVT-2026-00074",
+    "voyage_id": "VOY-2026-0519",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-18T13:30:00Z",
+    "location": "Caldera Energy Port",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Caldera Energy Port; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00075",
+    "voyage_id": "VOY-2026-0519",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "weather_event",
+    "event_time": "2026-05-19T19:30:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Kallisto; speed may be adjusted to protect ETA at Argos Bunkering Station."
+  },
+  {
+    "event_id": "EVT-2026-00076",
+    "voyage_id": "VOY-2026-0519",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "delay_event",
+    "event_time": "2026-05-20T09:00:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "high",
+    "description": "Potential delay exposure at Argos Bunkering Station due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00077",
+    "voyage_id": "VOY-2026-0519",
+    "vessel_name": "AMS Kallisto",
+    "event_type": "port_call",
+    "event_time": "2026-05-20T17:00:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "watch",
+    "description": "AMS Kallisto arrival or expected arrival at Argos Bunkering Station for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00078",
+    "voyage_id": "VOY-2026-0520",
+    "vessel_name": "AMS Notos",
+    "event_type": "port_call",
+    "event_time": "2026-05-20T12:15:00Z",
+    "location": "Ormos Multipurpose Dock",
+    "severity": "info",
+    "description": "AMS Notos completed pre-departure port call formalities for Project cargo modules."
+  },
+  {
+    "event_id": "EVT-2026-00079",
+    "voyage_id": "VOY-2026-0520",
+    "vessel_name": "AMS Notos",
+    "event_type": "delay_event",
+    "event_time": "2026-05-22T18:00:00Z",
+    "location": "Pontus Steel Dock",
+    "severity": "medium",
+    "description": "Potential delay exposure at Pontus Steel Dock due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00080",
+    "voyage_id": "VOY-2026-0520",
+    "vessel_name": "AMS Notos",
+    "event_type": "port_call",
+    "event_time": "2026-05-23T02:00:00Z",
+    "location": "Pontus Steel Dock",
+    "severity": "watch",
+    "description": "AMS Notos arrival or expected arrival at Pontus Steel Dock for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00081",
+    "voyage_id": "VOY-2026-0521",
+    "vessel_name": "AMS Helios",
+    "event_type": "port_call",
+    "event_time": "2026-05-21T16:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "info",
+    "description": "AMS Helios completed pre-departure port call formalities for Condensate blend."
+  },
+  {
+    "event_id": "EVT-2026-00082",
+    "voyage_id": "VOY-2026-0521",
+    "vessel_name": "AMS Helios",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-21T07:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "watch",
+    "description": "Synthetic bunker stop recorded before sailing from Ionia Liquid Terminal; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00083",
+    "voyage_id": "VOY-2026-0521",
+    "vessel_name": "AMS Helios",
+    "event_type": "weather_event",
+    "event_time": "2026-05-22T21:00:00Z",
+    "location": "At sea",
+    "severity": "medium",
+    "description": "Weather routing update issued for AMS Helios; speed may be adjusted to protect ETA at Helike Oil Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00084",
+    "voyage_id": "VOY-2026-0521",
+    "vessel_name": "AMS Helios",
+    "event_type": "delay_event",
+    "event_time": "2026-05-24T16:30:00Z",
+    "location": "Helike Oil Terminal",
+    "severity": "medium",
+    "description": "Potential delay exposure at Helike Oil Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00085",
+    "voyage_id": "VOY-2026-0521",
+    "vessel_name": "AMS Helios",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-23T01:00:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Helios reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00086",
+    "voyage_id": "VOY-2026-0521",
+    "vessel_name": "AMS Helios",
+    "event_type": "port_call",
+    "event_time": "2026-05-25T00:30:00Z",
+    "location": "Helike Oil Terminal",
+    "severity": "watch",
+    "description": "AMS Helios arrival or expected arrival at Helike Oil Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00087",
+    "voyage_id": "VOY-2026-0522",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "port_call",
+    "event_time": "2026-05-22T14:45:00Z",
+    "location": "Azure Strait Terminal",
+    "severity": "info",
+    "description": "AMS Zephyr completed pre-departure port call formalities for Containerized apparel."
+  },
+  {
+    "event_id": "EVT-2026-00088",
+    "voyage_id": "VOY-2026-0522",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-22T05:45:00Z",
+    "location": "Azure Strait Terminal",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Azure Strait Terminal; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00089",
+    "voyage_id": "VOY-2026-0522",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "weather_event",
+    "event_time": "2026-05-23T23:45:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Zephyr; speed may be adjusted to protect ETA at Kydonia Container Quay."
+  },
+  {
+    "event_id": "EVT-2026-00090",
+    "voyage_id": "VOY-2026-0522",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "delay_event",
+    "event_time": "2026-05-24T19:00:00Z",
+    "location": "Kydonia Container Quay",
+    "severity": "high",
+    "description": "Potential delay exposure at Kydonia Container Quay due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00091",
+    "voyage_id": "VOY-2026-0522",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-24T06:45:00Z",
+    "location": "Synthetic Strait Transit",
+    "severity": "info",
+    "description": "AMS Zephyr reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00092",
+    "voyage_id": "VOY-2026-0522",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "port_call",
+    "event_time": "2026-05-25T03:00:00Z",
+    "location": "Kydonia Container Quay",
+    "severity": "watch",
+    "description": "AMS Zephyr arrival or expected arrival at Kydonia Container Quay for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00093",
+    "voyage_id": "VOY-2026-0523",
+    "vessel_name": "AMS Dorian",
+    "event_type": "port_call",
+    "event_time": "2026-05-23T10:00:00Z",
+    "location": "Nereid Bay Port",
+    "severity": "info",
+    "description": "AMS Dorian completed pre-departure port call formalities for Clinker."
+  },
+  {
+    "event_id": "EVT-2026-00094",
+    "voyage_id": "VOY-2026-0523",
+    "vessel_name": "AMS Dorian",
+    "event_type": "delay_event",
+    "event_time": "2026-05-27T00:30:00Z",
+    "location": "Sirocco Bulk Terminal",
+    "severity": "medium",
+    "description": "Potential delay exposure at Sirocco Bulk Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00095",
+    "voyage_id": "VOY-2026-0523",
+    "vessel_name": "AMS Dorian",
+    "event_type": "port_call",
+    "event_time": "2026-05-27T08:30:00Z",
+    "location": "Sirocco Bulk Terminal",
+    "severity": "watch",
+    "description": "AMS Dorian arrival or expected arrival at Sirocco Bulk Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00096",
+    "voyage_id": "VOY-2026-0524",
+    "vessel_name": "AMS Asteria",
+    "event_type": "port_call",
+    "event_time": "2026-05-24T00:30:00Z",
+    "location": "Lykos Cold Port",
+    "severity": "info",
+    "description": "AMS Asteria completed pre-departure port call formalities for Frozen seafood."
+  },
+  {
+    "event_id": "EVT-2026-00097",
+    "voyage_id": "VOY-2026-0524",
+    "vessel_name": "AMS Asteria",
+    "event_type": "weather_event",
+    "event_time": "2026-05-25T17:30:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Asteria; speed may be adjusted to protect ETA at Koralia Fruit Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00098",
+    "voyage_id": "VOY-2026-0524",
+    "vessel_name": "AMS Asteria",
+    "event_type": "delay_event",
+    "event_time": "2026-05-26T07:00:00Z",
+    "location": "Koralia Fruit Terminal",
+    "severity": "medium",
+    "description": "Potential delay exposure at Koralia Fruit Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00099",
+    "voyage_id": "VOY-2026-0524",
+    "vessel_name": "AMS Asteria",
+    "event_type": "port_call",
+    "event_time": "2026-05-26T15:00:00Z",
+    "location": "Koralia Fruit Terminal",
+    "severity": "watch",
+    "description": "AMS Asteria arrival or expected arrival at Koralia Fruit Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00100",
+    "voyage_id": "VOY-2026-0525",
+    "vessel_name": "AMS Eirini",
+    "event_type": "port_call",
+    "event_time": "2026-05-25T06:00:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "info",
+    "description": "AMS Eirini completed pre-departure port call formalities for Clean petroleum products."
+  },
+  {
+    "event_id": "EVT-2026-00101",
+    "voyage_id": "VOY-2026-0525",
+    "vessel_name": "AMS Eirini",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-24T21:00:00Z",
+    "location": "Argos Bunkering Station",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Argos Bunkering Station; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00102",
+    "voyage_id": "VOY-2026-0525",
+    "vessel_name": "AMS Eirini",
+    "event_type": "weather_event",
+    "event_time": "2026-05-26T03:00:00Z",
+    "location": "At sea",
+    "severity": "medium",
+    "description": "Weather routing update issued for AMS Eirini; speed may be adjusted to protect ETA at Ionia Liquid Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00103",
+    "voyage_id": "VOY-2026-0525",
+    "vessel_name": "AMS Eirini",
+    "event_type": "delay_event",
+    "event_time": "2026-05-27T22:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "high",
+    "description": "Potential delay exposure at Ionia Liquid Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00104",
+    "voyage_id": "VOY-2026-0525",
+    "vessel_name": "AMS Eirini",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-27T19:00:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Eirini reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00105",
+    "voyage_id": "VOY-2026-0525",
+    "vessel_name": "AMS Eirini",
+    "event_type": "port_call",
+    "event_time": "2026-05-28T06:00:00Z",
+    "location": "Ionia Liquid Terminal",
+    "severity": "watch",
+    "description": "AMS Eirini arrival or expected arrival at Ionia Liquid Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00106",
+    "voyage_id": "VOY-2026-0526",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "port_call",
+    "event_time": "2026-05-26T13:30:00Z",
+    "location": "Daphne Fertilizer Jetty",
+    "severity": "info",
+    "description": "AMS Orion Star completed pre-departure port call formalities for Granular fertilizer."
+  },
+  {
+    "event_id": "EVT-2026-00107",
+    "voyage_id": "VOY-2026-0526",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-26T04:30:00Z",
+    "location": "Daphne Fertilizer Jetty",
+    "severity": "watch",
+    "description": "Synthetic bunker stop recorded before sailing from Daphne Fertilizer Jetty; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00108",
+    "voyage_id": "VOY-2026-0526",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "delay_event",
+    "event_time": "2026-05-30T22:00:00Z",
+    "location": "Maris Grain Pier",
+    "severity": "medium",
+    "description": "Potential delay exposure at Maris Grain Pier due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00109",
+    "voyage_id": "VOY-2026-0526",
+    "vessel_name": "AMS Orion Star",
+    "event_type": "port_call",
+    "event_time": "2026-05-31T06:00:00Z",
+    "location": "Maris Grain Pier",
+    "severity": "watch",
+    "description": "AMS Orion Star arrival or expected arrival at Maris Grain Pier for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00110",
+    "voyage_id": "VOY-2026-0527",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "port_call",
+    "event_time": "2026-05-27T15:00:00Z",
+    "location": "Kydonia Container Quay",
+    "severity": "info",
+    "description": "AMS Meltemi completed pre-departure port call formalities for Empty and loaded containers."
+  },
+  {
+    "event_id": "EVT-2026-00111",
+    "voyage_id": "VOY-2026-0527",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "weather_event",
+    "event_time": "2026-05-28T20:00:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Meltemi; speed may be adjusted to protect ETA at Azure Strait Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00112",
+    "voyage_id": "VOY-2026-0527",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "delay_event",
+    "event_time": "2026-05-29T19:30:00Z",
+    "location": "Azure Strait Terminal",
+    "severity": "medium",
+    "description": "Potential delay exposure at Azure Strait Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00113",
+    "voyage_id": "VOY-2026-0527",
+    "vessel_name": "AMS Meltemi",
+    "event_type": "port_call",
+    "event_time": "2026-05-30T03:30:00Z",
+    "location": "Azure Strait Terminal",
+    "severity": "watch",
+    "description": "AMS Meltemi arrival or expected arrival at Azure Strait Terminal for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00114",
+    "voyage_id": "VOY-2026-0528",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "port_call",
+    "event_time": "2026-05-28T04:00:00Z",
+    "location": "Minoa Cement Wharf",
+    "severity": "info",
+    "description": "AMS Pelagos completed pre-departure port call formalities for Bulk gypsum."
+  },
+  {
+    "event_id": "EVT-2026-00115",
+    "voyage_id": "VOY-2026-0528",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "bunker_stop",
+    "event_time": "2026-05-27T19:00:00Z",
+    "location": "Minoa Cement Wharf",
+    "severity": "info",
+    "description": "Synthetic bunker stop recorded before sailing from Minoa Cement Wharf; BDN pending final reconciliation."
+  },
+  {
+    "event_id": "EVT-2026-00116",
+    "voyage_id": "VOY-2026-0528",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "weather_event",
+    "event_time": "2026-05-29T13:00:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Pelagos; speed may be adjusted to protect ETA at Nereid Bay Port."
+  },
+  {
+    "event_id": "EVT-2026-00117",
+    "voyage_id": "VOY-2026-0528",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "delay_event",
+    "event_time": "2026-05-30T03:00:00Z",
+    "location": "Nereid Bay Port",
+    "severity": "high",
+    "description": "Potential delay exposure at Nereid Bay Port due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00118",
+    "voyage_id": "VOY-2026-0528",
+    "vessel_name": "AMS Pelagos",
+    "event_type": "port_call",
+    "event_time": "2026-05-30T11:00:00Z",
+    "location": "Nereid Bay Port",
+    "severity": "watch",
+    "description": "AMS Pelagos arrival or expected arrival at Nereid Bay Port for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00119",
+    "voyage_id": "VOY-2026-0529",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "port_call",
+    "event_time": "2026-05-29T12:00:00Z",
+    "location": "Helike Oil Terminal",
+    "severity": "info",
+    "description": "AMS Thalassa completed pre-departure port call formalities for Methanol blendstock."
+  },
+  {
+    "event_id": "EVT-2026-00120",
+    "voyage_id": "VOY-2026-0529",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "delay_event",
+    "event_time": "2026-06-03T02:30:00Z",
+    "location": "Daphne Fertilizer Jetty",
+    "severity": "medium",
+    "description": "Potential delay exposure at Daphne Fertilizer Jetty due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00121",
+    "voyage_id": "VOY-2026-0529",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "canal_transit",
+    "event_time": "2026-05-31T18:00:00Z",
+    "location": "Aegean Meridian Traffic Scheme",
+    "severity": "info",
+    "description": "AMS Thalassa reported synthetic traffic separation or canal-style transit checkpoint during voyage."
+  },
+  {
+    "event_id": "EVT-2026-00122",
+    "voyage_id": "VOY-2026-0529",
+    "vessel_name": "AMS Thalassa",
+    "event_type": "port_call",
+    "event_time": "2026-06-03T10:30:00Z",
+    "location": "Daphne Fertilizer Jetty",
+    "severity": "watch",
+    "description": "AMS Thalassa arrival or expected arrival at Daphne Fertilizer Jetty for discharge/operations."
+  },
+  {
+    "event_id": "EVT-2026-00123",
+    "voyage_id": "VOY-2026-0530",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "port_call",
+    "event_time": "2026-05-30T03:15:00Z",
+    "location": "Selene Container Yard",
+    "severity": "info",
+    "description": "AMS Zephyr completed pre-departure port call formalities for Containerized pharmaceuticals."
+  },
+  {
+    "event_id": "EVT-2026-00124",
+    "voyage_id": "VOY-2026-0530",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "weather_event",
+    "event_time": "2026-05-31T20:15:00Z",
+    "location": "At sea",
+    "severity": "watch",
+    "description": "Weather routing update issued for AMS Zephyr; speed may be adjusted to protect ETA at Thalassa Gate Terminal."
+  },
+  {
+    "event_id": "EVT-2026-00125",
+    "voyage_id": "VOY-2026-0530",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "delay_event",
+    "event_time": "2026-06-02T08:00:00Z",
+    "location": "Thalassa Gate Terminal",
+    "severity": "medium",
+    "description": "Potential delay exposure at Thalassa Gate Terminal due to berth line-up or cargo readiness uncertainty."
+  },
+  {
+    "event_id": "EVT-2026-00126",
+    "voyage_id": "VOY-2026-0530",
+    "vessel_name": "AMS Zephyr",
+    "event_type": "port_call",
+    "event_time": "2026-06-02T16:00:00Z",
+    "location": "Thalassa Gate Terminal",
+    "severity": "watch",
+    "description": "AMS Zephyr arrival or expected arrival at Thalassa Gate Terminal for discharge/operations."
+  }
+]

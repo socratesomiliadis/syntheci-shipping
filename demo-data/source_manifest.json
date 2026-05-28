@@ -1,0 +1,134 @@
+{
+  "dataset_name": "Syntheci Synthetic Maritime Demo Dataset",
+  "company": "Aegean Meridian Shipping",
+  "generated_on": "2026-05-28",
+  "timezone_context": "Europe/Athens",
+  "data_classification": "synthetic demo data",
+  "confidentiality_note": "This dataset is fully fictional and contains no real company confidential data. Names, contacts, vessel identifiers, port names, voyages, and operational details were invented for demonstration use.",
+  "identifier_note": "Vessel IMO values use a SYN prefix to avoid representing actual IMO registry identifiers.",
+  "date_window": {
+    "primary_month": "2026-05",
+    "range_start": "2026-05-01",
+    "range_end": "2026-06-03"
+  },
+  "files": [
+    {
+      "path": "vessels.json",
+      "record_type": "vessel",
+      "record_count": 12,
+      "primary_key": "vessel_id"
+    },
+    {
+      "path": "voyages.json",
+      "record_type": "voyage",
+      "record_count": 30,
+      "primary_key": "voyage_id",
+      "foreign_keys": {
+        "vessel_id": "vessels.vessel_id",
+        "imo": "vessels.imo",
+        "origin_port_id": "ports.port_id",
+        "destination_port_id": "ports.port_id",
+        "operations_contact_id": "people.person_id"
+      }
+    },
+    {
+      "path": "ports.json",
+      "record_type": "port",
+      "record_count": 20,
+      "primary_key": "port_id"
+    },
+    {
+      "path": "people.json",
+      "record_type": "employee_or_contact",
+      "record_count": 25,
+      "primary_key": "person_id"
+    },
+    {
+      "path": "emails/emails.json",
+      "record_type": "synthetic_email",
+      "record_count": 200,
+      "primary_key": "email_id",
+      "foreign_keys": {
+        "related_voyage_id": "voyages.voyage_id",
+        "related_vessel_name": "voyages.vessel_name",
+        "attachments.document_id": "documents front matter document_id"
+      }
+    },
+    {
+      "path": "documents/",
+      "record_type": "markdown_attachment_document",
+      "record_count": 135,
+      "primary_key": "document_id",
+      "document_type_counts": {
+        "voyage_order": 40,
+        "bunker_fuel_document": 40,
+        "charterparty_excerpt": 20,
+        "compliance_sop": 10,
+        "port_weather_notice": 15,
+        "claims_note": 10
+      },
+      "foreign_keys": {
+        "related_voyage_id": "voyages.voyage_id",
+        "related_vessel_name": "voyages.vessel_name",
+        "source_email_id": "emails.email_id"
+      }
+    },
+    {
+      "path": "structured/bunker_reports.csv",
+      "record_type": "bunker_report",
+      "record_count": 40,
+      "primary_key": "invoice_id",
+      "foreign_keys": {
+        "voyage_id": "voyages.voyage_id",
+        "vessel": "voyages.vessel_name"
+      }
+    },
+    {
+      "path": "structured/ais_positions.json",
+      "record_type": "ais_position",
+      "record_count": 72,
+      "primary_key": "position_id",
+      "foreign_keys": {
+        "voyage_id": "voyages.voyage_id",
+        "vessel_name": "voyages.vessel_name"
+      }
+    },
+    {
+      "path": "structured/voyage_events.json",
+      "record_type": "voyage_event",
+      "record_count": 126,
+      "primary_key": "event_id",
+      "event_types": [
+        "bunker_stop",
+        "canal_transit",
+        "delay_event",
+        "port_call",
+        "weather_event"
+      ],
+      "foreign_keys": {
+        "voyage_id": "voyages.voyage_id",
+        "vessel_name": "voyages.vessel_name"
+      }
+    },
+    {
+      "path": "structured/compliance_flags.json",
+      "record_type": "compliance_flag",
+      "record_count": 30,
+      "primary_key": "flag_id",
+      "flag_types": [
+        "eu_ets_exposure",
+        "fueleu_risk",
+        "mrv_missing_data",
+        "cii_risk"
+      ],
+      "foreign_keys": {
+        "voyage_id": "voyages.voyage_id",
+        "vessel_name": "voyages.vessel_name"
+      }
+    }
+  ],
+  "company_profile": {
+    "legal_name": "Aegean Meridian Shipping",
+    "profile": "Fictional regional shipping operator with tanker, bulk, feeder container, ro-ro, LNG bunkering, general cargo, and reefer vessels serving synthetic Mediterranean trade lanes."
+  }
+}

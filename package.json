@@ -5,6 +5,7 @@
   "packageManager": "pnpm@10.33.4",
   "scripts": {
     "dev": "pnpm --parallel --filter @syntheci/web --filter @syntheci/worker dev",
+    "dev:web": "pnpm --filter @syntheci/web dev",
     "build": "pnpm --recursive --if-present build",
     "lint": "pnpm --recursive --if-present lint",
     "typecheck": "pnpm --recursive --if-present typecheck",
@@ -15,6 +16,7 @@
     "worker:start": "pnpm --filter @syntheci/worker start",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up",
+    "docker:infra": "docker compose up --build postgres redis minio minio-init worker",
     "docker:down": "docker compose down"
   },
   "devDependencies": {

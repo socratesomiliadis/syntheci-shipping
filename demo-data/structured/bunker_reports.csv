@@ -1,0 +1,41 @@
+vessel,voyage_id,fuel_type,quantity_mt,sulfur_pct,co2_factor,port,supplier,invoice_id,date
+AMS Eirini,VOY-2026-0501,VLSFO,539.85,0.43,3.114,Ionia Liquid Terminal,Meridian Bunker Supply,BINV-2026-0001,2026-05-01
+AMS Eirini,VOY-2026-0501,MGO,272.25,0.045,3.206,Argos Bunkering Station,Aster Fuel Trading,BINV-2026-0002,2026-05-02
+AMS Orion Star,VOY-2026-0502,VLSFO,658.39,0.442,3.114,Sirocco Bulk Terminal,Aster Fuel Trading,BINV-2026-0003,2026-05-02
+AMS Meltemi,VOY-2026-0503,VLSFO,417.38,0.454,3.114,Azure Strait Terminal,HelioMarine Energy,BINV-2026-0004,2026-05-03
+AMS Pelagos,VOY-2026-0504,VLSFO,624.55,0.466,3.114,Minoa Cement Wharf,BlueWake Bunkers,BINV-2026-0005,2026-05-03
+AMS Pelagos,VOY-2026-0504,MGO,356.95,0.04,3.206,Argos Bunkering Station,Caldera Marine Fuels,BINV-2026-0006,2026-05-03
+AMS Nisos,VOY-2026-0505,VLSFO,622.74,0.478,3.114,Eurus Auto Quay,Caldera Marine Fuels,BINV-2026-0007,2026-05-04
+AMS Thalassa,VOY-2026-0506,VLSFO,1170.22,0.43,3.114,Daphne Fertilizer Jetty,Ionia Energy Desk,BINV-2026-0008,2026-05-06
+AMS Kallisto,VOY-2026-0507,LNG,198.42,0.001,2.75,Argos Bunkering Station,Meridian Bunker Supply,BINV-2026-0009,2026-05-06
+AMS Kallisto,VOY-2026-0507,MGO,104.42,0.055,3.206,Argos Bunkering Station,Aster Fuel Trading,BINV-2026-0010,2026-05-06
+AMS Notos,VOY-2026-0508,VLSFO,308.96,0.454,3.114,Pontus Steel Dock,Aster Fuel Trading,BINV-2026-0011,2026-05-07
+AMS Helios,VOY-2026-0509,VLSFO,1015.53,0.466,3.114,Helike Oil Terminal,HelioMarine Energy,BINV-2026-0012,2026-05-09
+AMS Zephyr,VOY-2026-0510,VLSFO,730.05,0.478,3.114,Selene Container Yard,BlueWake Bunkers,BINV-2026-0013,2026-05-09
+AMS Zephyr,VOY-2026-0510,MGO,392.45,0.05,3.206,Argos Bunkering Station,Caldera Marine Fuels,BINV-2026-0014,2026-05-10
+AMS Dorian,VOY-2026-0511,VLSFO,665.63,0.43,3.114,Maris Grain Pier,Caldera Marine Fuels,BINV-2026-0015,2026-05-10
+AMS Asteria,VOY-2026-0512,VLSFO,360.78,0.442,3.114,Koralia Fruit Terminal,Ionia Energy Desk,BINV-2026-0016,2026-05-11
+AMS Eirini,VOY-2026-0513,VLSFO,351.44,0.454,3.114,Thalassa Gate Terminal,Meridian Bunker Supply,BINV-2026-0017,2026-05-13
+AMS Eirini,VOY-2026-0513,MGO,83.84,0.045,3.206,Argos Bunkering Station,Aster Fuel Trading,BINV-2026-0018,2026-05-13
+AMS Orion Star,VOY-2026-0514,VLSFO,1183.29,0.466,3.114,Nereid Bay Port,Aster Fuel Trading,BINV-2026-0019,2026-05-13
+AMS Meltemi,VOY-2026-0515,VLSFO,396.23,0.478,3.114,Kydonia Container Quay,HelioMarine Energy,BINV-2026-0020,2026-05-15
+AMS Pelagos,VOY-2026-0516,VLSFO,582.55,0.43,3.114,Anemos Marine Terminal,BlueWake Bunkers,BINV-2026-0021,2026-05-15
+AMS Pelagos,VOY-2026-0516,MGO,314.95,0.04,3.206,Argos Bunkering Station,Caldera Marine Fuels,BINV-2026-0022,2026-05-15
+AMS Nisos,VOY-2026-0517,VLSFO,580.74,0.442,3.114,Vela Ro-Ro Berth,Caldera Marine Fuels,BINV-2026-0023,2026-05-16
+AMS Thalassa,VOY-2026-0518,VLSFO,601.53,0.454,3.114,Ionia Liquid Terminal,Ionia Energy Desk,BINV-2026-0024,2026-05-17
+AMS Kallisto,VOY-2026-0519,LNG,226.42,0.001,2.75,Caldera Energy Port,Meridian Bunker Supply,BINV-2026-0025,2026-05-18
+AMS Kallisto,VOY-2026-0519,MGO,132.42,0.055,3.206,Argos Bunkering Station,Aster Fuel Trading,BINV-2026-0026,2026-05-18
+AMS Notos,VOY-2026-0520,VLSFO,336.96,0.478,3.114,Ormos Multipurpose Dock,Aster Fuel Trading,BINV-2026-0027,2026-05-19
+AMS Helios,VOY-2026-0521,VLSFO,973.53,0.43,3.114,Ionia Liquid Terminal,HelioMarine Energy,BINV-2026-0028,2026-05-21
+AMS Zephyr,VOY-2026-0522,VLSFO,543.38,0.442,3.114,Azure Strait Terminal,BlueWake Bunkers,BINV-2026-0029,2026-05-21
+AMS Zephyr,VOY-2026-0522,MGO,275.78,0.05,3.206,Argos Bunkering Station,Caldera Marine Fuels,BINV-2026-0030,2026-05-22
+AMS Dorian,VOY-2026-0523,VLSFO,819.69,0.454,3.114,Nereid Bay Port,Caldera Marine Fuels,BINV-2026-0031,2026-05-22
+AMS Asteria,VOY-2026-0524,VLSFO,388.78,0.466,3.114,Lykos Cold Port,Ionia Energy Desk,BINV-2026-0032,2026-05-23
+AMS Eirini,VOY-2026-0525,VLSFO,598.28,0.478,3.114,Argos Bunkering Station,Meridian Bunker Supply,BINV-2026-0033,2026-05-24
+AMS Eirini,VOY-2026-0525,MGO,260.68,0.045,3.206,Argos Bunkering Station,Aster Fuel Trading,BINV-2026-0034,2026-05-24
+AMS Orion Star,VOY-2026-0526,VLSFO,977.98,0.43,3.114,Daphne Fertilizer Jetty,Aster Fuel Trading,BINV-2026-0035,2026-05-25
+AMS Meltemi,VOY-2026-0527,VLSFO,403.38,0.442,3.114,Kydonia Container Quay,HelioMarine Energy,BINV-2026-0036,2026-05-27
+AMS Pelagos,VOY-2026-0528,VLSFO,394.45,0.454,3.114,Minoa Cement Wharf,BlueWake Bunkers,BINV-2026-0037,2026-05-27
+AMS Pelagos,VOY-2026-0528,MGO,126.85,0.04,3.206,Argos Bunkering Station,Caldera Marine Fuels,BINV-2026-0038,2026-05-27
+AMS Thalassa,VOY-2026-0529,VLSFO,972.83,0.466,3.114,Helike Oil Terminal,Caldera Marine Fuels,BINV-2026-0039,2026-05-28
+AMS Zephyr,VOY-2026-0530,VLSFO,578.02,0.478,3.114,Selene Container Yard,Ionia Energy Desk,BINV-2026-0040,2026-05-29

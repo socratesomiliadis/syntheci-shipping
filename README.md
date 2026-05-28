@@ -32,6 +32,14 @@ pnpm worker:dev
 docker compose up --build
 ```
 
+To run the backing services and worker through Compose while keeping the Next.js app local for HMR:
+
+```bash
+pnpm docker:infra
+pnpm db:migrate
+pnpm --filter @syntheci/web dev
+```
+
 Services:
 
 - Web app: `http://localhost:3000`

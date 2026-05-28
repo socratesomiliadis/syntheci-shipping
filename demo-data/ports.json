@@ -1,0 +1,202 @@
+[
+  {
+    "port_id": "PORT-001",
+    "port_name": "Thalassa Gate Terminal",
+    "country": "Greece",
+    "region": "Aegean Sea",
+    "port_type": "mixed cargo",
+    "berths": 6,
+    "max_draft_m": 15.2,
+    "timezone": "Europe/Athens"
+  },
+  {
+    "port_id": "PORT-002",
+    "port_name": "Nereid Bay Port",
+    "country": "Greece",
+    "region": "Cyclades",
+    "port_type": "bulk cargo",
+    "berths": 4,
+    "max_draft_m": 13.8,
+    "timezone": "Europe/Athens"
+  },
+  {
+    "port_id": "PORT-003",
+    "port_name": "Kydonia Container Quay",
+    "country": "Greece",
+    "region": "Crete",
+    "port_type": "container",
+    "berths": 5,
+    "max_draft_m": 14.7,
+    "timezone": "Europe/Athens"
+  },
+  {
+    "port_id": "PORT-004",
+    "port_name": "Maris Grain Pier",
+    "country": "Italy",
+    "region": "Adriatic Sea",
+    "port_type": "dry bulk",
+    "berths": 3,
+    "max_draft_m": 12.6,
+    "timezone": "Europe/Rome"
+  },
+  {
+    "port_id": "PORT-005",
+    "port_name": "Vela Ro-Ro Berth",
+    "country": "Italy",
+    "region": "Ionian Sea",
+    "port_type": "ro-ro",
+    "berths": 4,
+    "max_draft_m": 10.4,
+    "timezone": "Europe/Rome"
+  },
+  {
+    "port_id": "PORT-006",
+    "port_name": "Ionia Liquid Terminal",
+    "country": "Cyprus",
+    "region": "Eastern Mediterranean",
+    "port_type": "liquid bulk",
+    "berths": 5,
+    "max_draft_m": 16.1,
+    "timezone": "Asia/Nicosia"
+  },
+  {
+    "port_id": "PORT-007",
+    "port_name": "Caldera Energy Port",
+    "country": "Greece",
+    "region": "South Aegean",
+    "port_type": "energy",
+    "berths": 3,
+    "max_draft_m": 14.1,
+    "timezone": "Europe/Athens"
+  },
+  {
+    "port_id": "PORT-008",
+    "port_name": "Ormos Multipurpose Dock",
+    "country": "Greece",
+    "region": "Dodecanese",
+    "port_type": "multipurpose",
+    "berths": 4,
+    "max_draft_m": 11.9,
+    "timezone": "Europe/Athens"
+  },
+  {
+    "port_id": "PORT-009",
+    "port_name": "Helike Oil Terminal",
+    "country": "Greece",
+    "region": "Corinthian Gulf",
+    "port_type": "oil",
+    "berths": 4,
+    "max_draft_m": 17.5,
+    "timezone": "Europe/Athens"
+  },
+  {
+    "port_id": "PORT-010",
+    "port_name": "Azure Strait Terminal",
+    "country": "Malta",
+    "region": "Central Mediterranean",
+    "port_type": "container",
+    "berths": 6,
+    "max_draft_m": 16.0,
+    "timezone": "Europe/Malta"
+  },
+  {
+    "port_id": "PORT-011",
+    "port_name": "Sirocco Bulk Terminal",
+    "country": "Tunisia",
+    "region": "Gulf of Tunis",
+    "port_type": "dry bulk",
+    "berths": 3,
+    "max_draft_m": 13.3,
+    "timezone": "Africa/Tunis"
+  },
+  {
+    "port_id": "PORT-012",
+    "port_name": "Lykos Cold Port",
+    "country": "Turkey",
+    "region": "Aegean Coast",
+    "port_type": "reefer",
+    "berths": 4,
+    "max_draft_m": 12.1,
+    "timezone": "Europe/Istanbul"
+  },
+  {
+    "port_id": "PORT-013",
+    "port_name": "Anemos Marine Terminal",
+    "country": "Croatia",
+    "region": "Dalmatian Coast",
+    "port_type": "mixed cargo",
+    "berths": 4,
+    "max_draft_m": 12.8,
+    "timezone": "Europe/Zagreb"
+  },
+  {
+    "port_id": "PORT-014",
+    "port_name": "Selene Container Yard",
+    "country": "Egypt",
+    "region": "Levantine Sea",
+    "port_type": "container",
+    "berths": 7,
+    "max_draft_m": 16.4,
+    "timezone": "Africa/Cairo"
+  },
+  {
+    "port_id": "PORT-015",
+    "port_name": "Minoa Cement Wharf",
+    "country": "Greece",
+    "region": "Crete",
+    "port_type": "cement and aggregates",
+    "berths": 2,
+    "max_draft_m": 10.7,
+    "timezone": "Europe/Athens"
+  },
+  {
+    "port_id": "PORT-016",
+    "port_name": "Pontus Steel Dock",
+    "country": "Turkey",
+    "region": "Marmara Sea",
+    "port_type": "breakbulk",
+    "berths": 5,
+    "max_draft_m": 13.1,
+    "timezone": "Europe/Istanbul"
+  },
+  {
+    "port_id": "PORT-017",
+    "port_name": "Koralia Fruit Terminal",
+    "country": "Cyprus",
+    "region": "Eastern Mediterranean",
+    "port_type": "reefer",
+    "berths": 3,
+    "max_draft_m": 11.8,
+    "timezone": "Asia/Nicosia"
+  },
+  {
+    "port_id": "PORT-018",
+    "port_name": "Eurus Auto Quay",
+    "country": "Spain",
+    "region": "Balearic Sea",
+    "port_type": "ro-ro",
+    "berths": 5,
+    "max_draft_m": 11.2,
+    "timezone": "Europe/Madrid"
+  },
+  {
+    "port_id": "PORT-019",
+    "port_name": "Daphne Fertilizer Jetty",
+    "country": "Morocco",
+    "region": "Alboran Sea",
+    "port_type": "chemical and dry bulk",
+    "berths": 3,
+    "max_draft_m": 14.3,
+    "timezone": "Africa/Casablanca"
+  },
+  {
+    "port_id": "PORT-020",
+    "port_name": "Argos Bunkering Station",
+    "country": "Greece",
+    "region": "Saronic Gulf",
+    "port_type": "bunkering",
+    "berths": 4,
+    "max_draft_m": 12.5,
+    "timezone": "Europe/Athens"
+  }
+]
