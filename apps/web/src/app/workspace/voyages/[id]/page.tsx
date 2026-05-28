@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ensureDefaultWorkspace } from "@syntheci/db";
+import { AMS_DORIAN_LIVE_DEMO_VOYAGE_ID, isAmsDorianLiveDemoSource } from "@/lib/live-demo-events";
 import { loadVoyageCockpit } from "@/lib/voyage-workflows";
+import { LiveEventDemo } from "../live-event-demo";
 import { WorkflowActions } from "../workflow-actions";
 
 export const dynamic = "force-dynamic";
@@ -43,6 +45,12 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
     context.events.length +
     context.aisPositions.length +
     (context.bunkerReports?.length ?? 0);
+  const isLiveDemoVoyage = context.voyage.id === AMS_DORIAN_LIVE_DEMO_VOYAGE_ID;
+  const liveDemoActive = isLiveDemoVoyage && (
+    context.documents.some((document) => isAmsDorianLiveDemoSource(document.id)) ||
+    context.emails.some((email) => isAmsDorianLiveDemoSource(email.id)) ||
+    context.events.some((event) => isAmsDorianLiveDemoSource(event.id))
+  );
 
   return (
     <div className="space-y-5">
@@ -66,6 +74,8 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
           </div>
         </div>
       </section>
+
+      {isLiveDemoVoyage ? <LiveEventDemo active={liveDemoActive} /> : null}
 
       <WorkflowActions voyageId={context.voyage.id} />
 
