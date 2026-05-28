@@ -1,0 +1,1 @@
+In many part of our ui, like clicking run all in a voyage or automations you have to refresh to see the data the ai returns (I think), we should update the ui when we get results without having to refresh

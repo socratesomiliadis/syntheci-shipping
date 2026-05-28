@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "e16aae688981",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/src/app/api/automations/[id]/run/route.ts",
+    "apps/web/src/app/api/automations/route.ts",
+    "apps/web/src/app/api/watchlist/route.ts",
+    "apps/web/src/app/api/watchlist/schedule/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/route.ts",
+    "apps/web/src/app/workspace/automations/automation-form.tsx",
+    "apps/web/src/app/workspace/automations/page.tsx",
+    "apps/web/src/app/workspace/automations/recent-automation-runs.tsx",
+    "apps/web/src/app/workspace/automations/run-automation-button.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e1/6aae688981/0/metadata.json",
+      "transcript": "/e1/6aae688981/0/full.jsonl",
+      "content_hash": "/e1/6aae688981/0/content_hash.txt",
+      "prompt": "/e1/6aae688981/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 91591,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2180992,
+    "output_tokens": 12921,
+    "api_call_count": 33
+  }
+}

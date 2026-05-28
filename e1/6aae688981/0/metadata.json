@@ -1,0 +1,78 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "e16aae688981",
+  "session_id": "019e6ed6-2d65-7d90-b9a5-c394c3f7103e",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T14:27:10.11537Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/src/app/api/automations/[id]/run/route.ts",
+    "apps/web/src/app/api/automations/route.ts",
+    "apps/web/src/app/api/watchlist/route.ts",
+    "apps/web/src/app/api/watchlist/schedule/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/route.ts",
+    "apps/web/src/app/workspace/automations/automation-form.tsx",
+    "apps/web/src/app/workspace/automations/page.tsx",
+    "apps/web/src/app/workspace/automations/recent-automation-runs.tsx",
+    "apps/web/src/app/workspace/automations/run-automation-button.tsx"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "abe80695703f",
+  "token_usage": {
+    "input_tokens": 91591,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2180992,
+    "output_tokens": 12921,
+    "api_call_count": 33
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T14:27:10.103394Z",
+    "agent_lines": 141,
+    "agent_removed": 25,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 141,
+    "total_lines_changed": 166,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 509,
+      "user_lines_removed": 55,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".env.example": 2,
+        "apps/web/src/app/workspace/voyages/[id]/page.tsx": 160,
+        "apps/web/src/lib/voyage-workflows.ts": 92,
+        "apps/worker/src/index.ts": 48,
+        "docker-compose.yml": 4,
+        "packages/ai/src/models.ts": 20,
+        "packages/ai/src/voyage-intelligence.test.ts": 28,
+        "packages/ai/src/voyage-intelligence.ts": 117,
+        "packages/shared/src/env.ts": 2,
+        "packages/shared/src/schemas.ts": 25,
+        "packages/shared/src/workflows.ts": 11
+      },
+      "user_removed_per_file": {
+        ".env.example": 2,
+        "apps/web/src/lib/voyage-workflows.ts": 5,
+        "apps/worker/src/index.ts": 5,
+        "docker-compose.yml": 4,
+        "packages/ai/src/models.ts": 5,
+        "packages/ai/src/voyage-intelligence.test.ts": 7,
+        "packages/ai/src/voyage-intelligence.ts": 24,
+        "packages/shared/src/env.ts": 2,
+        "packages/shared/src/schemas.ts": 1
+      }
+    }
+  ]
+}
