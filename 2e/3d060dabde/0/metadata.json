@@ -1,0 +1,52 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "2e3d060dabde",
+  "session_id": "019e6da3-2762-7900-b3ba-f657b9d43123",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T08:22:39.514958Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/src/app/api/demo-data/ingest/route.ts",
+    "apps/web/src/app/workspace/sources/source-upload.tsx",
+    "apps/web/src/lib/demo-data-ingestion.ts",
+    "packages/db/drizzle/0001_previous_ghost_rider.sql",
+    "packages/db/drizzle/meta/0001_snapshot.json",
+    "packages/db/drizzle/meta/_journal.json",
+    "packages/db/src/schema.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "007e384478a6",
+  "token_usage": {
+    "input_tokens": 100637,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2692096,
+    "output_tokens": 24439,
+    "api_call_count": 44
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T08:22:39.504686Z",
+    "agent_lines": 4720,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 4720,
+    "total_lines_changed": 4721,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

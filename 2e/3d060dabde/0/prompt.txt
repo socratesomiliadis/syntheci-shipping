@@ -1,0 +1,1 @@
+Take a look inside the demo-data folder and then lets make our system be able to properly,  handle/ingest/store this data

@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "2e3d060dabde",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/src/app/api/demo-data/ingest/route.ts",
+    "apps/web/src/app/workspace/sources/source-upload.tsx",
+    "apps/web/src/lib/demo-data-ingestion.ts",
+    "packages/db/drizzle/0001_previous_ghost_rider.sql",
+    "packages/db/drizzle/meta/0001_snapshot.json",
+    "packages/db/drizzle/meta/_journal.json",
+    "packages/db/src/schema.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2e/3d060dabde/0/metadata.json",
+      "transcript": "/2e/3d060dabde/0/full.jsonl",
+      "content_hash": "/2e/3d060dabde/0/content_hash.txt",
+      "prompt": "/2e/3d060dabde/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 100637,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 2692096,
+    "output_tokens": 24439,
+    "api_call_count": 44
+  }
+}
