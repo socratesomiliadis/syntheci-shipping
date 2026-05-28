@@ -1,81 +1,105 @@
 import { Button } from "@/components/ui/button";
 import {
-  AlertTriangle,
   Anchor,
   ArrowRight,
-  Bell,
   Bot,
   CheckCircle2,
-  ClipboardList,
-  Database,
+  ClipboardCheck,
   FileSearch,
   FileText,
   Fuel,
+  GitCompareArrows,
   Mail,
   MessageSquareText,
   Radar,
+  ReceiptText,
   Scale,
   Ship,
+  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 
+const topCapabilities = [
+  {
+    title: "Find the issue",
+    detail: "Missing NOR/SOF, ETA drift, PDA/FDA gaps, bunker mismatches, emissions exposure, and source conflicts.",
+    icon: FileSearch,
+  },
+  {
+    title: "Show the evidence",
+    detail: "Every answer, job, contradiction, and draft reply links back to documents, emails, AIS, or structured records.",
+    icon: ClipboardCheck,
+  },
+  {
+    title: "Create the work",
+    detail: "High-confidence findings become operational jobs for the team, without changing your existing job lifecycle.",
+    icon: Sparkles,
+  },
+];
+
+const cockpitPanels = [
+  { label: "Contradictions", value: "4", tone: "text-red-700 bg-red-50 border-red-200", icon: GitCompareArrows },
+  { label: "Extracted facts", value: "38", tone: "text-blue-700 bg-blue-50 border-blue-200", icon: FileText },
+  { label: "Audit checks", value: "2", tone: "text-amber-700 bg-amber-50 border-amber-200", icon: ClipboardCheck },
+  { label: "Action jobs", value: "7", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: CheckCircle2 },
+];
+
 const sources = [
-  { label: "Voyage + vessel data", icon: Ship },
-  { label: "Documents + contracts", icon: FileText },
-  { label: "Emails and operator notes", icon: Mail },
-  { label: "AIS positions", icon: Radar },
-  { label: "Bunker reports", icon: Fuel },
-  { label: "Compliance flags", icon: Scale },
+  { label: "Voyages", icon: Ship },
+  { label: "Emails", icon: Mail },
+  { label: "Contracts", icon: FileText },
+  { label: "AIS", icon: Radar },
+  { label: "Bunkers", icon: Fuel },
+  { label: "Compliance", icon: Scale },
+  { label: "PDA/FDA", icon: ReceiptText },
 ];
 
-const outcomes = [
-  {
-    title: "Risk briefs",
-    description: "Condensed voyage, claims, compliance, and commercial context with the evidence that matters.",
-    icon: AlertTriangle,
-  },
-  {
-    title: "Chat with citations",
-    description: "Ask operational questions and get answers tied back to source documents, rows, and messages.",
-    icon: MessageSquareText,
-  },
-  {
-    title: "Alerts and next actions",
-    description: "Detect drift, missing evidence, contract exposure, ETA changes, and follow-up work before handover.",
-    icon: Bell,
-  },
-  {
-    title: "Reports + audit trail",
-    description: "Generate repeatable reports with a clear record of sources, reasoning, outputs, and decisions.",
-    icon: ClipboardList,
-  },
+const workflows = [
+  "Extract maritime facts from NOR, SOF, BDN, PDA, FDA, invoices, and charterparty excerpts.",
+  "Detect contradictions across voyage orders, AIS updates, emails, fuel evidence, claims, and payments.",
+  "Draft cited replies and claims packs with unsupported-claim warnings.",
+  "Monitor what changed since the last run and create jobs when confidence is high.",
 ];
 
-const workflow = [
-  "Connect approved maritime sources",
-  "Retrieve the right evidence",
-  "Reason across conflicting context",
-  "Ship cited actions to the team",
+const differentiators = [
+  {
+    title: "Not another maritime database",
+    body: "Syntheci does not just store voyage records. It turns messy evidence into decisions, risks, and next actions.",
+  },
+  {
+    title: "Built around the voyage",
+    body: "Documents, emails, AIS, bunker data, claims events, compliance flags, and source confidence all roll up to a voyage cockpit.",
+  },
+  {
+    title: "Audit-ready by default",
+    body: "Operators can see what evidence supports a statement, what is missing, and which contradictions should block external reliance.",
+  },
 ];
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white text-slate-950">
-      <header className="border-b border-slate-200 bg-white">
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3" aria-label="Syntheci home">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1447e5] text-white">
               <Anchor className="h-5 w-5" />
             </div>
-            <span className="text-sm font-semibold tracking-normal">Syntheci</span>
+            <div className="leading-tight">
+              <div className="text-sm font-semibold">Syntheci</div>
+              <div className="text-xs text-slate-500">Maritime intelligence</div>
+            </div>
           </Link>
           <nav className="flex items-center gap-2">
+            <Link href="#workflows" className="hidden text-sm font-medium text-slate-600 hover:text-slate-950 sm:block">
+              Workflows
+            </Link>
             <Link href="#platform" className="hidden text-sm font-medium text-slate-600 hover:text-slate-950 sm:block">
               Platform
             </Link>
             <Button asChild className="bg-[#1447e5] text-white hover:bg-[#1447e5]/90">
               <Link href="/login">
-                Demo login
+                Open demo
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -83,23 +107,25 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
-          <div className="flex flex-col justify-center">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#1447e5]/20 bg-[#1447e5]/5 px-3 py-1 text-sm font-medium text-[#1447e5]">
+      <section className="relative isolate min-h-[calc(100vh-4rem)] overflow-hidden border-b border-slate-200 bg-slate-950 text-white">
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,6,23,0.98)_0%,rgba(15,23,42,0.88)_44%,rgba(15,23,42,0.58)_100%)]" />
+        <ProductCockpitBackground />
+
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-300/30 bg-blue-400/10 px-3 py-1 text-sm font-medium text-blue-100">
               <Bot className="h-4 w-4" />
-              Maritime reasoning engine
+              Voyage intelligence cockpit
             </div>
-            <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-normal text-slate-950 sm:text-5xl lg:text-6xl">
-              Turn scattered shipping context into actionable operational intelligence.
+            <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-normal text-white sm:text-5xl lg:text-6xl">
+              Syntheci turns maritime evidence into the next action.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              Syntheci combines voyage, vessel, document, contract, email, AIS, bunker, and compliance data, then
-              uses retrieval and reasoning to produce cited answers, risk briefs, alerts, next actions, reports, and
-              audit trails.
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
+              One workspace that reads voyage documents, emails, AIS, bunker records, claims events, and compliance flags,
+              then finds gaps, contradictions, risks, cited replies, and jobs your operators can act on.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" className="bg-[#1447e5] text-white hover:bg-[#1447e5]/90">
+              <Button asChild size="lg" className="bg-white text-[#1447e5] hover:bg-white/90">
                 <Link href="/login">
                   Open demo workspace
                   <ArrowRight className="h-4 w-4" />
@@ -109,77 +135,92 @@ export default function Home() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-slate-300 bg-white text-slate-900 hover:bg-slate-50"
+                className="border-white/30 bg-white/10 text-white hover:bg-white/15"
               >
-                <Link href="#platform">See how it works</Link>
+                <Link href="#quick-read">Understand in 30 seconds</Link>
               </Button>
             </div>
           </div>
 
-          <div className="relative min-h-[420px] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="flex h-12 items-center justify-between border-b border-slate-200 px-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-950">
-                <Database className="h-4 w-4 text-[#1447e5]" />
-                Live voyage intelligence
+          <div id="quick-read" className="mt-12 grid max-w-5xl gap-3 sm:grid-cols-3">
+            {topCapabilities.map((item) => (
+              <div key={item.title} className="rounded-lg border border-white/15 bg-white/10 p-4 backdrop-blur">
+                <item.icon className="h-5 w-5 text-blue-200" />
+                <h2 className="mt-3 text-sm font-semibold text-white">{item.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>
               </div>
-              <div className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
-                6 sources synced
-              </div>
-            </div>
-            <div className="grid gap-4 p-4 sm:grid-cols-[0.9fr_1.1fr]">
-              <div className="space-y-3">
-                {sources.slice(0, 5).map((source) => (
-                  <div key={source.label} className="flex items-center gap-3 rounded-lg border border-slate-200 p-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#1447e5]/10 text-[#1447e5]">
-                      <source.icon className="h-4 w-4" />
-                    </div>
-                    <span className="text-sm font-medium text-slate-700">{source.label}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-4">
-                <div className="rounded-lg border border-[#1447e5]/20 bg-[#1447e5]/5 p-4">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-[#1447e5]">
-                    <FileSearch className="h-4 w-4" />
-                    Risk brief ready
-                  </div>
-                  <p className="mt-3 text-sm leading-6 text-slate-700">
-                    Charterparty exposure, late bunker stem evidence, AIS deviation, and port weather notice all point
-                    to a handover risk before arrival.
-                  </p>
-                </div>
-                <div className="rounded-lg border border-slate-200 p-4">
-                  <div className="text-xs font-semibold uppercase tracking-normal text-slate-500">Cited answer</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-700">
-                    A latest-change question found 3 new signals and linked each answer to the source
-                    document, email, and AIS event.
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border border-slate-200 p-3">
-                    <div className="text-2xl font-semibold text-slate-950">14</div>
-                    <div className="text-xs text-slate-500">next actions</div>
-                  </div>
-                  <div className="rounded-lg border border-slate-200 p-3">
-                    <div className="text-2xl font-semibold text-slate-950">100%</div>
-                    <div className="text-xs text-slate-500">source trace</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="platform" className="border-b border-slate-200 bg-slate-50">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold tracking-normal text-slate-950">One workspace for every signal.</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              Syntheci is built for maritime teams who need quick, defensible decisions from messy operational data.
+      <section id="platform" className="border-b border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+          <div>
+            <div className="text-sm font-semibold text-[#1447e5]">What the platform does</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-normal text-slate-950">
+              It connects the sources, checks the story, and tells operations what to do next.
+            </h2>
+            <p className="mt-4 text-sm leading-6 text-slate-600">
+              Traditional maritime software shows records. Syntheci compares those records against the evidence trail and
+              highlights what is missing, conflicting, risky, or ready to send.
             </p>
           </div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {differentiators.map((item) => (
+              <div key={item.title} className="rounded-lg border border-slate-200 bg-slate-50 p-5">
+                <h3 className="text-sm font-semibold text-slate-950">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="workflows" className="border-b border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+            <div>
+              <div className="text-sm font-semibold text-[#1447e5]">Current feature set</div>
+              <h2 className="mt-3 text-3xl font-semibold tracking-normal text-slate-950">
+                Built for the daily exceptions that slow down voyage teams.
+              </h2>
+            </div>
+            <div className="grid gap-3">
+              {workflows.map((workflow, index) => (
+                <div key={workflow} className="flex gap-4 rounded-lg border border-slate-200 bg-white p-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#1447e5] text-sm font-semibold text-white">
+                    {index + 1}
+                  </div>
+                  <p className="text-sm leading-6 text-slate-700">{workflow}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {cockpitPanels.map((panel) => (
+              <div key={panel.label} className={`rounded-lg border p-4 ${panel.tone}`}>
+                <div className="flex items-center justify-between gap-3">
+                  <panel.icon className="h-5 w-5" />
+                  <div className="text-2xl font-semibold">{panel.value}</div>
+                </div>
+                <div className="mt-3 text-sm font-semibold">{panel.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <div className="text-sm font-semibold text-[#1447e5]">Evidence in, decisions out</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-normal text-slate-950">
+              Syntheci works across the sources your team already relies on.
+            </h2>
+          </div>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {sources.map((source) => (
               <div key={source.label} className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#1447e5]/10 text-[#1447e5]">
@@ -192,49 +233,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
-          <div>
-            <h2 className="text-3xl font-semibold tracking-normal text-slate-950">
-              Retrieval plus reasoning, not another search box.
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              The engine pulls evidence from structured records and unstructured communications, reconciles conflicts,
-              and produces outputs your operators can act on.
-            </p>
-            <div className="mt-6 space-y-3">
-              {workflow.map((step, index) => (
-                <div key={step} className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1447e5] text-xs text-white">
-                    {index + 1}
-                  </div>
-                  {step}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {outcomes.map((outcome) => (
-              <div key={outcome.title} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#1447e5]/10 text-[#1447e5]">
-                  <outcome.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-4 text-base font-semibold text-slate-950">{outcome.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{outcome.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-slate-200 bg-[#1447e5] text-white">
+      <section className="bg-[#1447e5] text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
             <div className="flex items-center gap-2 text-sm font-medium text-white/80">
               <CheckCircle2 className="h-4 w-4" />
               Demo workspace included
             </div>
-            <h2 className="mt-2 text-2xl font-semibold tracking-normal">See the dashboard, chat, sources, and runs.</h2>
+            <h2 className="mt-2 text-2xl font-semibold tracking-normal">
+              See voyages, sources, cited chat, contradictions, audit checks, and generated jobs.
+            </h2>
           </div>
           <Button asChild size="lg" className="bg-white text-[#1447e5] hover:bg-white/90">
             <Link href="/login">
@@ -245,5 +253,61 @@ export default function Home() {
         </div>
       </section>
     </main>
+  );
+}
+
+function ProductCockpitBackground() {
+  return (
+    <div className="pointer-events-none absolute inset-y-10 right-[-320px] hidden w-[760px] rotate-[-2deg] opacity-90 lg:block xl:right-[-240px]">
+      <div className="rounded-lg border border-white/15 bg-white/10 p-4 shadow-2xl backdrop-blur">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3">
+          <div>
+            <div className="text-xs font-medium text-blue-100">VOY-2026-0523</div>
+            <div className="mt-1 text-lg font-semibold text-white">AMS Dorian · Claims and payment exception</div>
+          </div>
+          <div className="rounded-md border border-red-300/30 bg-red-400/15 px-3 py-1 text-xs font-semibold text-red-100">
+            high risk
+          </div>
+        </div>
+        <div className="grid gap-4 pt-4 lg:grid-cols-[1fr_1.1fr]">
+          <div className="space-y-3">
+            {[
+              ["PDA indexed, FDA pending", "Payment risk"],
+              ["AIS ETA shifted +27h", "Change monitor"],
+              ["Bunker quantity mismatch", "Reconciliation"],
+              ["NOR/SOF evidence required", "Audit"],
+            ].map(([title, label]) => (
+              <div key={title} className="rounded-lg border border-white/10 bg-slate-950/55 p-3">
+                <div className="text-sm font-semibold text-white">{title}</div>
+                <div className="mt-1 text-xs text-slate-300">{label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-3">
+            <div className="rounded-lg border border-blue-200/20 bg-blue-400/10 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-blue-100">
+                <MessageSquareText className="h-4 w-4" />
+                Cited reply draft
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-200">
+                Current position remains provisional pending FDA evidence and reconciliation of bunker figures against
+                indexed BDN support.
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {["Primary docs", "AIS", "Email thread"].map((label) => (
+                <div key={label} className="rounded-lg border border-white/10 bg-white/10 p-3">
+                  <div className="text-lg font-semibold text-white">92%</div>
+                  <div className="mt-1 text-xs text-slate-300">{label}</div>
+                </div>
+              ))}
+            </div>
+            <div className="rounded-lg border border-emerald-200/20 bg-emerald-400/10 p-3 text-sm font-medium text-emerald-100">
+              7 high-confidence jobs ready
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

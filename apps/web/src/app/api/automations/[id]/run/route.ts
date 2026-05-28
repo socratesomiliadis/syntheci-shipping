@@ -1,6 +1,6 @@
 import { automationQueue } from "@/lib/queues";
 import { automationRules, automationRuns, db, ensureDefaultWorkspace, queueJobs } from "@syntheci/db";
-import { QUEUES } from "@syntheci/shared";
+import { parseWorkflowIntent, QUEUES } from "@syntheci/shared";
 import { eq } from "drizzle-orm";
 
 export async function POST(_request: Request, context: { params: Promise<{ id: string }> }) {
@@ -20,13 +20,19 @@ export async function POST(_request: Request, context: { params: Promise<{ id: s
     status: "queued",
   });
 
-  const job = await automationQueue().add("manual-automation", {
-    automationRuleId: id,
-    workspaceId,
-    runId,
-    question: rule.question,
-    kind: "brief",
-  });
+  const parsedIntent = parseWorkflowIntent(rule.question);
+  const jobData = parsedIntent.workflow === "watchlist" && parsedIntent.confidence < 0.8
+    ? { automationRuleId: id, workspaceId, runId, question: rule.question, kind: "brief" as const }
+    : {
+        automationRuleId: id,
+        workspaceId,
+        runId,
+        kind: "workflow" as const,
+        workflow: parsedIntent.workflow,
+        voyageId: parsedIntent.voyageId,
+      };
+
+  const job = await automationQueue().add("manual-automation", jobData);
 
   await db.insert(queueJobs).values({
     id: crypto.randomUUID(),
@@ -38,5 +44,5 @@ export async function POST(_request: Request, context: { params: Promise<{ id: s
     payload: job.data,
   });
 
-  return Response.json({ runId, jobId: job.id });
+  return Response.json({ runId, jobId: job.id, parsedIntent });
 }

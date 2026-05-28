@@ -36,6 +36,13 @@
       "when": 1779967681271,
       "tag": "0004_windy_stryfe",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1780012800000,
+      "tag": "0005_maritime_intelligence_v1",
+      "breakpoints": true
     }
   ]
 }

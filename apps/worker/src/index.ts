@@ -5,6 +5,7 @@ import {
   draftAutomationBrief,
   embedTexts,
   extractTextFromDocument,
+  generateVoyageIntelligence,
 } from "@syntheci/ai";
 import {
   automationRuns,
@@ -13,21 +14,32 @@ import {
   documents,
   findRelevantChunks,
   maritimeAisPositions,
+  maritimeBunkerReports,
   maritimeComplianceFlags,
   maritimeDocuments,
   maritimeEmails,
   maritimeVoyageEvents,
   maritimeVoyages,
   operationalJobs,
+  loadVoyageSnapshot,
+  persistDocumentExtractions,
+  persistReconciliationFindings,
+  persistVoyageSnapshot,
 } from "@syntheci/db";
 import {
   automationQueueJobSchema,
   automationJobSchema,
+  buildAiActionPlanJobs,
   buildWatchlistJobs,
+  buildAuditChecks,
+  buildReconciliationFindings,
+  buildVoyageSnapshot,
+  compareVoyageSnapshots,
   comparePdaFda,
   detectMissingDocuments,
   detectPaymentRisk,
   buildClaimsEvidencePack,
+  extractDocumentFields,
   getServerEnv,
   ingestionJobSchema,
   QUEUES,
@@ -68,6 +80,10 @@ const automationWorker = new Worker(
     const payload = automationQueueJobSchema.parse(job.data);
     if (payload.kind === "workflow") {
       await processWorkflowAutomation(payload);
+      return;
+    }
+    if (payload.kind === "document-extraction" || payload.kind === "voyage-reconciliation" || payload.kind === "voyage-change-monitor" || payload.kind === "audit-check") {
+      await processIntelligenceJob(payload);
       return;
     }
     await processAutomation(automationJobSchema.parse(payload));
@@ -181,8 +197,9 @@ async function processWorkflowAutomation(payload: WorkflowAutomationJob) {
 
     for (const voyageId of voyageIds) {
       const context = await loadWorkflowContext(payload.workspaceId, voyageId);
-      const drafts = draftsForWorkflow(payload.workflow, context);
-      const result = await persistWorkflowJobs(payload.workspaceId, voyageId, drafts);
+      const intelligence = await generateAiWorkflowIntelligence(payload.workspaceId, context, payload.workflow);
+      await persistReconciliationFindings(payload.workspaceId, intelligence.findings);
+      const result = await persistWorkflowJobs(payload.workspaceId, voyageId, intelligence.jobs);
       inserted += result.inserted;
       available += result.available;
     }
@@ -209,6 +226,31 @@ async function processWorkflowAutomation(payload: WorkflowAutomationJob) {
   }
 }
 
+async function processIntelligenceJob(payload: import("@syntheci/shared").IntelligenceQueueJob) {
+  const voyageIds = payload.voyageId ? [payload.voyageId] : await activeVoyageIds(payload.workspaceId);
+  for (const voyageId of voyageIds) {
+    const context = await loadWorkflowContext(payload.workspaceId, voyageId);
+    if (payload.kind === "document-extraction") {
+      await persistDocumentExtractions(payload.workspaceId, extractDocumentFields(context));
+    }
+    if (payload.kind === "voyage-reconciliation") {
+      const intelligence = await generateAiWorkflowIntelligence(payload.workspaceId, context, "reconciliation");
+      await persistReconciliationFindings(payload.workspaceId, intelligence.findings);
+      await persistWorkflowJobs(payload.workspaceId, voyageId, intelligence.jobs);
+    }
+    if (payload.kind === "voyage-change-monitor") {
+      const intelligence = await generateAiWorkflowIntelligence(payload.workspaceId, context, "change-monitor");
+      await persistReconciliationFindings(payload.workspaceId, intelligence.findings);
+      await persistWorkflowJobs(payload.workspaceId, voyageId, intelligence.jobs);
+    }
+    if (payload.kind === "audit-check") {
+      const intelligence = await generateAiWorkflowIntelligence(payload.workspaceId, context, "audit");
+      await persistReconciliationFindings(payload.workspaceId, intelligence.findings);
+      await persistWorkflowJobs(payload.workspaceId, voyageId, intelligence.jobs);
+    }
+  }
+}
+
 async function activeVoyageIds(workspaceId: string) {
   const rows = await db
     .select({ id: maritimeVoyages.id })
@@ -227,7 +269,7 @@ async function loadWorkflowContext(workspaceId: string, voyageId: string): Promi
 
   if (!voyage) throw new Error(`Voyage not found: ${voyageId}`);
 
-  const [documentRows, emails, events, flags, aisPositions] = await Promise.all([
+  const [documentRows, emails, events, flags, aisPositions, bunkerReports] = await Promise.all([
     db
       .select({
         id: maritimeDocuments.documentId,
@@ -259,6 +301,10 @@ async function loadWorkflowContext(workspaceId: string, voyageId: string): Promi
       .where(and(eq(maritimeAisPositions.workspaceId, workspaceId), eq(maritimeAisPositions.voyageId, voyageId)))
       .orderBy(desc(maritimeAisPositions.positionTimestamp))
       .limit(12),
+    db
+      .select()
+      .from(maritimeBunkerReports)
+      .where(and(eq(maritimeBunkerReports.workspaceId, workspaceId), eq(maritimeBunkerReports.voyageId, voyageId))),
   ]);
 
   return {
@@ -312,22 +358,26 @@ async function loadWorkflowContext(workspaceId: string, voyageId: string): Promi
       eta: position.eta,
       speedKnots: position.speedKnots,
     })),
+    bunkerReports: bunkerReports.map((report) => ({
+      id: report.id,
+      vessel: report.vessel,
+      voyageId: report.voyageId,
+      fuelType: report.fuelType,
+      quantityMt: report.quantityMt,
+      sulfurPct: report.sulfurPct,
+      co2Factor: report.co2Factor,
+      port: report.port,
+      supplier: report.supplier,
+      invoiceDate: report.invoiceDate,
+    })),
   };
 }
 
-function draftsForWorkflow(workflow: WorkflowAutomationJob["workflow"], context: WorkflowContext) {
-  if (workflow === "watchlist") return buildWatchlistJobs(context);
-  if (workflow === "missing-documents") return detectMissingDocuments(context);
-  if (workflow === "pda-fda") return comparePdaFda(context);
-  if (workflow === "claims-pack") return buildClaimsEvidencePack(context);
-  if (workflow === "payment-risk") return detectPaymentRisk(context);
-  return [
-    ...buildWatchlistJobs(context),
-    ...detectMissingDocuments(context),
-    ...comparePdaFda(context),
-    ...buildClaimsEvidencePack(context),
-    ...detectPaymentRisk(context),
-  ];
+async function generateAiWorkflowIntelligence(workspaceId: string, context: WorkflowContext, workflow: string) {
+  const query = buildVoyageRetrievalQuery(context, workflow);
+  const [embedding] = await embedTexts([query], "query");
+  const retrievedChunks = embedding ? await findRelevantChunks(workspaceId, embedding, 10, query) : [];
+  return generateVoyageIntelligence({ context, retrievedChunks, workflow });
 }
 
 async function persistWorkflowJobs(workspaceId: string, voyageId: string, drafts: WorkflowJobDraft[]) {
@@ -364,6 +414,20 @@ async function persistWorkflowJobs(workspaceId: string, voyageId: string, drafts
 
 function workflowJobKey(jobType: string, title: string) {
   return `${jobType}:${title.toLowerCase()}`;
+}
+
+function buildVoyageRetrievalQuery(context: WorkflowContext, workflow: string) {
+  return [
+    context.voyage.id,
+    context.voyage.vesselName,
+    context.voyage.originPort,
+    context.voyage.destinationPort,
+    context.voyage.cargo,
+    workflow,
+    "operational risk evidence missing documents payment claims compliance AIS bunker voyage changes",
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 async function objectBodyToBytes(body: unknown) {

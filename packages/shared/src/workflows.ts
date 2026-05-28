@@ -45,7 +45,7 @@ export type WorkflowEmail = {
   from: string;
   sentAt: string;
   body: string;
-  attachments?: { document_id?: string; document_type?: string; original_filename?: string; description?: string }[];
+  attachments?: { attachment_id?: string; document_id?: string; document_type?: string; original_filename?: string; description?: string }[];
 };
 
 export type WorkflowEvent = {
@@ -77,6 +77,19 @@ export type WorkflowAisPosition = {
   speedKnots: number;
 };
 
+export type WorkflowBunkerReport = {
+  id: string;
+  vessel: string;
+  voyageId: string;
+  fuelType: string;
+  quantityMt: number;
+  sulfurPct: number;
+  co2Factor: number;
+  port: string;
+  supplier: string;
+  invoiceDate: string;
+};
+
 export type WorkflowContext = {
   voyage: WorkflowVoyage;
   documents: WorkflowDocument[];
@@ -84,6 +97,7 @@ export type WorkflowContext = {
   events: WorkflowEvent[];
   complianceFlag?: WorkflowComplianceFlag | null;
   aisPositions: WorkflowAisPosition[];
+  bunkerReports?: WorkflowBunkerReport[];
 };
 
 export type TimelineItem = {

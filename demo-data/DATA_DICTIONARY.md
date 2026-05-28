@@ -191,12 +191,12 @@ Timeline events for voyage operations.
 | `event_type` | enum | `port_call`, `delay_event`, `canal_transit`, `weather_event`, or `bunker_stop`. |
 | `event_time` | datetime | Event timestamp. |
 | `location` | string | Port, sea area, or synthetic transit location. |
-| `severity` | enum | `info`, `watch`, `medium`, or `high`. |
+| `severity` | string | Legacy field retained for compatibility; ingestion normalizes it to `unclassified` so AI decides operational priority from evidence. |
 | `description` | string | Operational event description. |
 
 ### `structured/compliance_flags.json`
 
-Precomputed compliance and performance risk flags.
+Legacy precomputed compliance and performance risk flags. These records are retained for compatibility with older demos, but the AI-first ingestion path does not load them as workflow evidence.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -216,7 +216,7 @@ Precomputed compliance and performance risk flags.
 
 ### `scenarios/storylines.json`
 
-Curated demo storylines that connect multiple datasets into intentional workflows.
+Legacy curated demo storylines that connect multiple datasets into intentional workflows. These records are retained for reference, but the AI-first ingestion path does not load them as evidence or expected answers.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -229,9 +229,9 @@ Curated demo storylines that connect multiple datasets into intentional workflow
 | `business_problem` | string | One-paragraph problem statement. |
 | `narrative` | string | Coherent storyline tying the evidence together. |
 | `recommended_demo_questions` | array | Prompts that should retrieve this scenario well. |
-| `expected_insights` | array | Expected answer points for demos or manual QA. |
+| `expected_insights` | array | Legacy expected answer points; not used by AI-first workflow generation. |
 | `evidence` | object | IDs for related threads, emails, documents, and structured records. |
-| `suggested_actions` | array | Practical next actions the app can recommend. |
+| `suggested_actions` | array | Legacy suggested actions; not used by AI-first workflow generation. |
 
 ## Relationship Map
 
@@ -241,8 +241,8 @@ Most workflows should join data in this order:
 2. Resolve vessel and route from `voyages.json`.
 3. Retrieve matching emails via `emails.related_voyage_id`.
 4. Retrieve markdown documents via `emails.attachments[].path`.
-5. Retrieve structured records from `structured/*` by `voyage_id`.
-6. Use `scenarios/storylines.json` for demo-ready narratives and expected insights.
+5. Retrieve raw structured records from `structured/bunker_reports.csv`, `structured/ais_positions.json`, and `structured/voyage_events.json` by `voyage_id`.
+6. Let the platform generate operational intelligence from cited evidence instead of reading precomputed expected insights.
 
 ## Recommended Demo Query Patterns
 

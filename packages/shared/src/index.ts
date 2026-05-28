@@ -1,5 +1,6 @@
 export * from "./constants";
 export * from "./env";
+export * from "./intelligence";
 export * from "./maritime";
 export * from "./queues";
 export * from "./rag";

@@ -109,6 +109,7 @@
       "record_type": "voyage_event",
       "record_count": 126,
       "primary_key": "event_id",
+      "ingestion_note": "Ingested as factual timeline evidence; legacy severity values are normalized to unclassified.",
       "event_types": [
         "bunker_stop",
         "canal_transit",
@@ -125,6 +126,7 @@
       "path": "structured/compliance_flags.json",
       "record_type": "compliance_flag",
       "record_count": 30,
+      "ingestion_note": "Legacy compatibility file; not ingested by the AI-first demo workflow.",
       "primary_key": "flag_id",
       "flag_types": [
         "eu_ets_exposure",
@@ -141,6 +143,7 @@
       "path": "scenarios/storylines.json",
       "record_type": "curated_demo_storyline",
       "record_count": 5,
+      "ingestion_note": "Legacy reference file; not ingested as AI workflow evidence or expected answers.",
       "primary_key": "scenario_id",
       "foreign_keys": {
         "primary_voyage_id": "voyages.voyage_id",

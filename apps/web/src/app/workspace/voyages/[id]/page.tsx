@@ -7,8 +7,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ensureDefaultWorkspace } from "@syntheci/db";
 import { loadVoyageCockpit } from "@/lib/voyage-workflows";
 import { WorkflowActions } from "../workflow-actions";
-import { AlertTriangle, FileText, PackageCheck, ShieldAlert } from "lucide-react";
-import { DraftReplyEditor } from "./draft-reply-editor";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +17,16 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
   if (!cockpit) notFound();
 
   const { context } = cockpit;
-  const compliance = context.complianceFlag;
+  const aiJobs = cockpit.jobs.filter((job) => job.payload && (job.payload as Record<string, unknown>).generatedBy === "ai");
+  const latestSummary = aiJobs
+    .map((job) => (job.payload as Record<string, unknown>).runSummary)
+    .find((value): value is string => typeof value === "string" && value.length > 0);
+  const evidenceCount =
+    context.documents.length +
+    context.emails.length +
+    context.events.length +
+    context.aisPositions.length +
+    (context.bunkerReports?.length ?? 0);
 
   return (
     <div className="space-y-5">
@@ -28,7 +35,7 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="outline">{context.voyage.status ? formatLabel(context.voyage.status) : "Voyage"}</Badge>
-              {compliance ? <RiskBadge level={compliance.riskLevel} score={compliance.riskScore} /> : null}
+              {aiJobs.length > 0 ? <Badge variant="outline">AI intelligence</Badge> : null}
             </div>
             <h1 className="mt-3 text-2xl font-semibold text-slate-950">{context.voyage.id}</h1>
             <p className="mt-1 text-sm text-slate-500">
@@ -37,8 +44,8 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
           </div>
           <div className="grid gap-2 text-sm sm:grid-cols-3">
             <Metric label="ETA" value={context.voyage.eta ? formatDate(context.voyage.eta) : "Unknown"} />
-            <Metric label="Open jobs" value={String(cockpit.jobs.filter((job) => job.status === "open").length)} />
-            <Metric label="Source gaps" value={String(cockpit.missingDocumentDrafts.length)} />
+            <Metric label="Open AI jobs" value={String(aiJobs.filter((job) => job.status === "open").length)} />
+            <Metric label="Evidence sources" value={String(evidenceCount)} />
           </div>
         </div>
       </section>
@@ -48,21 +55,22 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
       <section className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Operational Jobs</CardTitle>
-            <CardDescription>Persisted work items generated from voyage workflow checks.</CardDescription>
+            <CardTitle>AI Operational Intelligence</CardTitle>
+            <CardDescription>Persisted work items generated from cited voyage evidence.</CardDescription>
           </CardHeader>
           <CardContent>
-            {cockpit.jobs.length === 0 ? (
-              <p className="text-sm text-slate-500">No persisted jobs yet. Run workflow actions to create them.</p>
+            {aiJobs.length === 0 ? (
+              <p className="text-sm text-slate-500">No AI-generated jobs yet. Run a workflow action to generate intelligence from the current evidence.</p>
             ) : (
               <div className="space-y-3">
-                {cockpit.jobs.slice(0, 8).map((job) => (
+                {aiJobs.slice(0, 10).map((job) => (
                   <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/jobs/${job.id}`} key={job.id}>
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="font-medium text-slate-950">{job.title}</div>
                       <Badge variant="outline">{job.priority}</Badge>
                     </div>
                     <p className="mt-1 line-clamp-2 text-sm text-slate-500">{job.summary}</p>
+                    <JobMeta payload={job.payload as Record<string, unknown>} />
                   </Link>
                 ))}
               </div>
@@ -72,11 +80,13 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
 
         <Card>
           <CardHeader>
-            <CardTitle>Draft Reply Assistant</CardTitle>
-            <CardDescription>Editable deterministic draft based on current gaps and risk signals.</CardDescription>
+            <CardTitle>AI Run Summary</CardTitle>
+            <CardDescription>Latest grounded intelligence summary for this voyage.</CardDescription>
           </CardHeader>
           <CardContent>
-            <DraftReplyEditor body={cockpit.draftReply.body} subject={cockpit.draftReply.subject} />
+            <p className="text-sm leading-6 text-slate-600">
+              {latestSummary ?? "Run a workflow action to produce an AI summary from the voyage evidence packet."}
+            </p>
           </CardContent>
         </Card>
       </section>
@@ -84,31 +94,18 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
       <section className="grid gap-5 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Timeline</CardTitle>
-            <CardDescription>Events, emails, documents, AIS, and compliance signals in time order.</CardDescription>
+            <CardTitle>AI Findings</CardTitle>
+            <CardDescription>Persisted contradictions, risks, and source-backed observations.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {cockpit.timeline.slice(0, 14).map((item) => (
-                <div className="grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-lg border border-slate-200 p-3" key={`${item.kind}-${item.id}`}>
-                  <div className="text-xs text-slate-500">{formatDate(item.timestamp)}</div>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="outline">{item.kind}</Badge>
-                      <span className="font-medium text-slate-950">{item.title}</span>
-                    </div>
-                    <p className="mt-1 text-sm text-slate-500">{item.detail}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <FindingList findings={cockpit.reconciliationFindings} empty="No AI findings have been persisted for this voyage." />
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Thread Summaries</CardTitle>
-            <CardDescription>Indexed email-thread summaries with open questions, decisions, and missing-document signals.</CardDescription>
+            <CardDescription>Indexed email-thread summaries available as evidence.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -129,24 +126,24 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
         </Card>
       </section>
 
-      <section className="grid gap-5 xl:grid-cols-3">
-        <WorkflowPanel icon={FileText} title="Missing Documents" drafts={cockpit.missingDocumentDrafts} />
-        <WorkflowPanel icon={ShieldAlert} title="Payment Risk" drafts={cockpit.paymentRiskDrafts} />
-        <WorkflowPanel icon={PackageCheck} title="Claims Pack" drafts={cockpit.claimsPackDrafts} />
-      </section>
-
       <section className="grid gap-5 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Charterparty Extraction</CardTitle>
-            <CardDescription>Clause cards extracted from indexed charterparty excerpts.</CardDescription>
+            <CardTitle>Timeline</CardTitle>
+            <CardDescription>Events, emails, documents, AIS, and structured records in time order.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {cockpit.charterpartyClauses.map((clause) => (
-                <div className="rounded-lg border border-slate-200 p-3" key={clause.key}>
-                  <div className="font-medium text-slate-950">{clause.title}</div>
-                  <p className="mt-1 text-sm leading-6 text-slate-500">{clause.text}</p>
+              {cockpit.timeline.slice(0, 14).map((item) => (
+                <div className="grid grid-cols-[112px_minmax(0,1fr)] gap-3 rounded-lg border border-slate-200 p-3" key={`${item.kind}-${item.id}`}>
+                  <div className="text-xs text-slate-500">{formatDate(item.timestamp)}</div>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline">{item.kind}</Badge>
+                      <span className="font-medium text-slate-950">{item.title}</span>
+                    </div>
+                    <p className="mt-1 text-sm text-slate-500">{item.detail}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -202,29 +199,38 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
   );
 }
 
-function WorkflowPanel({ drafts, icon: Icon, title }: { drafts: { title: string; summary: string; priority: string }[]; icon: typeof AlertTriangle; title: string }) {
+function JobMeta({ payload }: { payload: Record<string, unknown> }) {
+  const confidence = typeof payload.confidence === "number" ? payload.confidence : undefined;
+  const suggestedAction = typeof payload.suggestedAction === "string" ? payload.suggestedAction : undefined;
   return (
-    <Card>
-      <CardHeader>
-        <Icon className="h-5 w-5 text-slate-600" />
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{drafts.length} candidate workflow items</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {drafts.slice(0, 4).map((draft) => (
-            <div className="rounded-lg border border-slate-200 p-3" key={draft.title}>
-              <div className="flex items-center justify-between gap-2">
-                <div className="font-medium text-slate-950">{draft.title}</div>
-                <Badge variant="outline">{draft.priority}</Badge>
-              </div>
-              <p className="mt-1 text-sm text-slate-500">{draft.summary}</p>
-            </div>
-          ))}
-          {drafts.length === 0 ? <p className="text-sm text-slate-500">No candidate items detected.</p> : null}
+    <div className="mt-2 space-y-1 text-xs text-slate-500">
+      {confidence !== undefined ? <div>{Math.round(confidence * 100)}% confidence</div> : null}
+      {suggestedAction ? <div>{suggestedAction}</div> : null}
+    </div>
+  );
+}
+
+function FindingList({
+  empty,
+  findings,
+}: {
+  empty: string;
+  findings: { title: string; summary: string; severity: string; confidence: number; suggestedAction?: string }[];
+}) {
+  return (
+    <div className="space-y-3">
+      {findings.slice(0, 6).map((finding) => (
+        <div className="rounded-lg border border-slate-200 p-3" key={finding.title}>
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-medium text-slate-950">{finding.title}</div>
+            <Badge variant="outline">{finding.severity} · {Math.round(finding.confidence * 100)}%</Badge>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">{finding.summary}</p>
+          {finding.suggestedAction ? <p className="mt-2 text-xs text-slate-500">{finding.suggestedAction}</p> : null}
         </div>
-      </CardContent>
-    </Card>
+      ))}
+      {findings.length === 0 ? <p className="text-sm text-slate-500">{empty}</p> : null}
+    </div>
   );
 }
 
@@ -234,20 +240,6 @@ function Metric({ label, value }: { label: string; value: string }) {
       <div className="text-xs text-slate-500">{label}</div>
       <div className="mt-1 font-medium text-slate-950">{value}</div>
     </div>
-  );
-}
-
-function RiskBadge({ level, score }: { level: string; score: number }) {
-  const className =
-    level === "high"
-      ? "border-red-200 bg-red-50 text-red-700"
-      : level === "medium"
-      ? "border-amber-200 bg-amber-50 text-amber-700"
-      : "border-emerald-200 bg-emerald-50 text-emerald-700";
-  return (
-    <Badge className={className} variant="outline">
-      {formatLabel(level)} {score}
-    </Badge>
   );
 }
 

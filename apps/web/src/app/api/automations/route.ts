@@ -1,6 +1,6 @@
 import { automationQueue } from "@/lib/queues";
 import { automationRules, automationRuns, db, ensureDefaultWorkspace, queueJobs } from "@syntheci/db";
-import { createAutomationSchema, QUEUES } from "@syntheci/shared";
+import { createAutomationSchema, parseWorkflowIntent, QUEUES } from "@syntheci/shared";
 import { desc, eq } from "drizzle-orm";
 
 export async function GET() {
@@ -15,7 +15,12 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const input = createAutomationSchema.parse(await request.json());
+  const body = await request.json();
+  const input = createAutomationSchema.parse(body);
+  const parsedIntent = parseWorkflowIntent(input.question);
+  const cadence = body.cadence ? input.cadence : parsedIntent.cadence;
+  const workflow = input.workflow ?? parsedIntent.workflow;
+  const voyageId = input.voyageId ?? parsedIntent.voyageId;
   const workspaceId = await ensureDefaultWorkspace();
   const ruleId = crypto.randomUUID();
 
@@ -24,10 +29,10 @@ export async function POST(request: Request) {
     workspaceId,
     name: input.name,
     question: input.question,
-    cadence: input.cadence,
+    cadence,
   });
 
-  if (input.cadence !== "manual") {
+  if (cadence !== "manual") {
     const runId = crypto.randomUUID();
     await db.insert(automationRuns).values({
       id: runId,
@@ -37,8 +42,10 @@ export async function POST(request: Request) {
     });
     const job = await automationQueue().add(
       "scheduled-automation",
-      { automationRuleId: ruleId, workspaceId, runId, question: input.question, kind: "brief" },
-      { repeat: repeatForCadence(input.cadence) },
+      workflow === "watchlist" && parsedIntent.confidence < 0.8
+        ? { automationRuleId: ruleId, workspaceId, runId, question: input.question, kind: "brief" }
+        : { automationRuleId: ruleId, workspaceId, runId, kind: "workflow", workflow, voyageId },
+      { repeat: repeatForCadence(cadence) },
     );
     await db.insert(queueJobs).values({
       id: crypto.randomUUID(),
@@ -51,7 +58,7 @@ export async function POST(request: Request) {
     });
   }
 
-  return Response.json({ ruleId }, { status: 201 });
+  return Response.json({ ruleId, parsedIntent: { ...parsedIntent, workflow, voyageId, cadence } }, { status: 201 });
 }
 
 function repeatForCadence(cadence: "hourly" | "daily" | "weekly") {

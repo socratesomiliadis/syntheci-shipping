@@ -3,12 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { FileSearch, PackageCheck, Radar, ReceiptText, ShieldAlert } from "lucide-react";
+import { ClipboardCheck, FileSearch, GitCompareArrows, PackageCheck, Radar, ReceiptText, RefreshCw, ShieldAlert, WandSparkles } from "lucide-react";
 
 const workflows = [
   { id: "all", label: "Run all", icon: Radar },
   { id: "missing-documents", label: "Find gaps", icon: FileSearch },
   { id: "pda-fda", label: "PDA/FDA", icon: ReceiptText },
+  { id: "reconciliation", label: "Reconcile", icon: GitCompareArrows },
+  { id: "change-monitor", label: "Changes", icon: RefreshCw },
+  { id: "audit", label: "Audit", icon: ClipboardCheck },
+  { id: "action-plan", label: "Action plan", icon: WandSparkles },
   { id: "claims-pack", label: "Claims pack", icon: PackageCheck },
   { id: "payment-risk", label: "Payment risk", icon: ShieldAlert },
 ];

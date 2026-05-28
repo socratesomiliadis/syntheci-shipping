@@ -3,7 +3,6 @@ import path from "node:path";
 import {
   buildContactProfileChunk,
   buildEmailEmbeddingChunks,
-  buildScenarioProfileChunk,
   buildStructuredRecordChunk,
   buildThreadSummaryChunks,
   buildVesselProfileChunk,
@@ -150,7 +149,7 @@ const voyageEventSchema = z.object({
   event_type: z.string(),
   event_time: z.string(),
   location: z.string(),
-  severity: z.string(),
+  severity: z.string().default("unclassified"),
   description: z.string(),
 });
 
@@ -215,8 +214,8 @@ export async function ingestDemoData(input: z.infer<typeof ingestDemoDataInputSc
   counts.bunkerReports = await ingestBunkerReports(root, workspaceId);
   counts.aisPositions = await ingestAisPositions(root, workspaceId);
   counts.voyageEvents = await ingestVoyageEvents(root, workspaceId);
-  counts.complianceFlags = await ingestComplianceFlags(root, workspaceId);
-  counts.scenarios = await ingestScenarios(root, workspaceId);
+  counts.complianceFlags = 0;
+  counts.scenarios = 0;
   counts.documents = await ingestMarkdownDocuments(root, workspaceId, input.indexDocuments);
   counts.maritimeEmbeddings = await ingestMaritimeEmbeddingChunks(root, workspaceId, input.indexDocuments);
   counts.referenceDocuments = await ingestReferenceDocuments(root, workspaceId, input.indexDocuments);
@@ -541,7 +540,7 @@ async function ingestVoyageEvents(root: string, workspaceId: string) {
         eventType: record.event_type,
         eventTime: record.event_time,
         location: record.location,
-        severity: record.severity,
+        severity: "unclassified",
         description: record.description,
         raw: record,
         updatedAt: now,
@@ -846,13 +845,8 @@ async function ingestMaritimeEmbeddingChunks(root: string, workspaceId: string, 
   );
   const aisPositions = aisPositionSchema.array().parse(await readJson(path.join(root, "structured/ais_positions.json")));
   const voyageEvents = voyageEventSchema.array().parse(await readJson(path.join(root, "structured/voyage_events.json")));
-  const complianceFlags = complianceFlagSchema.array().parse(
-    await readJson(path.join(root, "structured/compliance_flags.json")),
-  );
-  const scenarios = scenarioSchema.array().parse(await readJson(path.join(root, "scenarios/storylines.json")));
   const markdownDocuments = await readDemoDocumentFrontMatter(root);
   const peopleById = new Map(people.map((person) => [person.person_id, person]));
-  const complianceByVoyage = new Map(complianceFlags.map((flag) => [flag.voyage_id, flag]));
   const eventsByVoyage = groupBy(voyageEvents, (event) => event.voyage_id);
   const docsByVoyage = groupBy(markdownDocuments, (document) => document.related_voyage_id);
   const voyagesByContact = groupBy(voyages, (voyage) => voyage.operations_contact_id);
@@ -872,22 +866,11 @@ async function ingestMaritimeEmbeddingChunks(root: string, workspaceId: string, 
   );
   chunks.push(
     ...voyages.map((voyage) => {
-      const compliance = complianceByVoyage.get(voyage.voyage_id);
       const voyageDocs = docsByVoyage.get(voyage.voyage_id) ?? [];
       const voyageEventsForProfile = eventsByVoyage.get(voyage.voyage_id) ?? [];
-      const openIssues = [
-        compliance?.mrv_missing_data ? "MRV fuel data missing" : undefined,
-        compliance?.fueleu_risk ? "FuelEU risk requires evidence review" : undefined,
-        compliance?.eu_ets_exposure ? "EU ETS exposure active" : undefined,
-        compliance?.cii_risk ? "CII risk watch" : undefined,
-        ...voyageEventsForProfile
-          .filter((event) => ["high", "medium", "watch"].includes(event.severity))
-          .slice(0, 3)
-          .map((event) => `${event.event_type}: ${event.description}`),
-      ].filter(Boolean) as string[];
       return buildVoyageProfileChunk(voyage, {
         operationsContact: peopleById.get(voyage.operations_contact_id)?.name,
-        openIssues,
+        openIssues: voyageEventsForProfile.slice(0, 3).map((event) => `${event.event_type}: ${event.description}`),
         relatedDocuments: voyageDocs.map((document) => `${document.document_id} ${formatDocumentType(document.document_type)}`),
       });
     }),
@@ -897,9 +880,7 @@ async function ingestMaritimeEmbeddingChunks(root: string, workspaceId: string, 
     chunks.push(...buildThreadSummaryChunks(threadId, threadEmails));
   }
 
-  chunks.push(...scenarios.map((scenario) => buildScenarioProfileChunk(scenario)));
   chunks.push(...bunkerReports.map(buildBunkerRecordChunk));
-  chunks.push(...complianceFlags.map(buildComplianceRecordChunk));
   chunks.push(...voyageEvents.map(buildVoyageEventRecordChunk));
 
   for (const [voyageId, positions] of positionsByVoyage) {

@@ -2,25 +2,43 @@ import {
   chatFeedback,
   db,
   documents,
+  findRelevantChunks,
+  loadVoyageSnapshot,
   maritimeAisPositions,
+  maritimeBunkerReports,
   maritimeComplianceFlags,
+  maritimeDocumentExtractions,
   maritimeDocuments,
   maritimeEmails,
   maritimeEmbeddingChunks,
+  maritimeReconciliationFindings,
   maritimeVoyageEvents,
   maritimeVoyages,
+  persistDocumentExtractions,
+  persistReconciliationFindings,
+  persistVoyageSnapshot,
   operationalJobs,
 } from "@syntheci/db";
+import { embedTexts, generateVoyageIntelligence } from "@syntheci/ai";
 import {
+  buildAiActionPlanJobs,
   buildClaimsEvidencePack,
+  buildClaimsPackSummary,
+  buildAuditChecks,
+  buildReconciliationFindings,
   buildTimeline,
   buildWatchlistJobs,
   buildWorkflowJobs,
+  buildVoyageSnapshot,
+  compareVoyageSnapshots,
   comparePdaFda,
   detectMissingDocuments,
   detectPaymentRisk,
+  draftCitedReply,
   draftReply,
+  extractDocumentFields,
   extractCharterpartyClauses,
+  scoreSourceConfidence,
   type WorkflowContext,
   type WorkflowJobDraft,
 } from "@syntheci/shared";
@@ -91,7 +109,14 @@ export async function loadVoyageSummaries(workspaceId: string, query = ""): Prom
 
 export async function loadVoyageCockpit(workspaceId: string, voyageId: string) {
   const context = await loadWorkflowContext(workspaceId, voyageId);
-  const [jobs, threadSummaries] = await Promise.all([
+  const intelligenceFindings = buildReconciliationFindings(context);
+  const auditChecks = buildAuditChecks(context, intelligenceFindings);
+  const citedDraftReply = draftCitedReply(context, intelligenceFindings);
+  const claimsPackSummary = buildClaimsPackSummary(context);
+  const sourceConfidence = buildSourceConfidence(context);
+  const currentSnapshot = buildVoyageSnapshot(context, intelligenceFindings);
+
+  const [jobs, threadSummaries, persistedExtractions, persistedFindings, previousSnapshot] = await Promise.all([
     db
       .select()
       .from(operationalJobs)
@@ -114,6 +139,17 @@ export async function loadVoyageCockpit(workspaceId: string, voyageId: string) {
         ),
       )
       .orderBy(asc(maritimeEmbeddingChunks.sourceId), asc(maritimeEmbeddingChunks.chunkIndex)),
+    db
+      .select()
+      .from(maritimeDocumentExtractions)
+      .where(and(eq(maritimeDocumentExtractions.workspaceId, workspaceId), eq(maritimeDocumentExtractions.voyageId, voyageId)))
+      .orderBy(desc(maritimeDocumentExtractions.updatedAt)),
+    db
+      .select()
+      .from(maritimeReconciliationFindings)
+      .where(and(eq(maritimeReconciliationFindings.workspaceId, workspaceId), eq(maritimeReconciliationFindings.voyageId, voyageId)))
+      .orderBy(desc(maritimeReconciliationFindings.updatedAt)),
+    loadVoyageSnapshot(workspaceId, voyageId),
   ]);
 
   return {
@@ -126,6 +162,15 @@ export async function loadVoyageCockpit(workspaceId: string, voyageId: string) {
     pdaFdaDrafts: comparePdaFda(context),
     claimsPackDrafts: buildClaimsEvidencePack(context),
     paymentRiskDrafts: detectPaymentRisk(context),
+    documentExtractions: persistedExtractions.length ? persistedExtractions : extractDocumentFields(context),
+    reconciliationFindings: persistedFindings,
+    auditChecks,
+    citedDraftReply,
+    claimsPackSummary,
+    sourceConfidence,
+    currentSnapshot,
+    snapshotChanges: compareVoyageSnapshots(context, previousSnapshot),
+    actionPlanDrafts: [],
     jobs,
     threadSummaries: groupThreadSummaries(threadSummaries),
   };
@@ -142,7 +187,7 @@ export async function loadWorkflowContext(workspaceId: string, voyageId: string)
     throw new Error("Voyage not found");
   }
 
-  const [documentRows, emails, events, flags, aisPositions] = await Promise.all([
+  const [documentRows, emails, events, flags, aisPositions, bunkerReports] = await Promise.all([
     db
       .select({
         id: maritimeDocuments.documentId,
@@ -175,6 +220,10 @@ export async function loadWorkflowContext(workspaceId: string, voyageId: string)
       .where(and(eq(maritimeAisPositions.workspaceId, workspaceId), eq(maritimeAisPositions.voyageId, voyageId)))
       .orderBy(desc(maritimeAisPositions.positionTimestamp))
       .limit(12),
+    db
+      .select()
+      .from(maritimeBunkerReports)
+      .where(and(eq(maritimeBunkerReports.workspaceId, workspaceId), eq(maritimeBunkerReports.voyageId, voyageId))),
   ]);
 
   return {
@@ -228,6 +277,18 @@ export async function loadWorkflowContext(workspaceId: string, voyageId: string)
       eta: position.eta,
       speedKnots: position.speedKnots,
     })),
+    bunkerReports: bunkerReports.map((report) => ({
+      id: report.id,
+      vessel: report.vessel,
+      voyageId: report.voyageId,
+      fuelType: report.fuelType,
+      quantityMt: report.quantityMt,
+      sulfurPct: report.sulfurPct,
+      co2Factor: report.co2Factor,
+      port: report.port,
+      supplier: report.supplier,
+      invoiceDate: report.invoiceDate,
+    })),
   };
 }
 
@@ -270,12 +331,7 @@ export async function persistWorkflowJobs(workspaceId: string, voyageId: string,
 
 export async function generateWorkflow(workspaceId: string, voyageId: string, workflow: string) {
   const context = await loadWorkflowContext(workspaceId, voyageId);
-  if (workflow === "missing-documents") return persistWorkflowJobs(workspaceId, voyageId, detectMissingDocuments(context));
-  if (workflow === "watchlist") return persistWorkflowJobs(workspaceId, voyageId, buildWatchlistJobs(context));
-  if (workflow === "pda-fda") return persistWorkflowJobs(workspaceId, voyageId, comparePdaFda(context));
-  if (workflow === "claims-pack") return persistWorkflowJobs(workspaceId, voyageId, buildClaimsEvidencePack(context));
-  if (workflow === "payment-risk") return persistWorkflowJobs(workspaceId, voyageId, detectPaymentRisk(context));
-  if (workflow === "all") return persistWorkflowJobs(workspaceId, voyageId, buildWorkflowJobs(context));
+  if (isSupportedWorkflow(workflow)) return generateAiWorkflow(workspaceId, context, workflow);
   throw new Error(`Unsupported workflow: ${workflow}`);
 }
 
@@ -295,13 +351,15 @@ export async function loadOperationalJobs(workspaceId: string, status?: string, 
 }
 
 export async function loadAdminSourceHealth(workspaceId: string) {
-  const [fileRows, emailRows, profileRows, failedRows, jobRows, feedbackRows] = await Promise.all([
+  const [fileRows, emailRows, profileRows, failedRows, jobRows, feedbackRows, extractionRows, findingRows] = await Promise.all([
     db.select().from(documents).where(eq(documents.workspaceId, workspaceId)),
     db.select().from(maritimeEmails).where(eq(maritimeEmails.workspaceId, workspaceId)),
     db.select().from(maritimeEmbeddingChunks).where(eq(maritimeEmbeddingChunks.workspaceId, workspaceId)),
     db.select().from(documents).where(and(eq(documents.workspaceId, workspaceId), eq(documents.status, "failed"))),
     db.select().from(operationalJobs).where(eq(operationalJobs.workspaceId, workspaceId)),
     db.select().from(chatFeedback).where(eq(chatFeedback.workspaceId, workspaceId)),
+    db.select().from(maritimeDocumentExtractions).where(eq(maritimeDocumentExtractions.workspaceId, workspaceId)),
+    db.select().from(maritimeReconciliationFindings).where(eq(maritimeReconciliationFindings.workspaceId, workspaceId)),
   ]);
 
   const readyFiles = fileRows.filter((file) => file.status === "ready").length;
@@ -316,6 +374,8 @@ export async function loadAdminSourceHealth(workspaceId: string) {
       failedFiles: failedRows.length,
       operationalJobs: jobRows.length,
       feedback: feedbackRows.length,
+      extractions: extractionRows.length,
+      findings: findingRows.length,
     },
     failedFiles: failedRows,
     openJobs: jobRows.filter((job) => job.status === "open").slice(0, 20),
@@ -342,8 +402,81 @@ function groupThreadSummaries(rows: { sourceId: string; entityName: string | nul
   }));
 }
 
+async function generateAiWorkflow(workspaceId: string, context: WorkflowContext, workflow: string) {
+  const query = buildVoyageRetrievalQuery(context, workflow);
+  const [embedding] = await embedTexts([query], "query");
+  const retrievedChunks = embedding ? await findRelevantChunks(workspaceId, embedding, 10, query) : [];
+  const intelligence = await generateVoyageIntelligence({ context, retrievedChunks, workflow });
+  await persistReconciliationFindings(workspaceId, intelligence.findings);
+  return persistWorkflowJobs(workspaceId, context.voyage.id, intelligence.jobs);
+}
+
+function buildSourceConfidence(context: WorkflowContext) {
+  return [
+    ...context.documents.map((document) => ({
+      ...scoreSourceConfidence("file", document.documentType),
+      sourceId: document.id,
+      sourceType: "file",
+      label: document.fileName,
+      documentType: document.documentType,
+    })),
+    ...context.emails.slice(0, 8).map((email) => ({
+      ...scoreSourceConfidence("email", "email"),
+      sourceId: email.id,
+      sourceType: "email",
+      label: email.subject,
+      documentType: "email",
+    })),
+    ...(context.complianceFlag
+      ? [{
+          ...scoreSourceConfidence("structured_record", "compliance_flag"),
+          sourceId: context.complianceFlag.id,
+          sourceType: "compliance_flag",
+          label: `${context.complianceFlag.riskLevel} compliance risk`,
+          documentType: "compliance_flag",
+        }]
+      : []),
+    ...context.aisPositions.slice(0, 3).map((position) => ({
+      ...scoreSourceConfidence("structured_record", "ais_position"),
+      sourceId: position.id,
+      sourceType: "structured_record",
+      label: `AIS ${position.destination}`,
+      documentType: "ais_position",
+    })),
+  ].sort((left, right) => right.score - left.score);
+}
+
 function workflowJobKey(jobType: string, title: string) {
   return `${jobType}:${title.toLowerCase()}`;
+}
+
+function isSupportedWorkflow(workflow: string) {
+  return [
+    "all",
+    "missing-documents",
+    "watchlist",
+    "pda-fda",
+    "claims-pack",
+    "payment-risk",
+    "reconciliation",
+    "change-monitor",
+    "audit",
+    "action-plan",
+  ].includes(workflow);
+}
+
+function buildVoyageRetrievalQuery(context: WorkflowContext, workflow: string) {
+  return [
+    context.voyage.id,
+    context.voyage.vesselName,
+    context.voyage.originPort,
+    context.voyage.destinationPort,
+    context.voyage.cargo,
+    workflow,
+    "operational risk evidence missing documents payment claims compliance AIS bunker voyage changes",
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 function groupBy<T, K>(values: T[], keyFor: (value: T) => K) {

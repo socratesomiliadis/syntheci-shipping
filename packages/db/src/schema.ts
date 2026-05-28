@@ -646,6 +646,104 @@ export const maritimeScenarios = pgTable(
   ],
 );
 
+export const maritimeDocumentExtractions = pgTable(
+  "maritime_document_extractions",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    documentId: text("document_id").notNull(),
+    voyageId: text("voyage_id").notNull(),
+    vesselName: text("vessel_name").notNull(),
+    documentType: text("document_type").notNull(),
+    fields: jsonb("fields").$type<Record<string, unknown>[]>().notNull().default([]),
+    confidence: doublePrecision("confidence").notNull(),
+    status: text("status").notNull(),
+    evidence: jsonb("evidence").$type<Record<string, unknown>[]>().notNull().default([]),
+    raw: rawMetadata(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("maritime_document_extractions_workspace_idx").on(table.workspaceId),
+    index("maritime_document_extractions_voyage_idx").on(table.workspaceId, table.voyageId),
+    index("maritime_document_extractions_document_idx").on(table.workspaceId, table.documentId),
+    index("maritime_document_extractions_status_idx").on(table.workspaceId, table.status),
+    uniqueIndex("maritime_document_extractions_workspace_document_idx").on(table.workspaceId, table.documentId),
+  ],
+);
+
+export const maritimeReconciliationFindings = pgTable(
+  "maritime_reconciliation_findings",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    voyageId: text("voyage_id").notNull(),
+    findingType: text("finding_type").notNull(),
+    severity: text("severity").notNull(),
+    confidence: doublePrecision("confidence").notNull(),
+    title: text("title").notNull(),
+    summary: text("summary").notNull(),
+    evidence: jsonb("evidence").$type<Record<string, unknown>[]>().notNull().default([]),
+    suggestedAction: text("suggested_action").notNull(),
+    payload: jsonb("payload").$type<Record<string, unknown>>().notNull().default({}),
+    status: text("status").notNull().default("open"),
+    raw: rawMetadata(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("maritime_reconciliation_findings_workspace_idx").on(table.workspaceId),
+    index("maritime_reconciliation_findings_voyage_idx").on(table.workspaceId, table.voyageId),
+    index("maritime_reconciliation_findings_type_idx").on(table.workspaceId, table.findingType),
+    index("maritime_reconciliation_findings_status_idx").on(table.workspaceId, table.status),
+    uniqueIndex("maritime_reconciliation_findings_unique_idx").on(table.workspaceId, table.voyageId, table.findingType, table.title),
+  ],
+);
+
+export const maritimeVoyageSnapshots = pgTable(
+  "maritime_voyage_snapshots",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    voyageId: text("voyage_id").notNull(),
+    stateHash: text("state_hash").notNull(),
+    state: jsonb("state").$type<Record<string, unknown>>().notNull().default({}),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("maritime_voyage_snapshots_workspace_idx").on(table.workspaceId),
+    uniqueIndex("maritime_voyage_snapshots_workspace_voyage_idx").on(table.workspaceId, table.voyageId),
+  ],
+);
+
+export const externalImportBatches = pgTable(
+  "external_import_batches",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    provider: text("provider").notNull(),
+    sourceType: text("source_type").notNull(),
+    status: text("status").notNull().default("completed"),
+    summary: jsonb("summary").$type<Record<string, unknown>>().notNull().default({}),
+    raw: rawMetadata(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("external_import_batches_workspace_idx").on(table.workspaceId),
+    index("external_import_batches_source_idx").on(table.workspaceId, table.sourceType),
+  ],
+);
+
 export const workspaceRelations = relations(workspaces, ({ many }) => ({
   members: many(workspaceMembers),
   documents: many(documents),
