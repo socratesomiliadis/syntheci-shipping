@@ -8,6 +8,13 @@
       "when": 1779952950778,
       "tag": "0000_keen_kingpin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779956289754,
+      "tag": "0001_previous_ghost_rider",
+      "breakpoints": true
     }
   ]
 }

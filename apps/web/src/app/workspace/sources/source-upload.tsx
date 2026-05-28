@@ -3,10 +3,12 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload } from "lucide-react";
+import { Database, Upload } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function SourceUpload() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
   const [status, setStatus] = useState("Idle");
 
   async function upload() {
@@ -40,6 +42,26 @@ export function SourceUpload() {
     });
 
     setStatus("Queued for ingestion");
+    router.refresh();
+  }
+
+  async function ingestDemoData() {
+    setStatus("Ingesting demo data");
+    const response = await fetch("/api/demo-data/ingest", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ indexDocuments: true }),
+    });
+    const result = await response.json();
+
+    if (!response.ok) {
+      setStatus(result.error ?? "Demo ingestion failed");
+      return;
+    }
+
+    const total = Object.values(result.counts as Record<string, number>).reduce((sum, count) => sum + count, 0);
+    setStatus(`Ingested ${total} demo records`);
+    router.refresh();
   }
 
   return (
@@ -50,6 +72,10 @@ export function SourceUpload() {
         <Button onClick={upload} type="button">
           <Upload className="h-4 w-4" />
           Upload
+        </Button>
+        <Button onClick={ingestDemoData} type="button" variant="secondary">
+          <Database className="h-4 w-4" />
+          Load demo data
         </Button>
       </div>
       <div className="text-xs text-slate-500">{status}</div>
