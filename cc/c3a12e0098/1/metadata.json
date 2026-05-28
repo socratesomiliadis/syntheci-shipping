@@ -1,0 +1,57 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "ccc3a12e0098",
+  "session_id": "019e6f17-a96e-7342-bc21-d3fdf540a175",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T16:12:36.087608Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/public/syntheci-logo.svg",
+    "apps/web/public/syntheci-mark.svg",
+    "apps/web/src/app/api/demo/voyages/[voyageId]/reset/route.ts",
+    "apps/web/src/app/icon.svg",
+    "apps/web/src/app/login/page.tsx",
+    "apps/web/src/app/page.tsx",
+    "apps/web/src/app/workspace/voyages/[id]/page.tsx",
+    "apps/web/src/app/workspace/voyages/reset-voyage-demo.tsx",
+    "apps/web/src/components/brand-logo.tsx",
+    "apps/web/src/components/workspace-sidebar.tsx",
+    "apps/web/src/lib/demo-voyage-reset.ts",
+    "apps/web/src/lib/live-demo-events.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "6c2941dae64c",
+  "token_usage": {
+    "input_tokens": 118486,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 935424,
+    "output_tokens": 17089,
+    "api_call_count": 16
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T16:12:36.074837Z",
+    "agent_lines": 309,
+    "agent_removed": 41,
+    "human_added": 354,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 663,
+    "total_lines_changed": 965,
+    "agent_percentage": 36.26943005181347,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
