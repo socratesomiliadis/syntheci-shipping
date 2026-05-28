@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "a17323e6fc22",
+  "session_id": "019e6e9e-928d-7f31-964b-68279cfd450c",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T13:06:25.431642Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "apps/web/src/lib/demo-data-ingestion.ts",
+    "apps/web/src/lib/voyage-workflows.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "923c0b54f45c",
+  "token_usage": {
+    "input_tokens": 363805,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 12139264,
+    "output_tokens": 37824,
+    "api_call_count": 78
+  },
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T13:06:25.397224Z",
+    "agent_lines": 0,
+    "agent_removed": 149,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 149,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
