@@ -1,0 +1,9 @@
+Make the / route a basic but clean looking marketing page that explains what syntheci does, combines 4+ data sources (voyage + vessel data, documentss + contracts, emails, ais, bunker data etc) and with its retrieval and reasoning engine it turns it into actionable info like risk briefs, chat with citations, alerts and next actions, reports + audit trail. Then make the login page work using a demo acc that when you login it redirects you to the workspace with the dashboard etc. Main colors are white and #1447e5
+
+---
+
+Now make the main workspace layout use shadcn's sidebar (in inset mode) and also have a user button at the bottom for logging out
+
+---
+
+Now make the main workspace layout use shadcn's sidebar (in inset mode) and also have a user button at the bottom for logging out. For installing the necesary shadcn components use the shadcn add cli command and dont write them yourself

@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "189aa2239527",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "apps/web/package.json",
+    "apps/web/src/app/globals.css",
+    "apps/web/src/app/layout.tsx",
+    "apps/web/src/app/login/page.tsx",
+    "apps/web/src/app/page.tsx",
+    "apps/web/src/app/workspace/layout.tsx",
+    "apps/web/src/components/ui/badge.tsx",
+    "apps/web/src/components/ui/button.tsx",
+    "apps/web/src/components/ui/card.tsx",
+    "apps/web/src/components/ui/input.tsx",
+    "apps/web/src/components/ui/separator.tsx",
+    "apps/web/src/components/ui/sheet.tsx",
+    "apps/web/src/components/ui/sidebar.tsx",
+    "apps/web/src/components/ui/skeleton.tsx",
+    "apps/web/src/components/ui/table.tsx",
+    "apps/web/src/components/ui/textarea.tsx",
+    "apps/web/src/components/ui/tooltip.tsx",
+    "apps/web/src/hooks/use-mobile.ts",
+    "apps/web/src/lib/utils.ts",
+    "components.json",
+    "pnpm-lock.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/18/9aa2239527/0/metadata.json",
+      "transcript": "/18/9aa2239527/0/full.jsonl",
+      "content_hash": "/18/9aa2239527/0/content_hash.txt",
+      "prompt": "/18/9aa2239527/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 265820,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 4361344,
+    "output_tokens": 21880,
+    "api_call_count": 65
+  }
+}
