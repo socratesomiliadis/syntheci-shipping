@@ -25,7 +25,8 @@ export function chunkText(input: string, maxChars = 1800, overlapChars = 220): T
     }
 
     if (softEnd >= normalized.length) break;
-    start = Math.max(0, softEnd - overlapChars);
+    const nextStart = Math.max(0, softEnd - overlapChars);
+    start = nextStart > start ? nextStart : softEnd;
   }
 
   return chunks;

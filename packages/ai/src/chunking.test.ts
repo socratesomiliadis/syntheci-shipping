@@ -14,4 +14,11 @@ describe("chunkText", () => {
   it("returns no chunks for blank input", () => {
     expect(chunkText(" \n\n ")).toEqual([]);
   });
+
+  it("does not repeat a window when overlap is larger than the next chunk", () => {
+    const chunks = chunkText("alpha beta gamma delta epsilon zeta eta theta", 24, 20);
+
+    expect(chunks.length).toBeLessThan(10);
+    expect(chunks.at(-1)?.content).toContain("theta");
+  });
 });
