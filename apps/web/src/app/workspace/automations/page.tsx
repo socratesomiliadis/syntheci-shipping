@@ -5,6 +5,7 @@ import { automationRules, automationRuns, db, ensureDefaultWorkspace } from "@sy
 import { parseWorkflowIntent } from "@syntheci/shared";
 import { desc, eq } from "drizzle-orm";
 import { AutomationForm } from "./automation-form";
+import { RecentAutomationRuns } from "./recent-automation-runs";
 import { RunAutomationButton } from "./run-automation-button";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,7 @@ export default async function AutomationsPage() {
         id: automationRuns.id,
         status: automationRuns.status,
         summary: automationRuns.summary,
+        error: automationRuns.error,
         createdAt: automationRuns.createdAt,
         completedAt: automationRuns.completedAt,
         ruleName: automationRules.name,
@@ -105,21 +107,14 @@ export default async function AutomationsPage() {
             <CardDescription>Queued, running, completed, and failed automation output.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {runs.map((run) => (
-                <div className="rounded-lg border border-slate-200 p-3" key={run.id}>
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="font-medium text-slate-950">{run.ruleName}</div>
-                    <Badge variant="outline">{run.status}</Badge>
-                  </div>
-                  <p className="mt-2 line-clamp-5 whitespace-pre-wrap text-sm leading-6 text-slate-500">
-                    {run.summary ?? "Queued or running. Refresh after the worker completes this run."}
-                  </p>
-                  <div className="mt-2 text-xs text-slate-500">{run.createdAt.toLocaleString()}</div>
-                </div>
-              ))}
-              {runs.length === 0 ? <p className="text-sm text-slate-500">No automation runs yet.</p> : null}
-            </div>
+            <RecentAutomationRuns
+              key={runs.map((run) => `${run.id}:${run.status}:${run.completedAt?.getTime() ?? ""}`).join("|")}
+              initialRuns={runs.map((run) => ({
+                ...run,
+                createdAt: run.createdAt.toISOString(),
+                completedAt: run.completedAt?.toISOString() ?? null,
+              }))}
+            />
           </CardContent>
         </Card>
       </section>

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import { automationRunsChangedEvent } from "./recent-automation-runs";
 
 export function RunAutomationButton({ ruleId }: { ruleId: string }) {
   const router = useRouter();
@@ -11,10 +12,16 @@ export function RunAutomationButton({ ruleId }: { ruleId: string }) {
 
   async function run() {
     setBusy(true);
-    const response = await fetch(`/api/automations/${ruleId}/run`, { method: "POST" });
-    await response.json().catch(() => null);
-    setBusy(false);
-    router.refresh();
+    try {
+      const response = await fetch(`/api/automations/${ruleId}/run`, { method: "POST" });
+      await response.json().catch(() => null);
+      if (response.ok) {
+        window.dispatchEvent(new Event(automationRunsChangedEvent));
+      }
+      router.refresh();
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (

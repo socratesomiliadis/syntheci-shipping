@@ -2,6 +2,7 @@ import { automationQueue } from "@/lib/queues";
 import { automationRules, automationRuns, db, ensureDefaultWorkspace, queueJobs } from "@syntheci/db";
 import { QUEUES } from "@syntheci/shared";
 import { and, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 const watchlistName = "Daily voyage watchlist";
 const watchlistQuestion = "Generate operational jobs for active voyage risk, missing documents, claims, payment, and compliance changes.";
@@ -57,6 +58,10 @@ export async function POST() {
     status: "queued",
     payload: job.data,
   });
+
+  revalidatePath("/workspace/admin");
+  revalidatePath("/workspace/automations");
+  revalidatePath("/workspace");
 
   return Response.json({ ruleId, runId, jobId: job.id });
 }

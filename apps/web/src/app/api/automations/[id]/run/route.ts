@@ -2,6 +2,7 @@ import { automationQueue } from "@/lib/queues";
 import { automationRules, automationRuns, db, ensureDefaultWorkspace, queueJobs } from "@syntheci/db";
 import { parseWorkflowIntent, QUEUES } from "@syntheci/shared";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export async function POST(_request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -43,6 +44,9 @@ export async function POST(_request: Request, context: { params: Promise<{ id: s
     status: "queued",
     payload: job.data,
   });
+
+  revalidatePath("/workspace/automations");
+  revalidatePath("/workspace");
 
   return Response.json({ runId, jobId: job.id, parsedIntent });
 }

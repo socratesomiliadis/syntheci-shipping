@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { parseWorkflowIntent } from "@syntheci/shared";
 import { Bot, Clock, FileSearch, GitCompareArrows, Play, Plus, ShieldCheck } from "lucide-react";
+import { automationRunsChangedEvent } from "./recent-automation-runs";
 
 const templates = [
   {
@@ -49,8 +50,14 @@ export function AutomationForm() {
       const runResponse = await fetch(`/api/automations/${body.ruleId}/run`, { method: "POST" });
       const runBody = await runResponse.json();
       setStatus(runResponse.ok ? `Queued ${runBody.parsedIntent?.workflow ?? parsed.workflow} run` : runBody.error ?? "Run failed");
+      if (runResponse.ok) {
+        window.dispatchEvent(new Event(automationRunsChangedEvent));
+      }
     } else {
       setStatus(`Created ${body.parsedIntent?.workflow ?? parsed.workflow} rule`);
+      if (body.parsedIntent?.cadence && body.parsedIntent.cadence !== "manual") {
+        window.dispatchEvent(new Event(automationRunsChangedEvent));
+      }
     }
     router.refresh();
   }

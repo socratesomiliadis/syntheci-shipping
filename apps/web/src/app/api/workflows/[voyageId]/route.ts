@@ -1,6 +1,7 @@
 import { ensureDefaultWorkspace } from "@syntheci/db";
 import { AiIntelligenceConfigurationError } from "@syntheci/ai";
 import { loadVoyageCockpit, generateWorkflow } from "@/lib/voyage-workflows";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const workflowRequestSchema = z.object({
@@ -41,6 +42,10 @@ export async function POST(request: Request, context: { params: Promise<{ voyage
   const input = workflowRequestSchema.parse(await request.json().catch(() => ({})));
   try {
     const jobs = await generateWorkflow(workspaceId, voyageId, input.workflow);
+    revalidatePath(`/workspace/voyages/${voyageId}`);
+    revalidatePath("/workspace/voyages");
+    revalidatePath("/workspace/jobs");
+    revalidatePath("/workspace");
     return Response.json({ jobs });
   } catch (error) {
     if (error instanceof AiIntelligenceConfigurationError) {

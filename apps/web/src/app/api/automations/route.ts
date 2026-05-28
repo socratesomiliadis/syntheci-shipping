@@ -2,16 +2,34 @@ import { automationQueue } from "@/lib/queues";
 import { automationRules, automationRuns, db, ensureDefaultWorkspace, queueJobs } from "@syntheci/db";
 import { createAutomationSchema, parseWorkflowIntent, QUEUES } from "@syntheci/shared";
 import { desc, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const workspaceId = await ensureDefaultWorkspace();
-  const rules = await db
-    .select()
-    .from(automationRules)
-    .where(eq(automationRules.workspaceId, workspaceId))
-    .orderBy(desc(automationRules.createdAt));
+  const [rules, runs] = await Promise.all([
+    db
+      .select()
+      .from(automationRules)
+      .where(eq(automationRules.workspaceId, workspaceId))
+      .orderBy(desc(automationRules.createdAt)),
+    db
+      .select({
+        id: automationRuns.id,
+        status: automationRuns.status,
+        summary: automationRuns.summary,
+        error: automationRuns.error,
+        createdAt: automationRuns.createdAt,
+        completedAt: automationRuns.completedAt,
+        ruleName: automationRules.name,
+      })
+      .from(automationRuns)
+      .innerJoin(automationRules, eq(automationRuns.automationRuleId, automationRules.id))
+      .where(eq(automationRuns.workspaceId, workspaceId))
+      .orderBy(desc(automationRuns.createdAt))
+      .limit(8),
+  ]);
 
-  return Response.json({ rules });
+  return Response.json({ rules, runs });
 }
 
 export async function POST(request: Request) {
@@ -57,6 +75,9 @@ export async function POST(request: Request) {
       payload: job.data,
     });
   }
+
+  revalidatePath("/workspace/automations");
+  revalidatePath("/workspace");
 
   return Response.json({ ruleId, parsedIntent: { ...parsedIntent, workflow, voyageId, cadence } }, { status: 201 });
 }
