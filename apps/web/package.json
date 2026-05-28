@@ -1,0 +1,44 @@
+{
+  "name": "@syntheci/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.956.0",
+    "@aws-sdk/s3-request-presigner": "^3.956.0",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@syntheci/ai": "workspace:*",
+    "@syntheci/db": "workspace:*",
+    "@syntheci/shared": "workspace:*",
+    "ai": "^6.0.191",
+    "better-auth": "^1.6.11",
+    "bullmq": "^5.77.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "drizzle-orm": "^0.45.2",
+    "ioredis": "^5.8.2",
+    "lucide-react": "^0.561.0",
+    "next": "16.2.6",
+    "postgres": "^3.4.7",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

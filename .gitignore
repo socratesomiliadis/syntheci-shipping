@@ -1,0 +1,24 @@
+# dependencies
+node_modules
+
+# Next.js
+.next
+out
+next-env.d.ts
+
+# build outputs
+dist
+coverage
+
+# local env
+.env
+.env.local
+.env.*.local
+
+# Docker volumes / local data
+.data
+
+# misc
+.DS_Store
+*.log
+*.tsbuildinfo

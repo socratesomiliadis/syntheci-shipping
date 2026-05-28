@@ -1,0 +1,24 @@
+{
+  "name": "syntheci-shipping",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @syntheci/web --filter @syntheci/worker dev",
+    "build": "pnpm --recursive --if-present build",
+    "lint": "pnpm --recursive --if-present lint",
+    "typecheck": "pnpm --recursive --if-present typecheck",
+    "test": "pnpm --recursive --if-present test",
+    "db:generate": "pnpm --filter @syntheci/db db:generate",
+    "db:migrate": "pnpm --filter @syntheci/db db:migrate",
+    "worker:dev": "pnpm --filter @syntheci/worker dev",
+    "worker:start": "pnpm --filter @syntheci/worker start",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
+  }
+}

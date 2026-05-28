@@ -1,0 +1,30 @@
+{
+  "name": "@syntheci/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.956.0",
+    "@syntheci/ai": "workspace:*",
+    "@syntheci/db": "workspace:*",
+    "@syntheci/shared": "workspace:*",
+    "bullmq": "^5.77.6",
+    "drizzle-orm": "^0.45.2",
+    "ioredis": "^5.8.2",
+    "postgres": "^3.4.7",
+    "tsx": "^4.21.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.41",
+    "eslint": "^9.39.4",
+    "typescript": "^5.9.3"
+  }
+}

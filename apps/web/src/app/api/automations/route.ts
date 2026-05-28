@@ -1,0 +1,61 @@
+import { automationQueue } from "@/lib/queues";
+import { automationRules, automationRuns, db, ensureDefaultWorkspace, queueJobs } from "@syntheci/db";
+import { createAutomationSchema, QUEUES } from "@syntheci/shared";
+import { desc, eq } from "drizzle-orm";
+
+export async function GET() {
+  const workspaceId = await ensureDefaultWorkspace();
+  const rules = await db
+    .select()
+    .from(automationRules)
+    .where(eq(automationRules.workspaceId, workspaceId))
+    .orderBy(desc(automationRules.createdAt));
+
+  return Response.json({ rules });
+}
+
+export async function POST(request: Request) {
+  const input = createAutomationSchema.parse(await request.json());
+  const workspaceId = await ensureDefaultWorkspace();
+  const ruleId = crypto.randomUUID();
+
+  await db.insert(automationRules).values({
+    id: ruleId,
+    workspaceId,
+    name: input.name,
+    question: input.question,
+    cadence: input.cadence,
+  });
+
+  if (input.cadence !== "manual") {
+    const runId = crypto.randomUUID();
+    await db.insert(automationRuns).values({
+      id: runId,
+      automationRuleId: ruleId,
+      workspaceId,
+      status: "queued",
+    });
+    const job = await automationQueue().add(
+      "scheduled-automation",
+      { automationRuleId: ruleId, workspaceId, runId, question: input.question },
+      { repeat: repeatForCadence(input.cadence) },
+    );
+    await db.insert(queueJobs).values({
+      id: crypto.randomUUID(),
+      queueName: QUEUES.automation,
+      jobId: String(job.id),
+      workspaceId,
+      automationRunId: runId,
+      status: "queued",
+      payload: job.data,
+    });
+  }
+
+  return Response.json({ ruleId }, { status: 201 });
+}
+
+function repeatForCadence(cadence: "hourly" | "daily" | "weekly") {
+  if (cadence === "hourly") return { every: 60 * 60 * 1000 };
+  if (cadence === "daily") return { pattern: "0 7 * * *" };
+  return { pattern: "0 7 * * 1" };
+}

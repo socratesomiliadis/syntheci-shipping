@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowJs": false,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@syntheci/ai": ["packages/ai/src/index.ts"],
+      "@syntheci/db": ["packages/db/src/index.ts"],
+      "@syntheci/db/*": ["packages/db/src/*"],
+      "@syntheci/shared": ["packages/shared/src/index.ts"],
+      "@syntheci/shared/*": ["packages/shared/src/*"]
+    }
+  }
+}
