@@ -395,6 +395,37 @@ export const maritimeEmailChunks = pgTable(
   ],
 );
 
+export const maritimeEmbeddingChunks = pgTable(
+  "maritime_embedding_chunks",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    sourceType: text("source_type").notNull(),
+    sourceId: text("source_id").notNull(),
+    chunkIndex: integer("chunk_index").notNull(),
+    content: text("content").notNull(),
+    tokenEstimate: integer("token_estimate").notNull(),
+    embedding: vector("embedding", { dimensions: EMBEDDING_DIMENSIONS }),
+    relatedVoyageId: text("related_voyage_id"),
+    relatedVesselName: text("related_vessel_name"),
+    recordType: text("record_type"),
+    entityName: text("entity_name"),
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("maritime_embedding_chunks_workspace_idx").on(table.workspaceId),
+    index("maritime_embedding_chunks_source_idx").on(table.workspaceId, table.sourceType, table.sourceId),
+    index("maritime_embedding_chunks_voyage_idx").on(table.workspaceId, table.relatedVoyageId),
+    index("maritime_embedding_chunks_record_type_idx").on(table.workspaceId, table.recordType),
+    index("maritime_embedding_chunks_embedding_idx")
+      .using("hnsw", table.embedding.op("vector_cosine_ops"))
+      .with({ m: 16, ef_construction: 64 }),
+  ],
+);
+
 export const maritimeDocuments = pgTable(
   "maritime_documents",
   {

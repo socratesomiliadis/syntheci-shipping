@@ -1,6 +1,17 @@
 import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
-import { chunkText, embedTexts } from "@syntheci/ai";
+import {
+  buildContactProfileChunk,
+  buildEmailEmbeddingChunks,
+  buildScenarioProfileChunk,
+  buildStructuredRecordChunk,
+  buildThreadSummaryChunks,
+  buildVesselProfileChunk,
+  buildVoyageProfileChunk,
+  chunkDocumentForEmbedding,
+  embedTexts,
+  type MaritimeEmbeddingChunk,
+} from "@syntheci/ai";
 import {
   db,
   documentChunks,
@@ -10,6 +21,7 @@ import {
   maritimeBunkerReports,
   maritimeComplianceFlags,
   maritimeDocuments,
+  maritimeEmbeddingChunks,
   maritimeEmailChunks,
   maritimeEmails,
   maritimePeople,
@@ -19,7 +31,7 @@ import {
   maritimeVoyageEvents,
   maritimeVoyages,
 } from "@syntheci/db";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 const demoDataRootCandidates = [
@@ -206,6 +218,7 @@ export async function ingestDemoData(input: z.infer<typeof ingestDemoDataInputSc
   counts.complianceFlags = await ingestComplianceFlags(root, workspaceId);
   counts.scenarios = await ingestScenarios(root, workspaceId);
   counts.documents = await ingestMarkdownDocuments(root, workspaceId, input.indexDocuments);
+  counts.maritimeEmbeddings = await ingestMaritimeEmbeddingChunks(root, workspaceId, input.indexDocuments);
   counts.referenceDocuments = await ingestReferenceDocuments(root, workspaceId, input.indexDocuments);
 
   return { workspaceId, demoDataRoot: root, counts };
@@ -418,7 +431,7 @@ async function ingestEmails(root: string, workspaceId: string, indexEmails: bool
 
   if (indexEmails) {
     for (const record of records) {
-      await indexEmailContent(record.email_id, workspaceId, formatEmailForIndex(record), {
+      await indexEmailContent(record, workspaceId, {
         subject: record.subject,
         from: record.from,
         sentAt: record.date,
@@ -821,13 +834,250 @@ async function ingestReferenceDocuments(root: string, workspaceId: string, index
   return references.length;
 }
 
+async function ingestMaritimeEmbeddingChunks(root: string, workspaceId: string, indexEmbeddings: boolean) {
+  if (!indexEmbeddings) return 0;
+
+  const vessels = vesselSchema.array().parse(await readJson(path.join(root, "vessels.json")));
+  const people = personSchema.array().parse(await readJson(path.join(root, "people.json")));
+  const voyages = voyageSchema.array().parse(await readJson(path.join(root, "voyages.json")));
+  const emails = emailSchema.array().parse(await readJson(path.join(root, "emails/emails.json")));
+  const bunkerReports = bunkerReportSchema.array().parse(
+    parseCsv(await readFileText(path.join(root, "structured/bunker_reports.csv"))),
+  );
+  const aisPositions = aisPositionSchema.array().parse(await readJson(path.join(root, "structured/ais_positions.json")));
+  const voyageEvents = voyageEventSchema.array().parse(await readJson(path.join(root, "structured/voyage_events.json")));
+  const complianceFlags = complianceFlagSchema.array().parse(
+    await readJson(path.join(root, "structured/compliance_flags.json")),
+  );
+  const scenarios = scenarioSchema.array().parse(await readJson(path.join(root, "scenarios/storylines.json")));
+  const markdownDocuments = await readDemoDocumentFrontMatter(root);
+  const peopleById = new Map(people.map((person) => [person.person_id, person]));
+  const complianceByVoyage = new Map(complianceFlags.map((flag) => [flag.voyage_id, flag]));
+  const eventsByVoyage = groupBy(voyageEvents, (event) => event.voyage_id);
+  const docsByVoyage = groupBy(markdownDocuments, (document) => document.related_voyage_id);
+  const voyagesByContact = groupBy(voyages, (voyage) => voyage.operations_contact_id);
+  const emailsByThread = groupBy(emails, (email) => email.thread_id);
+  const positionsByVoyage = groupBy(aisPositions, (position) => position.voyage_id);
+
+  const chunks: MaritimeEmbeddingChunk[] = [];
+
+  chunks.push(...vessels.map((vessel) => buildVesselProfileChunk(vessel)));
+  chunks.push(
+    ...people.map((person) =>
+      buildContactProfileChunk(
+        person,
+        (voyagesByContact.get(person.person_id) ?? []).map((voyage) => voyage.voyage_id),
+      ),
+    ),
+  );
+  chunks.push(
+    ...voyages.map((voyage) => {
+      const compliance = complianceByVoyage.get(voyage.voyage_id);
+      const voyageDocs = docsByVoyage.get(voyage.voyage_id) ?? [];
+      const voyageEventsForProfile = eventsByVoyage.get(voyage.voyage_id) ?? [];
+      const openIssues = [
+        compliance?.mrv_missing_data ? "MRV fuel data missing" : undefined,
+        compliance?.fueleu_risk ? "FuelEU risk requires evidence review" : undefined,
+        compliance?.eu_ets_exposure ? "EU ETS exposure active" : undefined,
+        compliance?.cii_risk ? "CII risk watch" : undefined,
+        ...voyageEventsForProfile
+          .filter((event) => ["high", "medium", "watch"].includes(event.severity))
+          .slice(0, 3)
+          .map((event) => `${event.event_type}: ${event.description}`),
+      ].filter(Boolean) as string[];
+      return buildVoyageProfileChunk(voyage, {
+        operationsContact: peopleById.get(voyage.operations_contact_id)?.name,
+        openIssues,
+        relatedDocuments: voyageDocs.map((document) => `${document.document_id} ${formatDocumentType(document.document_type)}`),
+      });
+    }),
+  );
+
+  for (const [threadId, threadEmails] of emailsByThread) {
+    chunks.push(...buildThreadSummaryChunks(threadId, threadEmails));
+  }
+
+  chunks.push(...scenarios.map((scenario) => buildScenarioProfileChunk(scenario)));
+  chunks.push(...bunkerReports.map(buildBunkerRecordChunk));
+  chunks.push(...complianceFlags.map(buildComplianceRecordChunk));
+  chunks.push(...voyageEvents.map(buildVoyageEventRecordChunk));
+
+  for (const [voyageId, positions] of positionsByVoyage) {
+    const latest = [...positions].sort((left, right) => Date.parse(right.timestamp) - Date.parse(left.timestamp))[0];
+    if (!latest) continue;
+    const speeds = positions.map((position) => position.speed_knots);
+    chunks.push(
+      buildStructuredRecordChunk(
+        "ais_position_summary",
+        `AIS-SUMMARY-${voyageId}`,
+        [
+          `AIS position summary: ${voyageId}`,
+          `Vessel: ${latest.vessel_name}`,
+          `Positions: ${positions.length}`,
+          `Latest timestamp: ${latest.timestamp}`,
+          `Latest position: ${latest.lat}, ${latest.lng}`,
+          `Destination: ${latest.destination}`,
+          `ETA: ${latest.eta}`,
+          `Speed range: ${Math.min(...speeds)} to ${Math.max(...speeds)} knots`,
+        ].join("\n"),
+        {
+          voyageId,
+          vesselName: latest.vessel_name,
+          entityName: `${voyageId} AIS summary`,
+          positionIds: positions.map((position) => position.position_id),
+        },
+      ),
+    );
+  }
+
+  let count = 0;
+  for (const sourceChunks of groupChunksBySource(chunks)) {
+    await indexMaritimeEmbeddingSource(workspaceId, sourceChunks);
+    count += sourceChunks.length;
+  }
+  return count;
+}
+
+async function indexMaritimeEmbeddingSource(workspaceId: string, chunks: MaritimeEmbeddingChunk[]) {
+  const first = chunks[0];
+  if (!first) return;
+
+  const embeddings = await embedTexts(
+    chunks.map((chunk) => chunk.content),
+    "document",
+  );
+
+  await db
+    .delete(maritimeEmbeddingChunks)
+    .where(
+      and(
+        eq(maritimeEmbeddingChunks.workspaceId, workspaceId),
+        eq(maritimeEmbeddingChunks.sourceType, first.sourceType),
+        eq(maritimeEmbeddingChunks.sourceId, first.sourceId),
+      ),
+    );
+
+  await db.insert(maritimeEmbeddingChunks).values(
+    chunks.map((chunk, index) => ({
+      id: crypto.randomUUID(),
+      workspaceId,
+      sourceType: chunk.sourceType,
+      sourceId: chunk.sourceId,
+      chunkIndex: chunk.index,
+      content: chunk.content,
+      tokenEstimate: chunk.tokenEstimate,
+      embedding: embeddings[index],
+      relatedVoyageId: chunk.relatedVoyageId ?? null,
+      relatedVesselName: chunk.relatedVesselName ?? null,
+      recordType: chunk.recordType ?? null,
+      entityName: chunk.entityName ?? null,
+      metadata: chunk.metadata ?? {},
+    })),
+  );
+}
+
+async function readDemoDocumentFrontMatter(root: string) {
+  const documentsRoot = path.join(root, "documents");
+  const fileNames = (await readdir(documentsRoot)).filter((fileName) => fileName.endsWith(".md")).sort();
+  return Promise.all(
+    fileNames.map(async (fileName) => {
+      const parsed = parseMarkdownDocument(await readFileText(path.join(documentsRoot, fileName)));
+      const frontMatter = frontMatterSchema.parse(parsed.frontMatter);
+      return {
+        ...frontMatter,
+        fileName,
+      };
+    }),
+  );
+}
+
+function buildBunkerRecordChunk(record: z.infer<typeof bunkerReportSchema>) {
+  return buildStructuredRecordChunk(
+    "bunker_record",
+    record.invoice_id,
+    [
+      `Bunker record: ${record.invoice_id}`,
+      `Vessel: ${record.vessel}`,
+      `Voyage: ${record.voyage_id}`,
+      `Fuel type: ${record.fuel_type}`,
+      `Quantity: ${record.quantity_mt} mt`,
+      `Sulfur: ${record.sulfur_pct}%`,
+      `CO2 factor: ${record.co2_factor}`,
+      `Port: ${record.port}`,
+      `Supplier: ${record.supplier}`,
+      `Invoice date: ${record.date}`,
+    ].join("\n"),
+    {
+      ...record,
+      voyageId: record.voyage_id,
+      vesselName: record.vessel,
+      entityName: record.invoice_id,
+    },
+  );
+}
+
+function buildComplianceRecordChunk(record: z.infer<typeof complianceFlagSchema>) {
+  return buildStructuredRecordChunk(
+    "compliance_flag",
+    record.flag_id,
+    [
+      `Compliance flag: ${record.flag_id}`,
+      `Vessel: ${record.vessel_name}`,
+      `Voyage: ${record.voyage_id}`,
+      `Risk level: ${record.risk_level}`,
+      `Risk score: ${record.risk_score}`,
+      `EU ETS exposure: ${record.eu_ets_exposure ? "yes" : "no"}`,
+      `FuelEU risk: ${record.fueleu_risk ? "yes" : "no"}`,
+      `MRV missing data: ${record.mrv_missing_data ? "yes" : "no"}`,
+      `CII risk: ${record.cii_risk ? "yes" : "no"}`,
+      `Rationale: ${record.rationale.join("; ")}`,
+      `Last evaluated: ${record.last_evaluated_at}`,
+    ].join("\n"),
+    {
+      ...record,
+      voyageId: record.voyage_id,
+      vesselName: record.vessel_name,
+      entityName: record.flag_id,
+    },
+  );
+}
+
+function buildVoyageEventRecordChunk(record: z.infer<typeof voyageEventSchema>) {
+  return buildStructuredRecordChunk(
+    "voyage_event",
+    record.event_id,
+    [
+      `Voyage event: ${record.event_id}`,
+      `Vessel: ${record.vessel_name}`,
+      `Voyage: ${record.voyage_id}`,
+      `Event type: ${formatDocumentType(record.event_type)}`,
+      `Event time: ${record.event_time}`,
+      `Location: ${record.location}`,
+      `Severity: ${record.severity}`,
+      `Description: ${record.description}`,
+    ].join("\n"),
+    {
+      ...record,
+      voyageId: record.voyage_id,
+      vesselName: record.vessel_name,
+      entityName: `${record.event_type} ${record.event_id}`,
+    },
+  );
+}
+
 async function indexDocumentContent(
   documentId: string,
   workspaceId: string,
   content: string,
   metadata: Record<string, unknown>,
 ) {
-  const chunks = chunkText(content);
+  const chunks = chunkDocumentForEmbedding(content, {
+    documentId,
+    fileName: typeof metadata.fileName === "string" ? metadata.fileName : undefined,
+    documentType: typeof metadata.documentType === "string" ? metadata.documentType : undefined,
+    relatedVoyageId: typeof metadata.relatedVoyageId === "string" ? metadata.relatedVoyageId : undefined,
+    relatedVesselName: typeof metadata.relatedVesselName === "string" ? metadata.relatedVesselName : undefined,
+  });
   const embeddings = await embedTexts(
     chunks.map((chunk) => chunk.content),
     "document",
@@ -852,25 +1102,24 @@ async function indexDocumentContent(
 }
 
 async function indexEmailContent(
-  emailId: string,
+  record: z.infer<typeof emailSchema>,
   workspaceId: string,
-  content: string,
   metadata: Record<string, unknown>,
 ) {
-  const chunks = chunkText(content);
+  const chunks = buildEmailEmbeddingChunks(record);
   const embeddings = await embedTexts(
     chunks.map((chunk) => chunk.content),
     "document",
   );
 
-  await db.delete(maritimeEmailChunks).where(eq(maritimeEmailChunks.emailId, emailId));
+  await db.delete(maritimeEmailChunks).where(eq(maritimeEmailChunks.emailId, record.email_id));
 
   if (chunks.length === 0) return;
 
   await db.insert(maritimeEmailChunks).values(
     chunks.map((chunk, index) => ({
       id: crypto.randomUUID(),
-      emailId,
+      emailId: record.email_id,
       workspaceId,
       chunkIndex: chunk.index,
       content: chunk.content,
@@ -879,22 +1128,6 @@ async function indexEmailContent(
       metadata,
     })),
   );
-}
-
-function formatEmailForIndex(record: z.infer<typeof emailSchema>) {
-  return [
-    `Email: ${record.subject}`,
-    `From: ${record.from}`,
-    `To: ${record.to.join(", ")}`,
-    record.cc.length > 0 ? `Cc: ${record.cc.join(", ")}` : undefined,
-    `Sent: ${record.date}`,
-    `Voyage: ${record.related_voyage_id}`,
-    `Vessel: ${record.related_vessel_name}`,
-    "",
-    record.body,
-  ]
-    .filter(Boolean)
-    .join("\n");
 }
 
 async function resolveDemoDataRoot() {
@@ -978,6 +1211,34 @@ function parseCsvLine(line: string) {
 
   values.push(current);
   return values;
+}
+
+function groupBy<T>(values: T[], keyForValue: (value: T) => string) {
+  const groups = new Map<string, T[]>();
+  for (const value of values) {
+    const key = keyForValue(value);
+    const group = groups.get(key);
+    if (group) {
+      group.push(value);
+    } else {
+      groups.set(key, [value]);
+    }
+  }
+  return groups;
+}
+
+function groupChunksBySource(chunks: MaritimeEmbeddingChunk[]) {
+  const grouped = groupBy(chunks, (chunk) => `${chunk.sourceType}:${chunk.sourceId}`);
+  return [...grouped.values()].map((sourceChunks) =>
+    sourceChunks.map((chunk, index) => ({
+      ...chunk,
+      index,
+    })),
+  );
+}
+
+function formatDocumentType(value: string) {
+  return value.replace(/[._/-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 function sqlExcluded(columnName: string) {

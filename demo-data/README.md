@@ -10,8 +10,8 @@ The data is synthetic and should not be treated as operational, commercial, regi
 - `voyages.json`: 30 synthetic voyages dated around May 2026.
 - `ports.json`: 20 fictional Mediterranean port and terminal records.
 - `people.json`: 25 fictional employees and operational contacts.
-- `emails/emails.json`: 200 synthetic operational emails grouped into 50 threads.
-- `documents/`: 135 markdown attachment documents referenced from `emails/emails.json`.
+- `emails/emails.json`: 212 synthetic operational emails grouped into 50 threads.
+- `documents/`: 147 markdown attachment documents referenced from `emails/emails.json`.
 - `structured/bunker_reports.csv`: Structured bunker and fuel invoice records.
 - `structured/ais_positions.json`: Synthetic AIS positions for active voyages.
 - `structured/voyage_events.json`: Operational timeline events across voyages.

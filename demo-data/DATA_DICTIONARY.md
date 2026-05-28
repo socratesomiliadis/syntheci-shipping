@@ -118,7 +118,7 @@ Attachment objects include:
 | --- | --- | --- |
 | `attachment_id` | string | Attachment reference identifier. |
 | `document_id` | string | Foreign key to a markdown document front-matter `document_id`. |
-| `document_type` | enum | Document category, such as `voyage_order` or `bunker_fuel_document`. |
+| `document_type` | enum | Document category, such as `voyage_order`, `bunker_fuel_document`, `notice_of_readiness`, `statement_of_facts`, `pda`, `fda`, `invoice`, `inspection_report`, `supplier_declaration`, or `claim_document`. |
 | `filename` | string | Markdown filename under `documents/`. |
 | `path` | string | Relative path to the markdown document. |
 | `content_type` | string | Always `text/markdown` after document generation. |
@@ -135,7 +135,7 @@ Required front matter:
 | Field | Type | Description |
 | --- | --- | --- |
 | `document_id` | string | Primary document identifier. |
-| `document_type` | enum | One of `voyage_order`, `bunker_fuel_document`, `charterparty_excerpt`, `compliance_sop`, `port_weather_notice`, or `claims_note`. |
+| `document_type` | enum | One of the synthetic attachment categories, including voyage orders, bunker/fuel evidence, charterparty excerpts, compliance SOPs, port/weather notices, claims notes, PDA/FDA records, NOR/SOF records, invoices, inspection reports, supplier declarations, MRV corrections, claim documents, and terminal notices. |
 | `related_voyage_id` | string | Foreign key to `voyages.voyage_id`. |
 | `related_vessel_name` | string | Vessel name matching the related voyage. |
 | `source_email_id` | string | Foreign key to `emails.email_id`. |

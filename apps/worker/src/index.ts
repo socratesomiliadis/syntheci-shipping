@@ -1,5 +1,11 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { chunkText, buildCitationBlock, draftAutomationBrief, embedTexts } from "@syntheci/ai";
+import {
+  buildCitationBlock,
+  chunkDocumentForEmbedding,
+  draftAutomationBrief,
+  embedTexts,
+  extractTextFromDocument,
+} from "@syntheci/ai";
 import { db, documentChunks, documents, automationRuns, findRelevantChunks } from "@syntheci/db";
 import {
   automationJobSchema,
@@ -63,8 +69,16 @@ async function processIngestion(payload: IngestionJob) {
       }),
     );
 
-    const text = await objectBodyToText(object.Body);
-    const chunks = chunkText(text);
+    const bytes = await objectBodyToBytes(object.Body);
+    const text = await extractTextFromDocument({
+      bytes,
+      contentType: payload.contentType,
+      fileName: payload.fileName,
+    });
+    const chunks = chunkDocumentForEmbedding(text, {
+      documentId: payload.documentId,
+      fileName: payload.fileName,
+    });
     const embeddings = await embedTexts(
       chunks.map((chunk) => chunk.content),
       "document",
@@ -127,11 +141,10 @@ async function processAutomation(payload: AutomationJob) {
   }
 }
 
-async function objectBodyToText(body: unknown) {
-  if (!body) return "";
+async function objectBodyToBytes(body: unknown) {
+  if (!body) return new Uint8Array();
   if (typeof body === "object" && "transformToByteArray" in body) {
-    const bytes = await (body as { transformToByteArray: () => Promise<Uint8Array> }).transformToByteArray();
-    return new TextDecoder().decode(bytes);
+    return (body as { transformToByteArray: () => Promise<Uint8Array> }).transformToByteArray();
   }
   throw new Error("Unsupported S3 response body");
 }

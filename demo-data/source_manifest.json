@@ -46,7 +46,7 @@
     {
       "path": "emails/emails.json",
       "record_type": "synthetic_email",
-      "record_count": 200,
+      "record_count": 212,
       "primary_key": "email_id",
       "foreign_keys": {
         "related_voyage_id": "voyages.voyage_id",
@@ -57,15 +57,26 @@
     {
       "path": "documents/",
       "record_type": "markdown_attachment_document",
-      "record_count": 135,
+      "record_count": 147,
       "primary_key": "document_id",
       "document_type_counts": {
-        "voyage_order": 40,
+        "bunker_delivery_note": 1,
         "bunker_fuel_document": 40,
         "charterparty_excerpt": 20,
+        "claim_document": 1,
+        "claims_note": 10,
         "compliance_sop": 10,
+        "fda": 1,
+        "inspection_report": 1,
+        "invoice": 2,
+        "mrv_correction": 1,
+        "notice_of_readiness": 1,
+        "pda": 1,
         "port_weather_notice": 15,
-        "claims_note": 10
+        "statement_of_facts": 1,
+        "supplier_declaration": 1,
+        "terminal_notice": 1,
+        "voyage_order": 40
       },
       "foreign_keys": {
         "related_voyage_id": "voyages.voyage_id",

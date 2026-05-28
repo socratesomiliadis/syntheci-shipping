@@ -51,4 +51,26 @@ describe("citations", () => {
       sourceHref: "/workspace/sources?type=email&id=EML-2026-0069&chunk=EML-2026-0069",
     });
   });
+
+  it("maps maritime profile evidence without document persistence fields", () => {
+    expect(
+      toCitations([
+        {
+          id: "profile_chunk_1",
+          sourceType: "voyage_profile",
+          sourceId: "VOY-2026-0523",
+          fileName: "VOY-2026-0523 profile",
+          content: "AMS Dorian is awaiting berth prospects.",
+          rank: 1,
+          finalScore: 0.9,
+          sourceHref: "/workspace/sources?type=voyage_profile&id=VOY-2026-0523&chunk=profile_chunk_1",
+        },
+      ])[0],
+    ).toMatchObject({
+      sourceType: "voyage_profile",
+      sourceId: "VOY-2026-0523",
+      chunkId: "profile_chunk_1",
+      sourceHref: "/workspace/sources?type=voyage_profile&id=VOY-2026-0523&chunk=profile_chunk_1",
+    });
+  });
 });

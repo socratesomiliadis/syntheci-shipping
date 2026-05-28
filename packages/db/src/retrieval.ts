@@ -1,11 +1,12 @@
 import { and, desc, eq, ilike, inArray, or, sql, type SQL } from "drizzle-orm";
 import { cosineDistance } from "drizzle-orm/sql/functions/vector";
-import { rankRetrievalCandidates, type RetrievalCandidate } from "@syntheci/shared";
+import { rankRetrievalCandidates, type RetrievalCandidate, type RetrievalSourceType } from "@syntheci/shared";
 import { db } from "./client";
 import {
   documentChunks,
   documents,
   maritimeDocuments,
+  maritimeEmbeddingChunks,
   maritimeEmailChunks,
   maritimeEmails,
   maritimeScenarios,
@@ -21,12 +22,15 @@ export async function findHybridRelevantChunks(workspaceId: string, embedding: n
   const candidateLimit = Math.max(limit * 4, 16);
   const distance = cosineDistance(documentChunks.embedding, embedding).mapWith(Number);
   const emailDistance = cosineDistance(maritimeEmailChunks.embedding, embedding).mapWith(Number);
+  const maritimeDistance = cosineDistance(maritimeEmbeddingChunks.embedding, embedding).mapWith(Number);
   const normalizedQuery = normalizeQuery(query);
   const entityContext = await resolveEntityContext(workspaceId, query);
   const keywordScore = buildKeywordScore(normalizedQuery);
   const emailKeywordScore = buildEmailKeywordScore(normalizedQuery);
+  const maritimeKeywordScore = buildMaritimeKeywordScore(normalizedQuery);
   const baseWhere = and(eq(documentChunks.workspaceId, workspaceId), eq(documents.status, "ready"));
   const emailBaseWhere = eq(maritimeEmailChunks.workspaceId, workspaceId);
+  const maritimeBaseWhere = eq(maritimeEmbeddingChunks.workspaceId, workspaceId);
 
   const vectorRows = await selectChunkCandidates(keywordScore, distance)
     .where(baseWhere)
@@ -36,6 +40,11 @@ export async function findHybridRelevantChunks(workspaceId: string, embedding: n
   const emailVectorRows = await selectEmailChunkCandidates(emailKeywordScore, emailDistance)
     .where(emailBaseWhere)
     .orderBy(emailDistance)
+    .limit(candidateLimit);
+
+  const maritimeVectorRows = await selectMaritimeEmbeddingCandidates(maritimeKeywordScore, maritimeDistance)
+    .where(maritimeBaseWhere)
+    .orderBy(maritimeDistance)
     .limit(candidateLimit);
 
   const keywordRows =
@@ -65,6 +74,14 @@ export async function findHybridRelevantChunks(workspaceId: string, embedding: n
           .limit(candidateLimit)
       : [];
 
+  const maritimeEntityRows =
+    entityContext.vesselNames.length > 0 || entityContext.voyageIds.length > 0
+      ? await selectMaritimeEmbeddingCandidates(maritimeKeywordScore, maritimeDistance)
+          .where(and(maritimeBaseWhere, maritimeEntityPredicate(entityContext)))
+          .orderBy(maritimeDistance)
+          .limit(candidateLimit)
+      : [];
+
   const emailKeywordRows =
     normalizedQuery.length > 0
       ? await selectEmailChunkCandidates(emailKeywordScore, emailDistance)
@@ -73,14 +90,25 @@ export async function findHybridRelevantChunks(workspaceId: string, embedding: n
           .limit(candidateLimit)
       : [];
 
+  const maritimeKeywordRows =
+    normalizedQuery.length > 0
+      ? await selectMaritimeEmbeddingCandidates(maritimeKeywordScore, maritimeDistance)
+          .where(and(maritimeBaseWhere, maritimeKeywordPredicate(normalizedQuery)))
+          .orderBy(desc(maritimeKeywordScore))
+          .limit(candidateLimit)
+      : [];
+
   const candidates = new Map<string, RetrievalCandidate>();
   for (const row of [
+    ...maritimeEntityRows,
     ...emailEntityRows,
     ...entityRows,
     ...vectorRows,
     ...emailVectorRows,
+    ...maritimeVectorRows,
     ...keywordRows,
     ...emailKeywordRows,
+    ...maritimeKeywordRows,
   ]) {
     const candidateKey = `${row.sourceType ?? "document"}:${row.id}`;
     const existing = candidates.get(candidateKey);
@@ -133,6 +161,23 @@ function selectEmailChunkCandidates(keywordScore: SQL<number>, distance: SQL<num
     .innerJoin(maritimeEmails, eq(maritimeEmailChunks.emailId, maritimeEmails.id));
 }
 
+function selectMaritimeEmbeddingCandidates(keywordScore: SQL<number>, distance: SQL<number>) {
+  return db
+    .select({
+      id: maritimeEmbeddingChunks.id,
+      sourceType: sql<RetrievalSourceType>`${maritimeEmbeddingChunks.sourceType}`,
+      sourceId: maritimeEmbeddingChunks.sourceId,
+      fileName: sql<string>`coalesce(${maritimeEmbeddingChunks.entityName}, ${maritimeEmbeddingChunks.sourceId})`,
+      content: maritimeEmbeddingChunks.content,
+      vectorDistance: distance,
+      keywordScore,
+      documentType: maritimeEmbeddingChunks.recordType,
+      voyageId: maritimeEmbeddingChunks.relatedVoyageId,
+      vesselName: maritimeEmbeddingChunks.relatedVesselName,
+    })
+    .from(maritimeEmbeddingChunks);
+}
+
 function buildKeywordScore(query: string) {
   if (!query) return sql<number>`0`.mapWith(Number);
 
@@ -145,6 +190,14 @@ function buildEmailKeywordScore(query: string) {
   if (!query) return sql<number>`0`.mapWith(Number);
 
   const vector = sql`to_tsvector('english', concat_ws(' ', ${maritimeEmailChunks.content}, ${maritimeEmails.subject}, ${maritimeEmails.from}, ${maritimeEmails.relatedVoyageId}, ${maritimeEmails.relatedVesselName}))`;
+  const tsQuery = sql`plainto_tsquery('english', ${query})`;
+  return sql<number>`ts_rank_cd(${vector}, ${tsQuery})`.mapWith(Number);
+}
+
+function buildMaritimeKeywordScore(query: string) {
+  if (!query) return sql<number>`0`.mapWith(Number);
+
+  const vector = sql`to_tsvector('english', concat_ws(' ', ${maritimeEmbeddingChunks.content}, ${maritimeEmbeddingChunks.sourceType}, ${maritimeEmbeddingChunks.recordType}, ${maritimeEmbeddingChunks.relatedVoyageId}, ${maritimeEmbeddingChunks.relatedVesselName}, ${maritimeEmbeddingChunks.entityName}))`;
   const tsQuery = sql`plainto_tsquery('english', ${query})`;
   return sql<number>`ts_rank_cd(${vector}, ${tsQuery})`.mapWith(Number);
 }
@@ -182,6 +235,27 @@ function emailKeywordPredicate(query: string) {
             ilike(maritimeEmails.from, `%${term}%`),
             ilike(maritimeEmails.relatedVoyageId, `%${term}%`),
             ilike(maritimeEmails.relatedVesselName, `%${term}%`),
+          ]),
+        )
+      : undefined;
+
+  return fallback ? or(sql`${vector} @@ ${tsQuery}`, fallback) : sql`${vector} @@ ${tsQuery}`;
+}
+
+function maritimeKeywordPredicate(query: string) {
+  const vector = sql`to_tsvector('english', concat_ws(' ', ${maritimeEmbeddingChunks.content}, ${maritimeEmbeddingChunks.sourceType}, ${maritimeEmbeddingChunks.recordType}, ${maritimeEmbeddingChunks.relatedVoyageId}, ${maritimeEmbeddingChunks.relatedVesselName}, ${maritimeEmbeddingChunks.entityName}))`;
+  const tsQuery = sql`plainto_tsquery('english', ${query})`;
+  const fallbackTerms = tokenize(query).slice(0, 6);
+  const fallback =
+    fallbackTerms.length > 0
+      ? or(
+          ...fallbackTerms.flatMap((term) => [
+            ilike(maritimeEmbeddingChunks.content, `%${term}%`),
+            ilike(maritimeEmbeddingChunks.sourceType, `%${term}%`),
+            ilike(maritimeEmbeddingChunks.recordType, `%${term}%`),
+            ilike(maritimeEmbeddingChunks.relatedVoyageId, `%${term}%`),
+            ilike(maritimeEmbeddingChunks.relatedVesselName, `%${term}%`),
+            ilike(maritimeEmbeddingChunks.entityName, `%${term}%`),
           ]),
         )
       : undefined;
@@ -259,6 +333,15 @@ function emailEntityPredicate(context: EntityContext) {
     context.voyageIds.length > 0
       ? context.voyageIds.map((voyageId) => eq(maritimeEmails.relatedVoyageId, voyageId))
       : context.vesselNames.map((vesselName) => eq(maritimeEmails.relatedVesselName, vesselName));
+
+  return predicates.length > 0 ? or(...predicates) : sql`false`;
+}
+
+function maritimeEntityPredicate(context: EntityContext) {
+  const predicates =
+    context.voyageIds.length > 0
+      ? context.voyageIds.map((voyageId) => eq(maritimeEmbeddingChunks.relatedVoyageId, voyageId))
+      : context.vesselNames.map((vesselName) => eq(maritimeEmbeddingChunks.relatedVesselName, vesselName));
 
   return predicates.length > 0 ? or(...predicates) : sql`false`;
 }

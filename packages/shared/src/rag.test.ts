@@ -14,6 +14,9 @@ describe("rag helpers", () => {
     expect(sourceHrefForChunk({ id: "email_chunk_1", sourceId: "EML-2026-0069", sourceType: "email" })).toBe(
       "/workspace/sources?type=email&id=EML-2026-0069&chunk=email_chunk_1",
     );
+    expect(
+      sourceHrefForChunk({ id: "thread_chunk_1", sourceId: "THR-2026-023", sourceType: "email_thread" }),
+    ).toBe("/workspace/sources?type=email_thread&id=THR-2026-023&chunk=thread_chunk_1");
   });
 
   it("ranks candidates and caps repeated chunks per document", () => {
@@ -60,13 +63,24 @@ describe("rag helpers", () => {
           keywordScore: 0.9,
           metadataScore: 0.2,
         },
+        {
+          id: "VOY-2026-0523-profile",
+          sourceType: "voyage_profile",
+          sourceId: "VOY-2026-0523",
+          fileName: "VOY-2026-0523 profile",
+          content: "voyage profile",
+          vectorDistance: 0.12,
+          keywordScore: 0.4,
+          metadataScore: 0.2,
+        },
       ],
-      { limit: 4, perDocumentLimit: 2 },
+      { limit: 5, perDocumentLimit: 2 },
     );
 
-    expect(ranked).toHaveLength(4);
+    expect(ranked).toHaveLength(5);
     expect(ranked.filter((chunk) => chunk.documentId === "doc_1")).toHaveLength(2);
     expect(ranked.some((chunk) => chunk.sourceType === "email")).toBe(true);
+    expect(ranked.some((chunk) => chunk.sourceType === "voyage_profile")).toBe(true);
   });
 
   it("extracts and validates citation labels", () => {

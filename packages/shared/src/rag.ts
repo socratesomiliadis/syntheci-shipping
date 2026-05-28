@@ -1,4 +1,12 @@
-export type RetrievalSourceType = "document" | "email";
+export type RetrievalSourceType =
+  | "document"
+  | "email"
+  | "email_thread"
+  | "vessel_profile"
+  | "voyage_profile"
+  | "contact_profile"
+  | "structured_record"
+  | "scenario_profile";
 
 export interface RetrievalCandidate {
   id: string;
@@ -49,18 +57,11 @@ export function sourceHrefForChunk(
   chunk: Pick<RetrievalCandidate, "documentId" | "id" | "sourceType" | "sourceId">,
 ) {
   const sourceType = chunk.sourceType ?? "document";
-  const params =
-    sourceType === "email"
-      ? new URLSearchParams({
-          type: "email",
-          id: chunk.sourceId ?? chunk.id,
-          chunk: chunk.id,
-        })
-      : new URLSearchParams({
-          type: "file",
-          id: chunk.documentId ?? chunk.sourceId ?? chunk.id,
-          chunk: chunk.id,
-        });
+  const params = new URLSearchParams({
+    type: sourceType === "document" ? "file" : sourceType,
+    id: sourceType === "document" ? chunk.documentId ?? chunk.sourceId ?? chunk.id : chunk.sourceId ?? chunk.id,
+    chunk: chunk.id,
+  });
   return `/workspace/sources?${params.toString()}`;
 }
 

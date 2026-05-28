@@ -5215,5 +5215,356 @@
     "related_voyage_id": "VOY-2026-0520",
     "related_vessel_name": "AMS Notos",
     "attachments": []
+  },
+  {
+    "email_id": "EML-2026-0201",
+    "thread_id": "THR-2026-023",
+    "subject": "NOR tendering package - AMS Dorian - VOY-2026-0523 - Sirocco Bulk Terminal",
+    "from": "Dimitra Lenos <dimitra.lenos@harborline-agency.example>",
+    "to": [
+      "Mehmet Arslan <mehmet.arslan@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Iris Papathanasiou <iris.papathanasiou@aegeanmeridian.example>",
+      "Maya Conti <maya.conti@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-24T06:15:00Z",
+    "body": "Good day,\n\nAttached is the NOR tendering package for AMS Dorian under VOY-2026-0523. The master tendered NOR at Sirocco anchorage at 05:40 local after free pratique was granted by radio. Please confirm whether chartering accepts anchorage tendering for the current congestion scenario.\n\nThe agent notes berth prospects remain uncertain and SOF collection is ongoing.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0523",
+    "related_vessel_name": "AMS Dorian",
+    "attachments": [
+      {
+        "attachment_id": "ATT-023-4",
+        "filename": "doc-2026-0136-notice-of-readiness-voy-2026-0523.md",
+        "description": "Notice of readiness",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0136",
+        "document_type": "notice_of_readiness",
+        "original_filename": "nor-ams-dorian-voy-2026-0523.pdf",
+        "path": "demo-data/documents/doc-2026-0136-notice-of-readiness-voy-2026-0523.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0202",
+    "thread_id": "THR-2026-023",
+    "subject": "Draft SOF received - AMS Dorian - VOY-2026-0523 - Sirocco Bulk Terminal",
+    "from": "Paula Serin <paula.serin@quaywise-terminals.example>",
+    "to": [
+      "Iris Papathanasiou <iris.papathanasiou@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Mehmet Arslan <mehmet.arslan@aegeanmeridian.example>",
+      "Dimitra Lenos <dimitra.lenos@harborline-agency.example>"
+    ],
+    "date": "2026-05-24T10:45:00Z",
+    "body": "Good day,\n\nPlease find attached the draft SOF for AMS Dorian. Waiting time is shown from NOR tender to first line ashore, but the rain stoppage entry is still marked provisional and needs terminal countersignature.\n\nPlease do not circulate a laytime position externally until the final SOF is signed.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0523",
+    "related_vessel_name": "AMS Dorian",
+    "attachments": [
+      {
+        "attachment_id": "ATT-023-5",
+        "filename": "doc-2026-0137-statement-of-facts-voy-2026-0523.md",
+        "description": "Draft Statement of Facts",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0137",
+        "document_type": "statement_of_facts",
+        "original_filename": "draft-sof-ams-dorian-voy-2026-0523.xlsx",
+        "path": "demo-data/documents/doc-2026-0137-statement-of-facts-voy-2026-0523.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0203",
+    "thread_id": "THR-2026-023",
+    "subject": "PDA Rev 2 for finance review - AMS Dorian - VOY-2026-0523",
+    "from": "Arun Menon <arun.menon@harborline-agency.example>",
+    "to": [
+      "Maya Conti <maya.conti@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Mehmet Arslan <mehmet.arslan@aegeanmeridian.example>",
+      "Elena Markou <elena.markou@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-24T14:10:00Z",
+    "body": "Good day,\n\nAttached is PDA Revision 2 for AMS Dorian at Sirocco Bulk Terminal. Berth prospects have changed and the agency estimate now includes two days of anchorage attendance plus additional launch service. Finance review is pending before we confirm the agent funding request.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0523",
+    "related_vessel_name": "AMS Dorian",
+    "attachments": [
+      {
+        "attachment_id": "ATT-023-6",
+        "filename": "doc-2026-0138-pda-voy-2026-0523.md",
+        "description": "PDA Revision 2",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0138",
+        "document_type": "pda",
+        "original_filename": "pda-rev-2-sirocco-ams-dorian-voy-2026-0523.pdf",
+        "path": "demo-data/documents/doc-2026-0138-pda-voy-2026-0523.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0204",
+    "thread_id": "THR-2026-023",
+    "subject": "FDA pending items - AMS Dorian - VOY-2026-0523",
+    "from": "Iris Papathanasiou <iris.papathanasiou@aegeanmeridian.example>",
+    "to": [
+      "Arun Menon <arun.menon@harborline-agency.example>"
+    ],
+    "cc": [
+      "Maya Conti <maya.conti@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-25T09:20:00Z",
+    "body": "Good day,\n\nThe FDA remains pending for AMS Dorian. Please separate launch, anchorage attendance, and overtime items from ordinary port dues, and hold any disputed waiting-time entries until the final SOF is signed.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0523",
+    "related_vessel_name": "AMS Dorian",
+    "attachments": [
+      {
+        "attachment_id": "ATT-023-7",
+        "filename": "doc-2026-0139-fda-pending-voy-2026-0523.md",
+        "description": "FDA pending note",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0139",
+        "document_type": "fda",
+        "original_filename": "fda-pending-note-sirocco-ams-dorian-voy-2026-0523.pdf",
+        "path": "demo-data/documents/doc-2026-0139-fda-pending-voy-2026-0523.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0205",
+    "thread_id": "THR-2026-029",
+    "subject": "Bunker invoice received - AMS Thalassa - VOY-2026-0529",
+    "from": "Hector Salvi <hector.salvi@meridian-bunkers.example>",
+    "to": [
+      "Omar Haddad <omar.haddad@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Elena Markou <elena.markou@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-29T21:10:00Z",
+    "body": "Good day,\n\nAttached is the bunker invoice supporting BINV-2026-0039 for AMS Thalassa / VOY-2026-0529. The invoice matches the nominated stem, but MRV reconciliation still needs final ROB and consumption data.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0529",
+    "related_vessel_name": "AMS Thalassa",
+    "attachments": [
+      {
+        "attachment_id": "ATT-029-4",
+        "filename": "doc-2026-0140-bunker-invoice-voy-2026-0529.md",
+        "description": "Bunker invoice",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0140",
+        "document_type": "invoice",
+        "original_filename": "bunker-invoice-binv-2026-0039-ams-thalassa.pdf",
+        "path": "demo-data/documents/doc-2026-0140-bunker-invoice-voy-2026-0529.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0206",
+    "thread_id": "THR-2026-029",
+    "subject": "BDN and sulphur certificate - AMS Thalassa - VOY-2026-0529",
+    "from": "Lina Farouk <lina.farouk@meridian-bunkers.example>",
+    "to": [
+      "Omar Haddad <omar.haddad@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Maya Conti <maya.conti@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-30T08:25:00Z",
+    "body": "Good day,\n\nAttached are the BDN and sulphur certificate for the AMS Thalassa stem. Sample seal numbers are included, but the supplier declaration for FuelEU is still pending.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0529",
+    "related_vessel_name": "AMS Thalassa",
+    "attachments": [
+      {
+        "attachment_id": "ATT-029-5",
+        "filename": "doc-2026-0141-bdn-sulphur-voy-2026-0529.md",
+        "description": "BDN and sulphur certificate",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0141",
+        "document_type": "bunker_delivery_note",
+        "original_filename": "bdn-sulphur-certificate-ams-thalassa-voy-2026-0529.pdf",
+        "path": "demo-data/documents/doc-2026-0141-bdn-sulphur-voy-2026-0529.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0207",
+    "thread_id": "THR-2026-029",
+    "subject": "Pre-sailing inspection report - AMS Thalassa - VOY-2026-0529",
+    "from": "Andreas Solakis <andreas.solakis@aegeanmeridian.example>",
+    "to": [
+      "Elena Markou <elena.markou@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Omar Haddad <omar.haddad@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-30T13:10:00Z",
+    "body": "Good day,\n\nAttached is the pre-sailing inspection report for AMS Thalassa. No cargo tank restriction was noted, but the inspector asks for final fuel sample custody records before departure.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0529",
+    "related_vessel_name": "AMS Thalassa",
+    "attachments": [
+      {
+        "attachment_id": "ATT-029-6",
+        "filename": "doc-2026-0142-inspection-report-voy-2026-0529.md",
+        "description": "Inspection report",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0142",
+        "document_type": "inspection_report",
+        "original_filename": "pre-sailing-inspection-ams-thalassa-voy-2026-0529.pdf",
+        "path": "demo-data/documents/doc-2026-0142-inspection-report-voy-2026-0529.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0208",
+    "thread_id": "THR-2026-025",
+    "subject": "MRV correction request - AMS Eirini - VOY-2026-0525",
+    "from": "Elena Markou <elena.markou@aegeanmeridian.example>",
+    "to": [
+      "Omar Haddad <omar.haddad@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Maya Conti <maya.conti@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-25T17:45:00Z",
+    "body": "Good day,\n\nPlease find attached the MRV correction request for AMS Eirini. The current fuel figures do not reconcile with the noon report and bunker invoice set, so the FuelEU note must remain provisional.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0525",
+    "related_vessel_name": "AMS Eirini",
+    "attachments": [
+      {
+        "attachment_id": "ATT-025-4",
+        "filename": "doc-2026-0143-mrv-correction-voy-2026-0525.md",
+        "description": "MRV correction request",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0143",
+        "document_type": "mrv_correction",
+        "original_filename": "mrv-correction-request-ams-eirini-voy-2026-0525.docx",
+        "path": "demo-data/documents/doc-2026-0143-mrv-correction-voy-2026-0525.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0209",
+    "thread_id": "THR-2026-025",
+    "subject": "Supplier declaration received - AMS Eirini - VOY-2026-0525",
+    "from": "Hector Salvi <hector.salvi@meridian-bunkers.example>",
+    "to": [
+      "Omar Haddad <omar.haddad@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Elena Markou <elena.markou@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-26T08:05:00Z",
+    "body": "Good day,\n\nAttached is the supplier declaration for AMS Eirini. It supports the bunker evidence pack but does not replace the corrected MRV fuel figures requested by operations.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0525",
+    "related_vessel_name": "AMS Eirini",
+    "attachments": [
+      {
+        "attachment_id": "ATT-025-5",
+        "filename": "doc-2026-0144-supplier-declaration-voy-2026-0525.md",
+        "description": "Supplier declaration",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0144",
+        "document_type": "supplier_declaration",
+        "original_filename": "supplier-declaration-ams-eirini-voy-2026-0525.pdf",
+        "path": "demo-data/documents/doc-2026-0144-supplier-declaration-voy-2026-0525.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0210",
+    "thread_id": "THR-2026-021",
+    "subject": "Freight invoice and ETS allocation - AMS Helios - VOY-2026-0521",
+    "from": "Nikos Vardas <nikos.vardas@aegeanmeridian.example>",
+    "to": [
+      "Clara Nguyen <clara.nguyen@bluearc-chartering.example>"
+    ],
+    "cc": [
+      "Iris Papathanasiou <iris.papathanasiou@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-22T08:35:00Z",
+    "body": "Good day,\n\nAttached is the freight invoice note for AMS Helios. The invoice reserves rights on EU ETS cost allocation pending final rider wording and emissions evidence exchange.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0521",
+    "related_vessel_name": "AMS Helios",
+    "attachments": [
+      {
+        "attachment_id": "ATT-021-4",
+        "filename": "doc-2026-0145-freight-invoice-voy-2026-0521.md",
+        "description": "Freight invoice",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0145",
+        "document_type": "invoice",
+        "original_filename": "freight-invoice-ams-helios-voy-2026-0521.pdf",
+        "path": "demo-data/documents/doc-2026-0145-freight-invoice-voy-2026-0521.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0211",
+    "thread_id": "THR-2026-021",
+    "subject": "Claim support note for ETS and CII reservation - AMS Helios - VOY-2026-0521",
+    "from": "Iris Papathanasiou <iris.papathanasiou@aegeanmeridian.example>",
+    "to": [
+      "Nikos Vardas <nikos.vardas@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Elena Markou <elena.markou@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-22T13:50:00Z",
+    "body": "Good day,\n\nAttached is the claim support note tying the charterparty revision to ETS and CII evidence. Please keep this internal until the counterparty confirms final rider wording.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0521",
+    "related_vessel_name": "AMS Helios",
+    "attachments": [
+      {
+        "attachment_id": "ATT-021-5",
+        "filename": "doc-2026-0146-claim-support-voy-2026-0521.md",
+        "description": "Claim support note",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0146",
+        "document_type": "claim_document",
+        "original_filename": "claim-support-ets-cii-ams-helios-voy-2026-0521.docx",
+        "path": "demo-data/documents/doc-2026-0146-claim-support-voy-2026-0521.md"
+      }
+    ]
+  },
+  {
+    "email_id": "EML-2026-0212",
+    "thread_id": "THR-2026-022",
+    "subject": "Terminal reslotting notice - AMS Zephyr - VOY-2026-0522",
+    "from": "Paula Serin <paula.serin@quaywise-terminals.example>",
+    "to": [
+      "Elena Markou <elena.markou@aegeanmeridian.example>"
+    ],
+    "cc": [
+      "Luca Romano <luca.romano@aegeanmeridian.example>"
+    ],
+    "date": "2026-05-23T08:10:00Z",
+    "body": "Good day,\n\nAttached is the terminal reslotting notice for AMS Zephyr. The terminal can protect a later window if the revised ETA is confirmed before 12:00 local. No compliance escalation is required from this notice alone.\n\nRegards,\nOperations Desk",
+    "related_voyage_id": "VOY-2026-0522",
+    "related_vessel_name": "AMS Zephyr",
+    "attachments": [
+      {
+        "attachment_id": "ATT-022-4",
+        "filename": "doc-2026-0147-terminal-reslotting-voy-2026-0522.md",
+        "description": "Terminal reslotting notice",
+        "content_type": "text/markdown",
+        "synthetic": true,
+        "document_id": "DOC-2026-0147",
+        "document_type": "terminal_notice",
+        "original_filename": "terminal-reslotting-notice-ams-zephyr-voy-2026-0522.pdf",
+        "path": "demo-data/documents/doc-2026-0147-terminal-reslotting-voy-2026-0522.md"
+      }
+    ]
   }
 ]

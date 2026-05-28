@@ -18,6 +18,7 @@ import {
   documents,
   ensureDefaultWorkspace,
   maritimeDocuments,
+  maritimeEmbeddingChunks,
   maritimeEmails,
 } from "@syntheci/db";
 import { and, asc, desc, eq, ilike, or } from "drizzle-orm";
@@ -26,6 +27,7 @@ import {
   FileText,
   Hash,
   Inbox,
+  Layers,
   Mail,
   Paperclip,
   Search,
@@ -82,7 +84,29 @@ type EmailSource = {
   attachments: EmailAttachment[];
 };
 
-type Source = FileSource | EmailSource;
+type GeneralSourceType =
+  | "email_thread"
+  | "vessel_profile"
+  | "voyage_profile"
+  | "contact_profile"
+  | "structured_record"
+  | "scenario_profile";
+
+type GeneralSource = {
+  sourceType: GeneralSourceType;
+  id: string;
+  sourceId: string;
+  recordType: string | null;
+  entityName: string | null;
+  relatedVoyageId: string | null;
+  relatedVesselName: string | null;
+  content: string;
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+  chunkCount: number;
+};
+
+type Source = FileSource | EmailSource | GeneralSource;
 
 export default async function SourcesPage({
   searchParams,
@@ -124,7 +148,22 @@ export default async function SourcesPage({
       )
     : eq(maritimeEmails.workspaceId, workspaceId);
 
-  const [fileRows, emailRows] = await Promise.all([
+  const generalWhere = query
+    ? and(
+        eq(maritimeEmbeddingChunks.workspaceId, workspaceId),
+        or(
+          ilike(maritimeEmbeddingChunks.content, `%${query}%`),
+          ilike(maritimeEmbeddingChunks.sourceType, `%${query}%`),
+          ilike(maritimeEmbeddingChunks.sourceId, `%${query}%`),
+          ilike(maritimeEmbeddingChunks.recordType, `%${query}%`),
+          ilike(maritimeEmbeddingChunks.entityName, `%${query}%`),
+          ilike(maritimeEmbeddingChunks.relatedVoyageId, `%${query}%`),
+          ilike(maritimeEmbeddingChunks.relatedVesselName, `%${query}%`)
+        )
+      )
+    : eq(maritimeEmbeddingChunks.workspaceId, workspaceId);
+
+  const [fileRows, emailRows, generalRows] = await Promise.all([
     db
       .select({
         id: documents.id,
@@ -168,6 +207,23 @@ export default async function SourcesPage({
       .from(maritimeEmails)
       .where(emailWhere)
       .orderBy(desc(maritimeEmails.sentAt), asc(maritimeEmails.subject)),
+    db
+      .select({
+        id: maritimeEmbeddingChunks.id,
+        sourceType: maritimeEmbeddingChunks.sourceType,
+        sourceId: maritimeEmbeddingChunks.sourceId,
+        recordType: maritimeEmbeddingChunks.recordType,
+        entityName: maritimeEmbeddingChunks.entityName,
+        relatedVoyageId: maritimeEmbeddingChunks.relatedVoyageId,
+        relatedVesselName: maritimeEmbeddingChunks.relatedVesselName,
+        content: maritimeEmbeddingChunks.content,
+        metadata: maritimeEmbeddingChunks.metadata,
+        createdAt: maritimeEmbeddingChunks.createdAt,
+        chunkIndex: maritimeEmbeddingChunks.chunkIndex,
+      })
+      .from(maritimeEmbeddingChunks)
+      .where(generalWhere)
+      .orderBy(desc(maritimeEmbeddingChunks.createdAt), asc(maritimeEmbeddingChunks.chunkIndex)),
   ]);
 
   const files: FileSource[] = fileRows.map((row) => ({
@@ -179,10 +235,11 @@ export default async function SourcesPage({
     sourceType: "email",
     attachments: normalizeAttachments(row.attachments),
   }));
-  const sources = [...files, ...emails].sort(
+  const generalSources = toGeneralSources(generalRows);
+  const sources = [...files, ...emails, ...generalSources].sort(
     (left, right) => sourceTimestamp(right) - sourceTimestamp(left)
   );
-  const selectedSource = selectSource(files, emails, selectedType, selectedId);
+  const selectedSource = selectSource(files, emails, generalSources, selectedType, selectedId);
   const selectedChunks =
     selectedSource?.sourceType === "file"
       ? await db
@@ -195,6 +252,23 @@ export default async function SourcesPage({
           .from(documentChunks)
           .where(eq(documentChunks.documentId, selectedSource.id))
           .orderBy(asc(documentChunks.chunkIndex))
+      : selectedSource && isGeneralSource(selectedSource)
+      ? await db
+          .select({
+            id: maritimeEmbeddingChunks.id,
+            chunkIndex: maritimeEmbeddingChunks.chunkIndex,
+            content: maritimeEmbeddingChunks.content,
+            tokenEstimate: maritimeEmbeddingChunks.tokenEstimate,
+          })
+          .from(maritimeEmbeddingChunks)
+          .where(
+            and(
+              eq(maritimeEmbeddingChunks.workspaceId, workspaceId),
+              eq(maritimeEmbeddingChunks.sourceType, selectedSource.sourceType),
+              eq(maritimeEmbeddingChunks.sourceId, selectedSource.id)
+            )
+          )
+          .orderBy(asc(maritimeEmbeddingChunks.chunkIndex))
       : [];
 
   return (
@@ -208,7 +282,8 @@ export default async function SourcesPage({
               Indexed sources
             </h1>
             <p className="mt-1 text-sm text-slate-500">
-              {files.length} indexed files and {emails.length} emails
+              {files.length} indexed files, {emails.length} emails, and{" "}
+              {generalSources.length} maritime profiles/records
               {query ? ` matching "${query}"` : ""}
             </p>
           </div>
@@ -288,8 +363,14 @@ export default async function SourcesPage({
               selectedChunkId={selectedChunkId}
               chunks={selectedChunks}
             />
-          ) : (
+          ) : selectedSource.sourceType === "email" ? (
             <EmailPreview email={selectedSource} />
+          ) : (
+            <GeneralPreview
+              source={selectedSource}
+              selectedChunkId={selectedChunkId}
+              chunks={selectedChunks}
+            />
           )
         ) : null}
       </SourcePreviewDrawer>
@@ -307,20 +388,16 @@ function SourceRow({
   source: Source;
 }) {
   const href = sourceHref(source.sourceType, source.id, query);
-  const Icon = source.sourceType === "file" ? FileText : Mail;
+  const Icon = source.sourceType === "file" ? FileText : source.sourceType === "email" ? Mail : Layers;
   const title = sourceTitle(source);
   const typeLabel =
     source.sourceType === "file"
       ? formatSourceType(source.documentType ?? source.contentType)
-      : "Email";
-  const voyage =
-    source.sourceType === "file"
-      ? source.relatedVoyageId
-      : source.relatedVoyageId;
-  const vessel =
-    source.sourceType === "file"
-      ? source.relatedVesselName
-      : source.relatedVesselName;
+      : source.sourceType === "email"
+      ? "Email"
+      : formatSourceType(source.recordType ?? source.sourceType);
+  const voyage = source.relatedVoyageId;
+  const vessel = source.relatedVesselName;
 
   return (
     <TableRow
@@ -334,12 +411,14 @@ function SourceRow({
           className={cn(
             source.sourceType === "file"
               ? "border-blue-200 bg-blue-50 text-blue-700"
-              : "border-amber-200 bg-amber-50 text-amber-700"
+              : source.sourceType === "email"
+              ? "border-amber-200 bg-amber-50 text-amber-700"
+              : "border-violet-200 bg-violet-50 text-violet-700"
           )}
           variant="outline"
         >
           <Icon className="h-3 w-3" />
-          {source.sourceType}
+          {formatSourceType(source.sourceType)}
         </Badge>
       </TableCell>
       <TableCell>
@@ -355,6 +434,7 @@ function SourceRow({
           {source.sourceType === "file" && source.originalAttachmentFilename ? (
             <span>{source.originalAttachmentFilename}</span>
           ) : null}
+          {isGeneralSource(source) ? <span>{source.chunkCount} chunks</span> : null}
         </div>
       </TableCell>
       <TableCell className="hidden text-slate-700 lg:table-cell">
@@ -619,6 +699,124 @@ function EmailPreview({ email }: { email: EmailSource }) {
   );
 }
 
+function GeneralPreview({
+  chunks,
+  selectedChunkId,
+  source,
+}: {
+  chunks: {
+    id: string;
+    chunkIndex: number;
+    content: string;
+    tokenEstimate: number;
+  }[];
+  selectedChunkId?: string;
+  source: GeneralSource;
+}) {
+  const selectedChunk = selectedChunkId
+    ? chunks.find((chunk) => chunk.id === selectedChunkId)
+    : undefined;
+
+  return (
+    <article>
+      <section className="border-b border-slate-200 bg-violet-50 px-5 py-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge
+            className="border-violet-200 bg-white text-violet-700"
+            variant="outline"
+          >
+            {formatSourceType(source.sourceType)}
+          </Badge>
+          {source.recordType ? (
+            <Badge variant="outline">{formatSourceType(source.recordType)}</Badge>
+          ) : null}
+          {source.relatedVoyageId ? (
+            <Badge variant="outline">{source.relatedVoyageId}</Badge>
+          ) : null}
+        </div>
+        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 xl:grid-cols-4">
+          <MetaItem
+            icon={Layers}
+            label="Entity"
+            value={source.entityName ?? source.id}
+          />
+          <MetaItem
+            icon={Inbox}
+            label="Vessel"
+            value={source.relatedVesselName ?? "Unassigned"}
+          />
+          <MetaItem
+            icon={Hash}
+            label="Voyage"
+            value={source.relatedVoyageId ?? "Unassigned"}
+          />
+          <MetaItem
+            icon={CalendarDays}
+            label="Indexed"
+            value={formatDate(source.createdAt)}
+          />
+        </dl>
+      </section>
+
+      {selectedChunk ? (
+        <section className="border-b border-amber-200 bg-amber-50 px-5 py-4">
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <Badge
+              className="border-amber-300 bg-amber-100 text-amber-800"
+              variant="outline"
+            >
+              Linked citation chunk {selectedChunk.chunkIndex + 1}
+            </Badge>
+            <span className="text-xs text-amber-800">
+              {selectedChunk.tokenEstimate} estimated tokens
+            </span>
+          </div>
+          <p className="whitespace-pre-wrap text-sm leading-6 text-amber-950">
+            {selectedChunk.content}
+          </p>
+        </section>
+      ) : null}
+
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="min-w-0 px-5 py-5">
+          <pre className="whitespace-pre-wrap rounded-lg border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700">
+            {source.content}
+          </pre>
+        </div>
+        <aside className="border-t border-slate-200 bg-slate-50 p-4 lg:border-l lg:border-t-0">
+          <div className="text-sm font-semibold text-slate-950">
+            Indexed chunks
+          </div>
+          <div className="mt-3 space-y-2">
+            {chunks.map((chunk) => (
+              <Link
+                className={cn(
+                  "block rounded-lg border border-slate-200 bg-white p-3 text-sm transition hover:border-slate-300 hover:bg-slate-50",
+                  selectedChunkId === chunk.id && "border-amber-300 bg-amber-50"
+                )}
+                href={sourceHref(source.sourceType, source.id, undefined, chunk.id)}
+                key={chunk.id}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-medium text-slate-950">
+                    Chunk {chunk.chunkIndex + 1}
+                  </span>
+                  <span className="text-xs text-slate-400">
+                    {chunk.tokenEstimate} tokens
+                  </span>
+                </div>
+                <p className="mt-2 line-clamp-3 text-xs leading-5 text-slate-500">
+                  {chunk.content}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </aside>
+      </div>
+    </article>
+  );
+}
+
 function MetaItem({
   icon: Icon,
   label,
@@ -833,15 +1031,20 @@ function isMarkdownBoundary(line: string) {
 function selectSource(
   files: FileSource[],
   emails: EmailSource[],
+  generalSources: GeneralSource[],
   type?: string,
   id?: string
 ) {
   if (!id) return undefined;
   if (type === "email") return emails.find((email) => email.id === id);
   if (type === "file") return files.find((file) => file.id === id);
+  if (isGeneralSourceType(type)) {
+    return generalSources.find((source) => source.sourceType === type && source.id === id);
+  }
   return (
     files.find((file) => file.id === id) ??
-    emails.find((email) => email.id === id)
+    emails.find((email) => email.id === id) ??
+    generalSources.find((source) => source.id === id)
   );
 }
 
@@ -871,12 +1074,70 @@ function normalizeAttachments(value: Record<string, unknown>[]) {
   return value.map((attachment) => attachment as EmailAttachment);
 }
 
+function toGeneralSources(
+  rows: {
+    id: string;
+    sourceType: string;
+    sourceId: string;
+    recordType: string | null;
+    entityName: string | null;
+    relatedVoyageId: string | null;
+    relatedVesselName: string | null;
+    content: string;
+    metadata: Record<string, unknown>;
+    createdAt: Date;
+  }[]
+) {
+  const sources = new Map<string, GeneralSource>();
+  for (const row of rows) {
+    if (!isGeneralSourceType(row.sourceType)) continue;
+    const key = `${row.sourceType}:${row.sourceId}`;
+    const existing = sources.get(key);
+    if (existing) {
+      existing.chunkCount += 1;
+      if (row.content.length > existing.content.length) existing.content = row.content;
+      continue;
+    }
+    sources.set(key, {
+      sourceType: row.sourceType,
+      id: row.sourceId,
+      sourceId: row.sourceId,
+      recordType: row.recordType,
+      entityName: row.entityName,
+      relatedVoyageId: row.relatedVoyageId,
+      relatedVesselName: row.relatedVesselName,
+      content: row.content,
+      metadata: row.metadata,
+      createdAt: row.createdAt,
+      chunkCount: 1,
+    });
+  }
+  return [...sources.values()];
+}
+
+function isGeneralSource(source: Source): source is GeneralSource {
+  return source.sourceType !== "file" && source.sourceType !== "email";
+}
+
+function isGeneralSourceType(value: unknown): value is GeneralSourceType {
+  return (
+    value === "email_thread" ||
+    value === "vessel_profile" ||
+    value === "voyage_profile" ||
+    value === "contact_profile" ||
+    value === "structured_record" ||
+    value === "scenario_profile"
+  );
+}
+
 function stripFrontMatter(source: string) {
   return source.replace(/^---\n[\s\S]*?\n---\n?/, "").trim();
 }
 
 function sourceTitle(source: Source) {
-  return source.sourceType === "file" ? source.fileName : source.subject;
+  if (source.sourceType === "file") return source.fileName;
+  if (source.sourceType === "email") return source.subject;
+  return source.entityName ?? source.id;
 }
 
 function drawerDescription(source: Source) {
@@ -890,13 +1151,21 @@ function drawerDescription(source: Source) {
       .join(" / ");
   }
 
+  if (source.sourceType !== "email") {
+    return [formatSourceType(source.recordType ?? source.sourceType), source.relatedVesselName, source.relatedVoyageId]
+      .filter(Boolean)
+      .join(" / ");
+  }
+
   return [source.from, source.relatedVesselName, source.relatedVoyageId]
     .filter(Boolean)
     .join(" / ");
 }
 
 function sourceDate(source: Source) {
-  return source.sourceType === "file" ? source.createdAt : source.sentAt;
+  if (source.sourceType === "file") return source.createdAt;
+  if (source.sourceType === "email") return source.sentAt;
+  return source.createdAt;
 }
 
 function sourceTimestamp(source: Source) {
