@@ -29,6 +29,13 @@
       "when": 1779966692520,
       "tag": "0003_little_frank_castle",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779967681271,
+      "tag": "0004_windy_stryfe",
+      "breakpoints": true
     }
   ]
 }

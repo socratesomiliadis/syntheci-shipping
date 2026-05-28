@@ -1,0 +1,11 @@
+import { ensureDefaultWorkspace } from "@syntheci/db";
+import { extractCharterpartyClauses } from "@syntheci/shared";
+import { loadWorkflowContext } from "@/lib/voyage-workflows";
+
+export async function GET(_request: Request, context: { params: Promise<{ voyageId: string }> }) {
+  const { voyageId } = await context.params;
+  const workspaceId = await ensureDefaultWorkspace();
+  const workflowContext = await loadWorkflowContext(workspaceId, voyageId);
+
+  return Response.json({ clauses: extractCharterpartyClauses(workflowContext) });
+}

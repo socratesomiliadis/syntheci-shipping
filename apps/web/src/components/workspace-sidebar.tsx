@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Anchor, Bell, Database, FileText, LogOut, MessageSquare, Radar, UserRound } from "lucide-react";
+import { Anchor, Bell, BriefcaseBusiness, Database, FileText, LogOut, MessageSquare, Radar, Settings, Ship, UserRound } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -20,10 +20,13 @@ import {
 
 const navItems = [
   { href: "/workspace", label: "Overview", icon: Radar },
+  { href: "/workspace/voyages", label: "Voyages", icon: Ship },
+  { href: "/workspace/jobs", label: "Jobs", icon: BriefcaseBusiness },
   { href: "/workspace/sources", label: "Sources", icon: Database },
   { href: "/workspace/chat", label: "Chat", icon: MessageSquare },
   { href: "/workspace/automations", label: "Automations", icon: Bell },
   { href: "/workspace/runs", label: "Runs", icon: FileText },
+  { href: "/workspace/admin", label: "Admin", icon: Settings },
 ];
 
 function isActiveRoute(pathname: string, href: string) {

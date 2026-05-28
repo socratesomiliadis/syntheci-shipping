@@ -31,6 +31,14 @@ export const automationRunStatusEnum = pgEnum("automation_run_status", [
 ]);
 export const queueJobStatusEnum = pgEnum("queue_job_status", ["queued", "active", "completed", "failed"]);
 export const chatMessageRoleEnum = pgEnum("chat_message_role", ["user", "assistant", "system"]);
+export const operationalJobStatusEnum = pgEnum("operational_job_status", [
+  "open",
+  "in_progress",
+  "resolved",
+  "dismissed",
+]);
+export const operationalJobPriorityEnum = pgEnum("operational_job_priority", ["low", "medium", "high"]);
+export const chatFeedbackRatingEnum = pgEnum("chat_feedback_rating", ["up", "down"]);
 
 const rawMetadata = () => jsonb("raw").$type<Record<string, unknown>>().notNull().default({});
 
@@ -193,6 +201,53 @@ export const citations = pgTable("citations", {
   label: text("label").notNull(),
   excerpt: text("excerpt").notNull(),
 });
+
+export const chatFeedback = pgTable(
+  "chat_feedback",
+  {
+    id: text("id").primaryKey(),
+    messageId: text("message_id")
+      .notNull()
+      .references(() => chatMessages.id, { onDelete: "cascade" }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    rating: chatFeedbackRatingEnum("rating").notNull(),
+    note: text("note"),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("chat_feedback_workspace_idx").on(table.workspaceId),
+    index("chat_feedback_message_idx").on(table.messageId),
+    uniqueIndex("chat_feedback_message_workspace_idx").on(table.messageId, table.workspaceId),
+  ],
+);
+
+export const operationalJobs = pgTable(
+  "operational_jobs",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    voyageId: text("voyage_id").notNull(),
+    jobType: text("job_type").notNull(),
+    status: operationalJobStatusEnum("status").notNull().default("open"),
+    priority: operationalJobPriorityEnum("priority").notNull().default("medium"),
+    title: text("title").notNull(),
+    summary: text("summary").notNull(),
+    evidence: jsonb("evidence").$type<Record<string, unknown>[]>().notNull().default([]),
+    payload: jsonb("payload").$type<Record<string, unknown>>().notNull().default({}),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("operational_jobs_workspace_idx").on(table.workspaceId),
+    index("operational_jobs_voyage_idx").on(table.workspaceId, table.voyageId),
+    index("operational_jobs_status_idx").on(table.workspaceId, table.status),
+    index("operational_jobs_type_idx").on(table.workspaceId, table.jobType),
+  ],
+);
 
 export const automationRules = pgTable("automation_rules", {
   id: text("id").primaryKey(),

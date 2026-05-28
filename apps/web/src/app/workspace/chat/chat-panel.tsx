@@ -54,6 +54,8 @@ import {
   MessageSquarePlus,
   Send,
   Sparkles,
+  ThumbsDown,
+  ThumbsUp,
 } from "lucide-react";
 
 export type SyntheciMessageMetadata = {
@@ -359,6 +361,43 @@ function ChatMessage({ message }: { message: SyntheciUIMessage }) {
           {warningText(warnings)}
         </div>
       ) : null}
+      {message.role === "assistant" ? <FeedbackButtons messageId={message.id} /> : null}
+    </div>
+  );
+}
+
+function FeedbackButtons({ messageId }: { messageId: string }) {
+  const [rating, setRating] = useState<"up" | "down" | null>(null);
+
+  async function sendFeedback(nextRating: "up" | "down") {
+    setRating(nextRating);
+    await fetch("/api/chat/feedback", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ messageId, rating: nextRating }),
+    });
+  }
+
+  return (
+    <div className="flex items-center gap-1">
+      <Button
+        aria-label="Mark answer helpful"
+        onClick={() => sendFeedback("up")}
+        size="icon"
+        type="button"
+        variant={rating === "up" ? "default" : "ghost"}
+      >
+        <ThumbsUp className="h-3.5 w-3.5" />
+      </Button>
+      <Button
+        aria-label="Mark answer not helpful"
+        onClick={() => sendFeedback("down")}
+        size="icon"
+        type="button"
+        variant={rating === "down" ? "default" : "ghost"}
+      >
+        <ThumbsDown className="h-3.5 w-3.5" />
+      </Button>
     </div>
   );
 }
