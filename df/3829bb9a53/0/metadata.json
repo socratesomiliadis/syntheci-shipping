@@ -1,0 +1,63 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "df3829bb9a53",
+  "session_id": "019e6dd1-ec54-7ed2-aabf-c4e98b604513",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T09:21:05.119087Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "apps/web/package.json",
+    "apps/web/src/app/workspace/sources/page.tsx",
+    "apps/web/src/components/ui/drawer.tsx",
+    "pnpm-lock.yaml"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "f3dde47138cd",
+  "token_usage": {
+    "input_tokens": 225940,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3147008,
+    "output_tokens": 27760,
+    "api_call_count": 42
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T09:21:05.100804Z",
+    "agent_lines": 785,
+    "agent_removed": 31,
+    "human_added": 347,
+    "human_modified": 76,
+    "human_removed": 0,
+    "total_committed": 1208,
+    "total_lines_changed": 1323,
+    "agent_percentage": 61.67800453514739,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 9,
+      "user_lines_removed": 1,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "packages/ai/src/chunking.test.ts": 7,
+        "packages/ai/src/chunking.ts": 2
+      },
+      "user_removed_per_file": {
+        "packages/ai/src/chunking.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 747,
+      "agent_lines_removed": 33
+    }
+  ]
+}

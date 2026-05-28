@@ -1,0 +1,5 @@
+In the sources page we should be able to view all of the indexed files and emails and preview them in nice looking uis. Also make all of this work with url params so later we can deeplink chat citations so users can press on the source and read it
+
+---
+
+Make the table full screen again and make the previews open in a right-side scrollable drawer from shadcn https://ui.shadcn.com/docs/components/radix/drawer
