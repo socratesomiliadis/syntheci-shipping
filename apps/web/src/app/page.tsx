@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 import {
-  Anchor,
   ArrowRight,
   Bot,
   CheckCircle2,
@@ -27,12 +27,12 @@ const topCapabilities = [
   },
   {
     title: "Show the evidence",
-    detail: "Every answer, job, contradiction, and draft reply links back to documents, emails, AIS, or structured records.",
+    detail: "Every answer, task, contradiction, and draft reply links back to documents, emails, AIS, or structured records.",
     icon: ClipboardCheck,
   },
   {
     title: "Create the work",
-    detail: "High-confidence findings become operational jobs for the team, without changing your existing job lifecycle.",
+    detail: "High-confidence findings become operational tasks for the team, without changing your existing task lifecycle.",
     icon: Sparkles,
   },
 ];
@@ -41,7 +41,7 @@ const cockpitPanels = [
   { label: "Contradictions", value: "4", tone: "text-red-700 bg-red-50 border-red-200", icon: GitCompareArrows },
   { label: "Extracted facts", value: "38", tone: "text-blue-700 bg-blue-50 border-blue-200", icon: FileText },
   { label: "Audit checks", value: "2", tone: "text-amber-700 bg-amber-50 border-amber-200", icon: ClipboardCheck },
-  { label: "Action jobs", value: "7", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: CheckCircle2 },
+  { label: "Action tasks", value: "7", tone: "text-emerald-700 bg-emerald-50 border-emerald-200", icon: CheckCircle2 },
 ];
 
 const sources = [
@@ -58,7 +58,7 @@ const workflows = [
   "Extract maritime facts from NOR, SOF, BDN, PDA, FDA, invoices, and charterparty excerpts.",
   "Detect contradictions across voyage orders, AIS updates, emails, fuel evidence, claims, and payments.",
   "Draft cited replies and claims packs with unsupported-claim warnings.",
-  "Monitor what changed since the last run and create jobs when confidence is high.",
+  "Monitor what changed since the last run and create tasks when confidence is high.",
 ];
 
 const differentiators = [
@@ -82,13 +82,7 @@ export default function Home() {
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3" aria-label="Syntheci home">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1447e5] text-white">
-              <Anchor className="h-5 w-5" />
-            </div>
-            <div className="leading-tight">
-              <div className="text-sm font-semibold">Syntheci</div>
-              <div className="text-xs text-slate-500">Maritime intelligence</div>
-            </div>
+            <BrandLogo className="w-36" />
           </Link>
           <nav className="flex items-center gap-2">
             <Link href="#workflows" className="hidden text-sm font-medium text-slate-600 hover:text-slate-950 sm:block">
@@ -122,7 +116,7 @@ export default function Home() {
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
               One workspace that reads voyage documents, emails, AIS, bunker records, claims events, and compliance flags,
-              then finds gaps, contradictions, risks, cited replies, and jobs your operators can act on.
+              then finds gaps, contradictions, risks, cited replies, and tasks your operators can act on.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="bg-white text-[#1447e5] hover:bg-white/90">
@@ -241,7 +235,7 @@ export default function Home() {
               Demo workspace included
             </div>
             <h2 className="mt-2 text-2xl font-semibold tracking-normal">
-              See voyages, sources, cited chat, contradictions, audit checks, and generated jobs.
+              See voyages, sources, cited chat, contradictions, audit checks, and generated tasks.
             </h2>
           </div>
           <Button asChild size="lg" className="bg-white text-[#1447e5] hover:bg-white/90">
@@ -303,7 +297,7 @@ function ProductCockpitBackground() {
               ))}
             </div>
             <div className="rounded-lg border border-emerald-200/20 bg-emerald-400/10 p-3 text-sm font-medium text-emerald-100">
-              7 high-confidence jobs ready
+              7 high-confidence tasks ready
             </div>
           </div>
         </div>

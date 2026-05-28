@@ -8,6 +8,7 @@ import { ensureDefaultWorkspace } from "@syntheci/db";
 import { AMS_DORIAN_LIVE_DEMO_VOYAGE_ID, isAmsDorianLiveDemoSource } from "@/lib/live-demo-events";
 import { loadVoyageCockpit } from "@/lib/voyage-workflows";
 import { LiveEventDemo } from "../live-event-demo";
+import { ResetVoyageDemo } from "../reset-voyage-demo";
 import { WorkflowActions } from "../workflow-actions";
 
 export const dynamic = "force-dynamic";
@@ -23,14 +24,23 @@ const workflowResultCards = [
   { id: "action-plan", title: "Action Plan", description: "Prioritized operator actions from the strongest cited evidence." },
 ];
 
-export default async function VoyageCockpitPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function VoyageCockpitPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ run?: string }>;
+}) {
   const { id } = await params;
+  const highlightedRunId = (await searchParams)?.run;
   const workspaceId = await ensureDefaultWorkspace();
   const cockpit = await loadVoyageCockpit(workspaceId, id).catch(() => null);
   if (!cockpit) notFound();
 
   const { context } = cockpit;
-  const aiJobs = cockpit.jobs.filter((job) => job.payload && (job.payload as Record<string, unknown>).generatedBy === "ai");
+  const aiJobs = cockpit.jobs
+    .filter((job) => job.payload && (job.payload as Record<string, unknown>).generatedBy === "ai")
+    .sort((left, right) => right.createdAt.getTime() - left.createdAt.getTime());
   const workflowResults = buildWorkflowResults(
     aiJobs,
     cockpit.reconciliationFindings.filter((finding) => finding.findingType !== "risk_assessment"),
@@ -69,13 +79,15 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
           <div className="grid gap-2 text-sm sm:grid-cols-3">
             <Metric label="ETA" value={context.voyage.eta ? formatDate(context.voyage.eta) : "Unknown"} />
             <Metric label="AI risk" value={riskAssessment ? `${formatLabel(riskAssessment.riskLevel)} ${riskAssessment.riskScore}` : "Unscored"} />
-            <Metric label="Open AI jobs" value={String(aiJobs.filter((job) => job.status === "open").length)} />
+            <Metric label="Open AI tasks" value={String(aiJobs.filter((job) => job.status === "open").length)} />
             <Metric label="Evidence sources" value={String(evidenceCount)} />
           </div>
         </div>
       </section>
 
-      {isLiveDemoVoyage ? <LiveEventDemo active={liveDemoActive} /> : null}
+      <ResetVoyageDemo includeLiveSources={isLiveDemoVoyage} voyageId={context.voyage.id} />
+
+      {isLiveDemoVoyage ? <LiveEventDemo active={liveDemoActive} voyageId={context.voyage.id} /> : null}
 
       <WorkflowActions voyageId={context.voyage.id} />
 
@@ -87,17 +99,20 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
           </CardHeader>
           <CardContent>
             {aiJobs.length === 0 ? (
-              <p className="text-sm text-slate-500">No AI-generated jobs yet. Run a workflow action to generate intelligence from the current evidence.</p>
+              <p className="text-sm text-slate-500">No AI-generated tasks yet. Run a workflow action to generate intelligence from the current evidence.</p>
             ) : (
               <div className="space-y-3">
                 {aiJobs.slice(0, 10).map((job) => (
-                  <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/jobs/${job.id}`} key={job.id}>
+                  <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/tasks/${job.id}`} key={job.id}>
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="font-medium text-slate-950">{job.title}</div>
-                      <Badge variant="outline">{job.priority}</Badge>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {isHighlightedRunJob(job, highlightedRunId) ? <Badge className="border-emerald-300 bg-emerald-50 text-emerald-700" variant="outline">Just created</Badge> : null}
+                        <Badge variant="outline">{job.priority}</Badge>
+                      </div>
                     </div>
                     <p className="mt-1 line-clamp-2 text-sm text-slate-500">{job.summary}</p>
-                    <JobMeta payload={job.payload as Record<string, unknown>} />
+                    <JobMeta createdAt={job.createdAt} payload={job.payload as Record<string, unknown>} />
                   </Link>
                 ))}
               </div>
@@ -139,7 +154,7 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
         <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
           <div>
             <h2 className="text-base font-semibold text-slate-950">Workflow Results</h2>
-            <p className="mt-1 text-sm text-slate-500">Latest AI jobs and findings grouped by the workflow button that produced them.</p>
+            <p className="mt-1 text-sm text-slate-500">Latest AI tasks and findings grouped by the workflow button that produced them.</p>
           </div>
           <Badge variant="outline">{workflowResults.total} persisted outputs</Badge>
         </div>
@@ -148,6 +163,7 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
             <WorkflowResultCard
               description={workflow.description}
               findings={workflowResults.byWorkflow.get(workflow.id)?.findings ?? []}
+              highlightedRunId={highlightedRunId}
               jobs={workflowResults.byWorkflow.get(workflow.id)?.jobs ?? []}
               key={workflow.id}
               title={workflow.title}
@@ -271,6 +287,7 @@ type AiJob = {
   priority: string;
   status: string;
   payload: unknown;
+  createdAt: Date;
 };
 
 type AiFinding = {
@@ -285,11 +302,13 @@ type AiFinding = {
 function WorkflowResultCard({
   description,
   findings,
+  highlightedRunId,
   jobs,
   title,
 }: {
   description: string;
   findings: AiFinding[];
+  highlightedRunId?: string;
   jobs: AiJob[];
   title: string;
 }) {
@@ -309,12 +328,16 @@ function WorkflowResultCard({
         {hasResults ? (
           <div className="space-y-3">
             {jobs.slice(0, 2).map((job) => (
-              <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/jobs/${job.id}`} key={job.id}>
+              <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/tasks/${job.id}`} key={job.id}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="font-medium text-slate-950">{job.title}</div>
-                  <Badge variant="outline">{job.priority}</Badge>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {isHighlightedRunJob(job, highlightedRunId) ? <Badge className="border-emerald-300 bg-emerald-50 text-emerald-700" variant="outline">Just created</Badge> : null}
+                    <Badge variant="outline">{job.priority}</Badge>
+                  </div>
                 </div>
                 <p className="mt-1 line-clamp-2 text-sm text-slate-500">{job.summary}</p>
+                <div className="mt-2 text-xs text-slate-500">{formatRelativeJobTime(job.createdAt)}</div>
               </Link>
             ))}
             {findings.slice(0, 2).map((finding) => (
@@ -335,11 +358,12 @@ function WorkflowResultCard({
   );
 }
 
-function JobMeta({ payload }: { payload: Record<string, unknown> }) {
+function JobMeta({ createdAt, payload }: { createdAt: Date; payload: Record<string, unknown> }) {
   const confidence = typeof payload.confidence === "number" ? payload.confidence : undefined;
   const suggestedAction = typeof payload.suggestedAction === "string" ? payload.suggestedAction : undefined;
   return (
     <div className="mt-2 space-y-1 text-xs text-slate-500">
+      <div>{formatRelativeJobTime(createdAt)}</div>
       {confidence !== undefined ? <div>{Math.round(confidence * 100)}% confidence</div> : null}
       {suggestedAction ? <div>{suggestedAction}</div> : null}
     </div>
@@ -415,6 +439,19 @@ function workflowFromPayload(payload: unknown) {
 
 function formatDate(value: string) {
   return new Date(value).toLocaleString();
+}
+
+function isHighlightedRunJob(job: AiJob, highlightedRunId?: string) {
+  if (!highlightedRunId || !job.payload || typeof job.payload !== "object") return false;
+  return (job.payload as Record<string, unknown>).workflowRunId === highlightedRunId;
+}
+
+function formatRelativeJobTime(createdAt: Date) {
+  const minutes = Math.max(0, Math.round((Date.now() - createdAt.getTime()) / 60000));
+  if (minutes < 1) return "Created just now";
+  if (minutes === 1) return "Created 1 minute ago";
+  if (minutes < 60) return `Created ${minutes} minutes ago`;
+  return `Created ${createdAt.toLocaleString()}`;
 }
 
 function formatLabel(value: string) {

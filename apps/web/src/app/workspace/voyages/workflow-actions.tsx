@@ -28,9 +28,13 @@ export function WorkflowActions({ voyageId }: { voyageId: string }) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ workflow }),
     });
-    const payload = (await response.json()) as { jobs?: unknown[]; error?: string };
-    setStatus(response.ok ? `${payload.jobs?.length ?? 0} jobs available` : payload.error ?? "Workflow failed");
-    router.refresh();
+    const payload = (await response.json()) as { jobs?: unknown[]; workflowRunId?: string; error?: string };
+    setStatus(response.ok ? `${payload.jobs?.length ?? 0} tasks available` : payload.error ?? "Workflow failed");
+    if (response.ok && payload.workflowRunId) {
+      router.push(`/workspace/voyages/${voyageId}?run=${payload.workflowRunId}`);
+    } else {
+      router.refresh();
+    }
   }
 
   return (

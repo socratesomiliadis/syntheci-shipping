@@ -69,13 +69,13 @@ export default async function AdminPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Open operational jobs</CardTitle>
+            <CardTitle>Open operational tasks</CardTitle>
             <CardDescription>Latest unresolved workflow items.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {health.openJobs.map((job) => (
-                <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/jobs/${job.id}`} key={job.id}>
+                <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/tasks/${job.id}`} key={job.id}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-medium text-slate-950">{job.title}</span>
                     <Badge variant="outline">{job.priority}</Badge>
@@ -83,7 +83,7 @@ export default async function AdminPage() {
                   <div className="mt-1 text-xs text-slate-500">{job.voyageId} · {formatLabel(job.jobType)}</div>
                 </Link>
               ))}
-              {health.openJobs.length === 0 ? <p className="text-sm text-slate-500">No open jobs.</p> : null}
+              {health.openJobs.length === 0 ? <p className="text-sm text-slate-500">No open tasks.</p> : null}
             </div>
           </CardContent>
         </Card>

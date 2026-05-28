@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Anchor, Bell, BriefcaseBusiness, Database, FileText, LogOut, MessageSquare, Radar, Settings, Ship, UserRound } from "lucide-react";
+import { Bell, ClipboardCheck, Database, FileText, LogOut, MessageSquare, Radar, Settings, Ship, UserRound } from "lucide-react";
+import { BrandLogo, BrandMark } from "@/components/brand-logo";
 import {
   Sidebar,
   SidebarContent,
@@ -21,7 +22,7 @@ import {
 const navItems = [
   { href: "/workspace", label: "Overview", icon: Radar },
   { href: "/workspace/voyages", label: "Voyages", icon: Ship },
-  { href: "/workspace/jobs", label: "Jobs", icon: BriefcaseBusiness },
+  { href: "/workspace/tasks", label: "Tasks", icon: ClipboardCheck },
   { href: "/workspace/sources", label: "Sources", icon: Database },
   { href: "/workspace/chat", label: "Chat", icon: MessageSquare },
   { href: "/workspace/automations", label: "Automations", icon: Bell },
@@ -60,13 +61,8 @@ export function WorkspaceSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg" tooltip="Syntheci">
               <Link href="/workspace">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-[#1447e5] text-white">
-                  <Anchor className="h-4 w-4" />
-                </div>
-                <span className="grid flex-1 text-left leading-tight">
-                  <span className="truncate text-sm font-semibold">Syntheci</span>
-                  <span className="truncate text-xs text-sidebar-foreground/60">Maritime AI</span>
-                </span>
+                <BrandLogo className="w-32 group-data-[collapsible=icon]:hidden" />
+                <BrandMark className="hidden group-data-[collapsible=icon]:block" />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

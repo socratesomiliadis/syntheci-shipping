@@ -23,7 +23,7 @@ export default async function VoyagesPage({ searchParams }: { searchParams: Sear
         <div>
           <h1 className="text-xl font-semibold text-slate-950">Voyages</h1>
           <p className="mt-1 text-sm text-slate-500">
-            {voyages.length} voyage cockpits with risk, source gaps, and operational jobs.
+            {voyages.length} voyage cockpits with risk, source gaps, and operational tasks.
           </p>
         </div>
         <form action="/workspace/voyages" className="flex w-full gap-2 lg:w-[420px]">
@@ -46,7 +46,7 @@ export default async function VoyagesPage({ searchParams }: { searchParams: Sear
               <TableHead className="hidden lg:table-cell">Cargo</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Risk</TableHead>
-              <TableHead className="text-right">Open jobs</TableHead>
+              <TableHead className="text-right">Open tasks</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -72,7 +72,7 @@ export default async function VoyagesPage({ searchParams }: { searchParams: Sear
                 <TableCell className="text-right">
                   <Button asChild size="sm" variant={voyage.openJobs > 0 ? "default" : "outline"}>
                     <Link href={`/workspace/voyages/${voyage.id}`}>
-                      {voyage.openJobs} jobs
+                      {voyage.openJobs} tasks
                     </Link>
                   </Button>
                 </TableCell>

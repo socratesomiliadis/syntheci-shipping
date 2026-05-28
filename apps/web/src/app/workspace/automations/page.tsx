@@ -43,7 +43,7 @@ export default async function AutomationsPage() {
         </Badge>
         <h1 className="mt-3 text-2xl font-semibold text-slate-950">Automations that turn natural language into voyage work.</h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-          Describe what to monitor. Syntheci parses the intent, queues the matching workflow, and writes run summaries or generated jobs back into the workspace.
+          Describe what to monitor. Syntheci parses the intent, queues the matching workflow, and writes run summaries or generated tasks back into the workspace.
         </p>
       </section>
 

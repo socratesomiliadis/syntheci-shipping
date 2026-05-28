@@ -38,7 +38,7 @@ import {
   type WorkflowContext,
   type WorkflowJobDraft,
 } from "@syntheci/shared";
-import { and, asc, desc, eq, ilike, ne, or } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, ne, or, sql } from "drizzle-orm";
 
 export type VoyageSummary = {
   id: string;
@@ -346,6 +346,62 @@ export async function generateWorkflow(workspaceId: string, voyageId: string, wo
   return loadOperationalJobs(workspaceId, undefined, voyageId);
 }
 
+export async function generateWorkflowForSources(
+  workspaceId: string,
+  voyageId: string,
+  workflow: string,
+  sourceIds: { documentIds?: string[]; emailIds?: string[]; eventIds?: string[] },
+) {
+  const context = await loadWorkflowContext(workspaceId, voyageId);
+  if (!isSupportedWorkflow(workflow)) {
+    throw new Error(`Unsupported workflow: ${workflow}`);
+  }
+
+  const documentIds = new Set(sourceIds.documentIds ?? []);
+  const emailIds = new Set(sourceIds.emailIds ?? []);
+  const eventIds = new Set(sourceIds.eventIds ?? []);
+  const scopedContext: WorkflowContext = {
+    ...context,
+    documents: context.documents.filter((document) => documentIds.has(document.id)),
+    emails: context.emails.filter((email) => emailIds.has(email.id)),
+    events: context.events.filter((event) => eventIds.has(event.id)),
+    aisPositions: [],
+    bunkerReports: [],
+    complianceFlag: null,
+  };
+  const hasEvidence = scopedContext.documents.length > 0 || scopedContext.emails.length > 0 || scopedContext.events.length > 0;
+  if (!hasEvidence) return loadOperationalJobs(workspaceId, undefined, voyageId);
+
+  const intelligence = await generateVoyageIntelligence({ context: scopedContext, retrievedChunks: [], workflow });
+  await persistReconciliationFindings(workspaceId, intelligence.findings);
+  await persistWorkflowJobs(workspaceId, voyageId, intelligence.jobs);
+
+  return loadOperationalJobs(workspaceId, undefined, voyageId);
+}
+
+export async function tagWorkflowRunJobs(
+  workspaceId: string,
+  voyageId: string,
+  runId: string,
+  startedAt: Date,
+  metadata: Record<string, unknown> = {},
+) {
+  const marker = {
+    ...metadata,
+    workflowRunId: runId,
+    workflowRunStartedAt: startedAt.toISOString(),
+  };
+
+  return db
+    .update(operationalJobs)
+    .set({
+      payload: sql`${operationalJobs.payload} || ${JSON.stringify(marker)}::jsonb`,
+      updatedAt: new Date(),
+    })
+    .where(and(eq(operationalJobs.workspaceId, workspaceId), eq(operationalJobs.voyageId, voyageId), gte(operationalJobs.createdAt, startedAt)))
+    .returning({ id: operationalJobs.id });
+}
+
 function workflowsForRun(workflow: string) {
   if (workflow !== "all") return [workflow];
   return runnableWorkflowIds;
@@ -548,7 +604,7 @@ function buildVoyageRetrievalQuery(context: WorkflowContext, workflow: string) {
 
 function workflowRetrievalTerms(workflow: string) {
   const terms: Record<string, string> = {
-    all: "risk findings jobs contradictions evidence",
+    all: "risk findings tasks contradictions evidence",
     "missing-documents": "missing document attachment pending unavailable stale required certificate source evidence",
     watchlist: "watchlist blocker urgent risk latest update monitor active voyage",
     "pda-fda": "PDA FDA disbursement account proforma final port costs remittance dues",

@@ -10,7 +10,7 @@ import {
   ensureDefaultWorkspace,
 } from "@syntheci/db";
 import { loadAdminSourceHealth, loadOperationalJobs, loadVoyageSummaries } from "@/lib/voyage-workflows";
-import { AlertTriangle, ArrowRight, BriefcaseBusiness, Database, Radar, Ship, Workflow } from "lucide-react";
+import { AlertTriangle, ArrowRight, ClipboardCheck, Database, Radar, Ship, Workflow } from "lucide-react";
 import { desc, eq } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
@@ -51,13 +51,13 @@ export default async function WorkspacePage() {
             <Badge className="border-sky-200 bg-sky-50 text-sky-700" variant="outline">
               Operations overview
             </Badge>
-            <Badge variant="outline">{openJobs.length} unresolved jobs</Badge>
+            <Badge variant="outline">{openJobs.length} unresolved tasks</Badge>
           </div>
           <h1 className="mt-3 text-2xl font-semibold tracking-normal text-slate-950">
             Voyage risk, evidence gaps, and automations in one place.
           </h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-            Start from high-risk voyages, review generated workflow jobs, check source health, then jump into the voyage cockpit for evidence and actions.
+            Start from high-risk voyages, review generated workflow tasks, check source health, then jump into the voyage cockpit for evidence and actions.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button asChild>
@@ -82,7 +82,7 @@ export default async function WorkspacePage() {
           </div>
           <div className="mt-4 space-y-3">
             <ActionLink href="/workspace/admin" label="Run or schedule daily voyage watchlist" />
-            <ActionLink href="/workspace/jobs?status=open" label="Resolve the oldest open operational jobs" />
+            <ActionLink href="/workspace/tasks?status=open" label="Resolve the oldest open operational tasks" />
             <ActionLink href="/workspace/sources" label="Load demo data or inspect failed source ingestion" />
           </div>
         </div>
@@ -90,7 +90,7 @@ export default async function WorkspacePage() {
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <Metric icon={Ship} label="Voyages" value={voyages.length} detail={`${highRiskVoyages.length} need attention`} />
-        <Metric icon={BriefcaseBusiness} label="Open jobs" value={openJobs.length} detail={`${jobs.length} total generated`} />
+        <Metric icon={ClipboardCheck} label="Open tasks" value={openJobs.length} detail={`${jobs.length} total generated`} />
         <Metric icon={Database} label="Indexed sources" value={health.totals.readyFiles + health.totals.emails} detail={`${health.totals.profileChunks} profile chunks`} />
         <Metric icon={AlertTriangle} label="Source issues" value={health.totals.failedFiles + health.totals.staleFiles} detail={`${health.totals.feedback} feedback records`} />
       </section>
@@ -99,7 +99,7 @@ export default async function WorkspacePage() {
         <Card>
           <CardHeader>
             <CardTitle>Voyages needing attention</CardTitle>
-            <CardDescription>Prioritized by compliance risk and unresolved operational jobs.</CardDescription>
+            <CardDescription>Prioritized by compliance risk and unresolved operational tasks.</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
@@ -107,7 +107,7 @@ export default async function WorkspacePage() {
                 <TableRow>
                   <TableHead>Voyage</TableHead>
                   <TableHead>Risk</TableHead>
-                  <TableHead className="text-right">Jobs</TableHead>
+                  <TableHead className="text-right">Tasks</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -134,7 +134,7 @@ export default async function WorkspacePage() {
                 {highRiskVoyages.length === 0 ? (
                   <TableRow>
                     <TableCell className="h-20 text-center text-sm text-slate-500" colSpan={3}>
-                      No high-risk voyages or open jobs yet.
+                      No high-risk voyages or open tasks yet.
                     </TableCell>
                   </TableRow>
                 ) : null}
@@ -145,13 +145,13 @@ export default async function WorkspacePage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Latest operational jobs</CardTitle>
+            <CardTitle>Latest operational tasks</CardTitle>
             <CardDescription>Evidence-backed work items from detectors and automations.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {openJobs.slice(0, 6).map((job) => (
-                <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/jobs/${job.id}`} key={job.id}>
+                <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/tasks/${job.id}`} key={job.id}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-medium text-slate-950">{job.title}</span>
                     <Badge variant="outline">{job.priority}</Badge>
@@ -160,7 +160,7 @@ export default async function WorkspacePage() {
                   <div className="mt-2 text-xs text-slate-500">{job.voyageId} · {formatLabel(job.jobType)}</div>
                 </Link>
               ))}
-              {openJobs.length === 0 ? <p className="text-sm text-slate-500">No unresolved jobs yet. Run the watchlist from Admin.</p> : null}
+              {openJobs.length === 0 ? <p className="text-sm text-slate-500">No unresolved tasks yet. Run the watchlist from Admin.</p> : null}
             </div>
           </CardContent>
         </Card>

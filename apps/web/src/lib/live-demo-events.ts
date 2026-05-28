@@ -19,6 +19,18 @@ const liveEventRecordId = "LIVE-EVT-VOY-2026-0523-CONGESTION";
 const liveBatchId = "LIVE-BATCH-VOY-2026-0523-CONGESTION";
 const voyageId = AMS_DORIAN_LIVE_DEMO_VOYAGE_ID;
 const vesselName = "AMS Dorian";
+
+export const AMS_DORIAN_LIVE_DEMO_SOURCE_IDS = {
+  emailId: liveEmailId,
+  documentId: liveDocumentId,
+  eventId: liveEventRecordId,
+} as const;
+
+export const AMS_DORIAN_LIVE_DEMO_SOURCE_META = {
+  batchId: liveBatchId,
+  liveEventId,
+} as const;
+
 const legacyLiveJobTitles = [
   "Escalate AMS Dorian live congestion response",
   "Preserve NOR, free-pratique, and SOF evidence",
@@ -243,6 +255,11 @@ export async function injectAmsDorianLiveDemoEvent(workspaceId: string) {
       events: 1,
     },
     disputedCostUsd: 10050,
+    sourceIds: {
+      documentIds: [AMS_DORIAN_LIVE_DEMO_SOURCE_IDS.documentId],
+      emailIds: [AMS_DORIAN_LIVE_DEMO_SOURCE_IDS.emailId],
+      eventIds: [AMS_DORIAN_LIVE_DEMO_SOURCE_IDS.eventId],
+    },
   };
 }
 

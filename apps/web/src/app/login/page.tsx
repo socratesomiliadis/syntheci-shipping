@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Anchor, ArrowRight, CheckCircle2, Loader2, LockKeyhole, Mail } from "lucide-react";
+import { BrandLogo } from "@/components/brand-logo";
+import { ArrowRight, CheckCircle2, Loader2, LockKeyhole, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -66,10 +67,7 @@ export default function LoginPage() {
       <header className="border-b border-slate-200">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3" aria-label="Syntheci home">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1447e5] text-white">
-              <Anchor className="h-5 w-5" />
-            </div>
-            <span className="text-sm font-semibold">Syntheci</span>
+            <BrandLogo className="w-36" />
           </Link>
           <Link href="/" className="text-sm font-medium text-slate-600 hover:text-slate-950">
             Back to site

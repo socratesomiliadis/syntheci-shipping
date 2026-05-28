@@ -10,12 +10,14 @@ import { Button } from "@/components/ui/button";
 type LiveDemoResponse = {
   ai?: {
     jobsAvailable?: number;
+    tasksCreated?: number;
+    workflowRunId?: string;
   };
   disputedCostUsd?: number;
   error?: string;
 };
 
-export function LiveEventDemo({ active }: { active: boolean }) {
+export function LiveEventDemo({ active, voyageId }: { active: boolean; voyageId: string }) {
   const router = useRouter();
   const [status, setStatus] = useState(active ? "Live event active" : "Ready");
   const [busy, setBusy] = useState(false);
@@ -27,9 +29,13 @@ export function LiveEventDemo({ active }: { active: boolean }) {
     const payload = (await response.json().catch(() => ({}))) as LiveDemoResponse;
     if (response.ok) {
       const disputed = payload.disputedCostUsd ? `$${payload.disputedCostUsd.toLocaleString()}` : "$10,050";
-      const jobs = payload.ai?.jobsAvailable;
-      setStatus(`${jobs ?? "AI"} jobs ready · ${disputed} held`);
-      router.refresh();
+      const jobs = payload.ai?.tasksCreated ?? payload.ai?.jobsAvailable;
+      setStatus(`${jobs ?? "AI"} tasks ready · ${disputed} held`);
+      if (payload.ai?.workflowRunId) {
+        router.push(`/workspace/voyages/${voyageId}?run=${payload.ai.workflowRunId}`);
+      } else {
+        router.refresh();
+      }
     } else {
       setStatus(payload.error ?? "Live event failed");
     }

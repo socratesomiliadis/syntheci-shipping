@@ -283,7 +283,7 @@ export function validateVoyageIntelligenceOutput(
       summary: riskAssessment.summary,
       evidence: riskAssessment.evidence,
       suggestedAction: riskAssessment.riskLevel === "high"
-        ? "Review high-risk voyage evidence and assign the generated action jobs."
+        ? "Review high-risk voyage evidence and assign the generated action tasks."
         : "Review the cited risk rationale and monitor for material changes.",
       payload: {
         ...riskAssessment.payload,
@@ -321,17 +321,17 @@ function buildVoyageIntelligencePrompt(context: WorkflowContext, workflow: strin
   return [
     "Generate actionable maritime operational intelligence for this voyage.",
     "Use workflowFocus as the product surface the operator clicked.",
-    "If workflow is not all, only return jobs and findings that match that workflowFocus.",
+    "If workflow is not all, only return tasks and findings that match that workflowFocus.",
     "Always produce a voyage riskAssessment when the evidence packet has at least one source.",
-    "Return only jobs that an operator can act on now.",
-    "Every job must cite one or more evidenceSources by exact refId in evidenceRefs.",
+    "Return only tasks that an operator can act on now.",
+    "Every task must cite one or more evidenceSources by exact refId in evidenceRefs.",
     "Every finding must cite one or more evidenceSources by exact refId in evidenceRefs.",
     "Findings should capture contradictions, risks, source-backed observations, missing expected records, payment/document mismatches, ETA/position concerns, bunker/compliance concerns, and audit issues.",
     "Risk score must be 0-100 and riskLevel must be low, medium, or high. Score only from cited evidence: low 0-39, medium 40-69, high 70-100.",
     "Do not create generic checklist items. Do not infer facts without cited evidence.",
     "Use low priority for informational follow-up, medium for operational review, high for urgent risk or blocker.",
     "Return valid JSON only. Do not wrap it in markdown.",
-    "The JSON object must have this shape: {\"runSummary\":\"string\",\"riskAssessment\":{\"riskScore\":0,\"riskLevel\":\"low|medium|high\",\"summary\":\"string\",\"rationale\":[\"string\"],\"confidence\":0.0,\"evidenceRefs\":[\"refId\"],\"payload\":{}},\"jobs\":[{\"jobType\":\"string\",\"priority\":\"low|medium|high\",\"title\":\"string\",\"summary\":\"string\",\"suggestedAction\":\"string\",\"confidence\":0.0,\"evidenceRefs\":[\"refId\"],\"payload\":{}}],\"findings\":[{\"findingType\":\"string\",\"severity\":\"low|medium|high\",\"confidence\":0.0,\"title\":\"string\",\"summary\":\"string\",\"suggestedAction\":\"string\",\"evidenceRefs\":[\"refId\"],\"payload\":{}}]}.",
+    "The JSON object must have this shape; task objects still go in the compatibility key named jobs: {\"runSummary\":\"string\",\"riskAssessment\":{\"riskScore\":0,\"riskLevel\":\"low|medium|high\",\"summary\":\"string\",\"rationale\":[\"string\"],\"confidence\":0.0,\"evidenceRefs\":[\"refId\"],\"payload\":{}},\"jobs\":[{\"jobType\":\"string\",\"priority\":\"low|medium|high\",\"title\":\"string\",\"summary\":\"string\",\"suggestedAction\":\"string\",\"confidence\":0.0,\"evidenceRefs\":[\"refId\"],\"payload\":{}}],\"findings\":[{\"findingType\":\"string\",\"severity\":\"low|medium|high\",\"confidence\":0.0,\"title\":\"string\",\"summary\":\"string\",\"suggestedAction\":\"string\",\"evidenceRefs\":[\"refId\"],\"payload\":{}}]}.",
     "",
     JSON.stringify(packet, null, 2),
   ].join("\n");
@@ -339,7 +339,7 @@ function buildVoyageIntelligencePrompt(context: WorkflowContext, workflow: strin
 
 const voyageIntelligenceSystemPrompt = [
   "You are Syntheci, a private maritime intelligence layer.",
-  "You convert voyage evidence into grounded operational jobs and findings.",
+  "You convert voyage evidence into grounded operational tasks and findings.",
   "Use only the supplied evidence source refIds.",
   "Do not mention missing sources unless the supplied evidence directly shows the source is expected or referenced.",
   "Be concise, specific, and operational.",
@@ -347,8 +347,8 @@ const voyageIntelligenceSystemPrompt = [
 
 function workflowFocus(workflow: string) {
   const focus: Record<string, string> = {
-    all: "Run the full voyage intelligence workflow: score voyage risk, identify contradictions and source-backed findings, then create the most actionable jobs across documents, finance, claims, payment, audit, changes, and operations.",
-    "missing-documents": "Find missing, stale, incomplete, or referenced-but-unavailable voyage documents and evidence. Create jobs only when an operator can request, upload, verify, or chase a specific missing source.",
+    all: "Run the full voyage intelligence workflow: score voyage risk, identify contradictions and source-backed findings, then create the most actionable tasks across documents, finance, claims, payment, audit, changes, and operations.",
+    "missing-documents": "Find missing, stale, incomplete, or referenced-but-unavailable voyage documents and evidence. Create tasks only when an operator can request, upload, verify, or chase a specific missing source.",
     watchlist: "Monitor active voyage risk and operational blockers across the available evidence. Prioritize urgent changes, missing evidence, payment blockers, compliance concerns, ETA movement, and open handoffs.",
     "pda-fda": "Review proforma and final disbursement account evidence, port cost emails, remittance status, FDA/PDA mismatches, and pending payment approvals. Focus on finance reconciliation actions.",
     "claims-pack": "Build claims-pack intelligence from cited operational evidence: SOF/NOR/laytime, ETA/arrival changes, delays, port events, cargo issues, invoices, and supporting documents needed for a defensible claim file.",
@@ -356,7 +356,7 @@ function workflowFocus(workflow: string) {
     reconciliation: "Find contradictions, mismatches, and unresolved reconciliation issues across documents, emails, AIS, bunker records, voyage events, and finance records. Prefer source-backed conflicting facts over generic risks.",
     "change-monitor": "Detect material changes over time in ETA, destination, voyage status, cargo operations, payment state, document state, or operator instructions. Cite evidence for both the current state and the changed signal when available.",
     audit: "Assess audit readiness and source traceability. Identify unsupported claims, missing source documents, low-confidence records, evidence gaps, and controls needed before relying on the voyage record.",
-    "action-plan": "Convert the strongest source-backed risks and findings into a concise operator action plan. Return practical jobs with owners implied by the work, clear suggested actions, and no passive observations.",
+    "action-plan": "Convert the strongest source-backed risks and findings into a concise operator action plan. Return practical tasks with owners implied by the work, clear suggested actions, and no passive observations.",
   };
   return focus[workflow] ?? focus.all;
 }

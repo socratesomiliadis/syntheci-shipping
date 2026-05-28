@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 
 const statuses = ["open", "in_progress", "resolved", "dismissed"] as const;
 
-export function JobStatusActions({ currentStatus, jobId }: { currentStatus: string; jobId: string }) {
+export function TaskStatusActions({ currentStatus, taskId }: { currentStatus: string; taskId: string }) {
   const router = useRouter();
   const [status, setStatus] = useState("Idle");
 
   async function update(nextStatus: string) {
     setStatus("Updating");
-    await fetch(`/api/jobs/${jobId}`, {
+    await fetch(`/api/jobs/${taskId}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ status: nextStatus }),

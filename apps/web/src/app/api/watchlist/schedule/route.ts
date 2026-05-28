@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 const watchlistName = "Daily voyage watchlist";
-const watchlistQuestion = "Generate operational jobs for active voyage risk, missing documents, claims, payment, and compliance changes.";
+const watchlistQuestion = "Generate operational tasks for active voyage risk, missing documents, claims, payment, and compliance changes.";
 
 export async function POST() {
   const workspaceId = await ensureDefaultWorkspace();

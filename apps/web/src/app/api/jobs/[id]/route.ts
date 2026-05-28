@@ -12,7 +12,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
     .limit(1);
 
   if (!job) {
-    return Response.json({ error: "Job not found" }, { status: 404 });
+    return Response.json({ error: "Task not found" }, { status: 404 });
   }
 
   return Response.json({ job });

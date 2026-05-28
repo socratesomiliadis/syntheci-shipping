@@ -213,8 +213,8 @@ async function processWorkflowAutomation(payload: WorkflowAutomationJob) {
         summary: [
           `Workflow automation: ${payload.workflow}`,
           `Voyages checked: ${voyageIds.length}`,
-          `New jobs created: ${inserted}`,
-          `Open workflow jobs available: ${available}`,
+          `New tasks created: ${inserted}`,
+          `Open workflow tasks available: ${available}`,
         ].join("\n"),
         completedAt: new Date(),
       })
@@ -459,7 +459,7 @@ function buildVoyageRetrievalQuery(context: WorkflowContext, workflow: string) {
 
 function workflowRetrievalTerms(workflow: string) {
   const terms: Record<string, string> = {
-    all: "risk findings jobs contradictions evidence",
+    all: "risk findings tasks contradictions evidence",
     "missing-documents": "missing document attachment pending unavailable stale required certificate source evidence",
     watchlist: "watchlist blocker urgent risk latest update monitor active voyage",
     "pda-fda": "PDA FDA disbursement account proforma final port costs remittance dues",

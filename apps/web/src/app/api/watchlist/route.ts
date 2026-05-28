@@ -14,7 +14,7 @@ export async function POST() {
 
   revalidatePath("/workspace/admin");
   revalidatePath("/workspace/voyages");
-  revalidatePath("/workspace/jobs");
+  revalidatePath("/workspace/tasks");
   revalidatePath("/workspace");
 
   return Response.json({ results });

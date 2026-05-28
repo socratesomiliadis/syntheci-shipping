@@ -14,7 +14,7 @@ export function WatchlistAction() {
     const response = await fetch("/api/watchlist", { method: "POST" });
     const payload = (await response.json()) as { results?: { voyageId: string; jobCount: number }[] };
     const count = payload.results?.reduce((sum, result) => sum + result.jobCount, 0) ?? 0;
-    setStatus(response.ok ? `${count} watchlist jobs available` : "Watchlist failed");
+    setStatus(response.ok ? `${count} watchlist tasks available` : "Watchlist failed");
     router.refresh();
   }
 

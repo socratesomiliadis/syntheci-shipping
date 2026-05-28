@@ -1,6 +1,6 @@
 import { ensureDefaultWorkspace } from "@syntheci/db";
 import { AiIntelligenceConfigurationError } from "@syntheci/ai";
-import { loadVoyageCockpit, generateWorkflow } from "@/lib/voyage-workflows";
+import { loadVoyageCockpit, generateWorkflow, tagWorkflowRunJobs } from "@/lib/voyage-workflows";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -40,13 +40,16 @@ export async function POST(request: Request, context: { params: Promise<{ voyage
   const { voyageId } = await context.params;
   const workspaceId = await ensureDefaultWorkspace();
   const input = workflowRequestSchema.parse(await request.json().catch(() => ({})));
+  const workflowRunId = crypto.randomUUID();
+  const startedAt = new Date();
   try {
     const jobs = await generateWorkflow(workspaceId, voyageId, input.workflow);
+    await tagWorkflowRunJobs(workspaceId, voyageId, workflowRunId, startedAt, { workflow: input.workflow });
     revalidatePath(`/workspace/voyages/${voyageId}`);
     revalidatePath("/workspace/voyages");
-    revalidatePath("/workspace/jobs");
+    revalidatePath("/workspace/tasks");
     revalidatePath("/workspace");
-    return Response.json({ jobs });
+    return Response.json({ jobs, workflowRunId });
   } catch (error) {
     if (error instanceof AiIntelligenceConfigurationError) {
       return Response.json({ error: error.message }, { status: 503 });
