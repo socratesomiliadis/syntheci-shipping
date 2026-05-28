@@ -1,0 +1,130 @@
+what features are we missing from here:
+MVP priority list
+
+Build in this order:
+
+Must-have
+Mock SEDNA dataset
+File/document ingestion
+Embeddings + pgvector search
+Chat with citations
+Voyage/job pages
+Thread summaries
+Missing-document detector
+Draft reply assistant
+Should-have
+Daily voyage watchlist
+Charter-party extraction
+Timeline view
+Basic admin/source page
+Feedback buttons
+Nice-to-have
+PDA/FDA comparison
+Claims evidence pack
+Payment-risk alert
+
+---
+
+what features are we missing from here:
+MVP priority list
+
+Build in this order:
+
+Must-have
+Mock dataset
+File/document ingestion
+Embeddings + pgvector search
+Chat with citations
+Voyage/job pages
+Thread summaries
+Missing-document detector
+Draft reply assistant
+
+Should-have
+Daily voyage watchlist
+Charter-party extraction
+Timeline view
+Basic admin/source page
+Feedback buttons
+
+Nice-to-have
+PDA/FDA comparison
+Claims evidence pack
+Payment-risk alert
+
+---
+
+Okay lets start building these now
+
+---
+
+PLEASE IMPLEMENT THIS PLAN:
+# Full Missing-Feature Build Plan
+
+## Summary
+Build the remaining MVP/should/nice features as phased, PR-sized slices centered on a new **Voyage Cockpit**. Use deterministic SQL/metadata heuristics to identify candidates and use AI only for drafting/explaining outputs. Do not start a dev server; verify with typecheck/tests and use any already-running app for browser checks.
+
+## Key Changes
+- Add user-facing routes:
+  - `/workspace/voyages`: voyage list with status, risk, open jobs, missing docs, and search.
+  - `/workspace/voyages/[id]`: cockpit with overview, timeline, sources, email thread summaries, operational jobs, watchlist/risk, draft replies, and evidence packs.
+  - `/workspace/jobs` and `/workspace/jobs/[id]`: operational shipping work items, not technical queue jobs.
+  - `/workspace/admin`: basic source/admin health view for indexed files, emails, profiles, failed ingestion, and stale/missing metadata.
+- Add persistence:
+  - `operational_jobs` table with `workspaceId`, `voyageId`, `jobType`, `status`, `priority`, `title`, `summary`, `evidence`, `payload`, timestamps.
+  - `chat_feedback` table with assistant message, rating, optional note, and timestamps.
+- Add APIs:
+  - Voyage read APIs for list/detail data.
+  - Job APIs for create/list/update/status.
+  - Workflow APIs for missing-document detection, draft reply, charter-party extraction, PDA/FDA comparison, claims evidence pack, payment-risk alert, and feedback.
+- Add shared workflow logic:
+  - Missing-document detector compares voyage context, email attachments, document types, compliance flags, and event severity.
+  - Thread summaries reuse existing email-thread chunks, surfaced visibly in the cockpit.
+  - Charter-party extraction returns structured clause cards: laycan, NOR, demurrage, documents, ETS/FuelEU allocation, exceptions.
+  - Timeline merges voyage events, emails, source documents, AIS summaries, compliance flags, PDA/FDA/claims records.
+  - Watchlist creates high/medium priority jobs from ETA shifts, compliance flags, missing MRV, unresolved document gaps, claims signals, and payment review signals.
+  - Draft reply assistant creates an editable subject/body with cited evidence and next-action framing.
+  - PDA/FDA comparison, claims pack, and payment-risk alert produce operational jobs with evidence-linked summaries.
+- UI rules:
+  - Use existing shadcn components where available.
+  - If a missing shadcn component is needed, install it with the shadcn add command, not by hand.
+  - Add sidebar entries for Voyages, Jobs, and Admin.
+
+## Phased Implementation
+- Phase 1: Voyage Cockpit foundation
+  - Add voyage list/detail routes and queries.
+  - Add timeline view from existing voyage events, emails, documents, AIS/compliance records.
+  - Add visible thread summaries grouped by `threadId`.
+- Phase 2: Operational jobs + must-have workflows
+  - Add `operational_jobs` schema/migration and job pages.
+  - Implement missing-document detector and draft reply assistant.
+  - Link jobs back to voyage cockpit and source evidence.
+- Phase 3: Should-have workflows
+  - Add daily voyage watchlist as a scheduled automation-backed workflow.
+  - Add charter-party extraction cards.
+  - Add admin/source health page.
+  - Add chat feedback buttons and persistence.
+- Phase 4: Nice-to-have workflows
+  - Add PDA/FDA comparison.
+  - Add claims evidence pack generator.
+  - Add payment-risk alert.
+
+## Test Plan
+- Add unit tests for missing-document detection, watchlist classification, charter-party extraction normalization, timeline merge ordering, PDA/FDA comparison, claims-pack evidence selection, and payment-risk scoring.
+- Add API validation tests where existing test patterns support it.
+- Run `pnpm typecheck`, targeted package tests, and lint where practical.
+- Browser-check existing running app only; do not start a dev server.
+
+## Assumptions
+- “Job pages” means operational voyage work items/cases, not BullMQ queue jobs.
+- V1 stores workflow outputs as operational jobs so users can triage, resolve, and revisit them.
+- AI outputs must degrade to deterministic/template output when provider keys are missing, matching the existing chat/automation behavior.
+- Demo-data-backed heuristics are acceptable for v1 as long as every generated workflow links to source evidence.
+
+---
+
+what are the next steps
+
+---
+
+so all features were implemented?

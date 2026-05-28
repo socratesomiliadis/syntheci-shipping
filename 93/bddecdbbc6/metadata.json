@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "93bddecdbbc6",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "apps/web/src/app/api/chat/feedback/route.ts",
+    "apps/web/src/app/api/jobs/[id]/route.ts",
+    "apps/web/src/app/api/jobs/route.ts",
+    "apps/web/src/app/api/voyages/[id]/route.ts",
+    "apps/web/src/app/api/voyages/route.ts",
+    "apps/web/src/app/api/watchlist/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/charterparty/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/draft-reply/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/route.ts",
+    "apps/web/src/app/workspace/admin/page.tsx",
+    "apps/web/src/app/workspace/admin/watchlist-action.tsx",
+    "apps/web/src/app/workspace/chat/chat-panel.tsx",
+    "apps/web/src/app/workspace/jobs/[id]/job-status-actions.tsx",
+    "apps/web/src/app/workspace/jobs/[id]/page.tsx",
+    "apps/web/src/app/workspace/jobs/page.tsx",
+    "apps/web/src/app/workspace/voyages/[id]/draft-reply-editor.tsx",
+    "apps/web/src/app/workspace/voyages/[id]/page.tsx",
+    "apps/web/src/app/workspace/voyages/page.tsx",
+    "apps/web/src/app/workspace/voyages/workflow-actions.tsx",
+    "apps/web/src/components/workspace-sidebar.tsx",
+    "apps/web/src/lib/voyage-workflows.ts",
+    "packages/db/drizzle/0004_windy_stryfe.sql",
+    "packages/db/drizzle/meta/0004_snapshot.json",
+    "packages/db/drizzle/meta/_journal.json",
+    "packages/db/src/schema.ts",
+    "packages/shared/src/index.ts",
+    "packages/shared/src/maritime.ts",
+    "packages/shared/src/schemas.ts",
+    "packages/shared/src/workflows.test.ts",
+    "packages/shared/src/workflows.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/93/bddecdbbc6/0/metadata.json",
+      "transcript": "/93/bddecdbbc6/0/full.jsonl",
+      "content_hash": "/93/bddecdbbc6/0/content_hash.txt",
+      "prompt": "/93/bddecdbbc6/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 375068,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 8828160,
+    "output_tokens": 42271,
+    "api_call_count": 79
+  }
+}
