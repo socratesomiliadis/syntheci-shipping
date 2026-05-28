@@ -16,6 +16,8 @@ The data is synthetic and should not be treated as operational, commercial, regi
 - `structured/ais_positions.json`: Synthetic AIS positions for active voyages.
 - `structured/voyage_events.json`: Operational timeline events across voyages.
 - `structured/compliance_flags.json`: Precomputed EU ETS, FuelEU, MRV, and CII risk flags.
+- `scenarios/storylines.json`: Five curated demo storylines that connect emails, documents, and structured records.
+- `DATA_DICTIONARY.md`: Field definitions, identifier conventions, relationships, and demo query patterns.
 - `source_manifest.json`: Dataset metadata, record counts, classification, and relationship notes.
 
 ## Relationships
@@ -36,6 +38,11 @@ The data is synthetic and should not be treated as operational, commercial, regi
 
 - `bunker_reports.csv`, `ais_positions.json`, `voyage_events.json`, and `compliance_flags.json` all use valid `voyage_id` values from `voyages.json`.
 - Vessel fields match the vessel names on the referenced voyages.
+
+`scenarios/storylines.json` references existing evidence:
+
+- Each scenario has a `primary_voyage_id` and `primary_vessel_name`.
+- Evidence arrays point to real email IDs, thread IDs, document IDs, voyage events, bunker invoice IDs, AIS position IDs, and compliance flag IDs.
 
 Each markdown document starts with metadata fields:
 

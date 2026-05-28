@@ -125,6 +125,27 @@
         "voyage_id": "voyages.voyage_id",
         "vessel_name": "voyages.vessel_name"
       }
+    },
+    {
+      "path": "scenarios/storylines.json",
+      "record_type": "curated_demo_storyline",
+      "record_count": 5,
+      "primary_key": "scenario_id",
+      "foreign_keys": {
+        "primary_voyage_id": "voyages.voyage_id",
+        "primary_vessel_name": "voyages.vessel_name",
+        "evidence.emails": "emails.email_id",
+        "evidence.documents.document_id": "documents front matter document_id",
+        "evidence.structured_records.compliance_flags": "structured/compliance_flags.flag_id",
+        "evidence.structured_records.voyage_events": "structured/voyage_events.event_id",
+        "evidence.structured_records.bunker_invoices": "structured/bunker_reports.invoice_id",
+        "evidence.structured_records.ais_positions": "structured/ais_positions.position_id"
+      }
+    },
+    {
+      "path": "DATA_DICTIONARY.md",
+      "record_type": "data_dictionary",
+      "record_count": 1
     }
   ],
   "company_profile": {

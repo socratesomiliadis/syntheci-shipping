@@ -1,0 +1,379 @@
+[
+  {
+    "scenario_id": "SCN-001",
+    "title": "FuelEU and MRV Gap Before Scheduled Product Tanker Voyage",
+    "primary_voyage_id": "VOY-2026-0525",
+    "primary_vessel_name": "AMS Eirini",
+    "severity": "high",
+    "status": "open",
+    "business_problem": "A scheduled product tanker voyage has FuelEU exposure, missing MRV fuel data, and a high compliance risk score before departure. Operations needs to know what evidence is missing and whether the voyage can proceed without holding the vessel.",
+    "narrative": "AMS Eirini is scheduled from Argos Bunkering Station to Ionia Liquid Terminal with clean petroleum products. The FuelEU email thread asks whether pooling or supplier declarations are needed. Bunker records exist for VLSFO and MGO, but the compliance flag marks MRV data missing and CII risk high. The scenario is useful for demonstrating cross-source retrieval across emails, markdown documents, bunker reports, voyage events, AIS positions, and compliance flags.",
+    "recommended_demo_questions": [
+      "Why is VOY-2026-0525 high risk?",
+      "What MRV evidence is missing for AMS Eirini?",
+      "Which documents support the FuelEU question for VOY-2026-0525?",
+      "Summarize the operational and compliance blockers before departure."
+    ],
+    "expected_insights": [
+      "The compliance flag is high because EU ETS, FuelEU, MRV missing data, and CII risk are all triggered.",
+      "Bunker reports BINV-2026-0033 and BINV-2026-0034 provide fuel evidence but do not close the MRV gap by themselves.",
+      "The related emails and documents frame the issue as a FuelEU workflow, while structured flags expose broader compliance risk.",
+      "The recommended action is to request corrected MRV fuel evidence and keep the FuelEU note provisional."
+    ],
+    "evidence": {
+      "threads": [
+        "THR-2026-025"
+      ],
+      "emails": [
+        "EML-2026-0077",
+        "EML-2026-0078",
+        "EML-2026-0079",
+        "EML-2026-0080"
+      ],
+      "documents": [
+        {
+          "document_id": "DOC-2026-0058",
+          "path": "demo-data/documents/doc-2026-0058-bunker-fuel-document-voy-2026-0525.md"
+        },
+        {
+          "document_id": "DOC-2026-0059",
+          "path": "demo-data/documents/doc-2026-0059-bunker-fuel-document-voy-2026-0525.md"
+        },
+        {
+          "document_id": "DOC-2026-0060",
+          "path": "demo-data/documents/doc-2026-0060-bunker-fuel-document-voy-2026-0525.md"
+        }
+      ],
+      "structured_records": {
+        "compliance_flags": [
+          "CFL-2026-0025"
+        ],
+        "voyage_events": [
+          "EVT-2026-00100",
+          "EVT-2026-00101",
+          "EVT-2026-00102",
+          "EVT-2026-00103",
+          "EVT-2026-00104",
+          "EVT-2026-00105"
+        ],
+        "bunker_invoices": [
+          "BINV-2026-0033",
+          "BINV-2026-0034"
+        ],
+        "ais_positions": [
+          "AIS-2026-00037",
+          "AIS-2026-00038",
+          "AIS-2026-00039",
+          "AIS-2026-00040",
+          "AIS-2026-00041",
+          "AIS-2026-00042"
+        ]
+      }
+    },
+    "suggested_actions": [
+      "Ask the master or performance desk for corrected MRV fuel figures before month close.",
+      "Keep FuelEU and EU ETS calculations provisional until final ROB and consumption data are reconciled.",
+      "Show this scenario when demonstrating compliance triage or evidence-backed answers."
+    ]
+  },
+  {
+    "scenario_id": "SCN-002",
+    "title": "Port Congestion Becoming Demurrage Exposure",
+    "primary_voyage_id": "VOY-2026-0523",
+    "primary_vessel_name": "AMS Dorian",
+    "severity": "medium",
+    "status": "watch",
+    "business_problem": "A bulk voyage is in transit toward Sirocco Bulk Terminal with congestion signals and possible delay exposure. Claims and operations need a concise view of emails, port notices, events, and charterparty-relevant evidence.",
+    "narrative": "AMS Dorian is sailing from Nereid Bay Port to Sirocco Bulk Terminal with clinker. The port congestion email chain asks whether NOR can be tendered at anchorage and whether berth prospects will create waiting time. Voyage events include a medium delay event and a watched destination port call. The compliance flag is medium, with FuelEU and EU ETS exposure also present, but the demo storyline focuses on demurrage risk and evidence preservation.",
+    "recommended_demo_questions": [
+      "What is the demurrage risk on VOY-2026-0523?",
+      "Which port congestion evidence should claims preserve for AMS Dorian?",
+      "Find the documents and events that explain the delay risk at Sirocco Bulk Terminal.",
+      "What should operations do next?"
+    ],
+    "expected_insights": [
+      "The key risk is berth congestion at the destination and whether NOR can be validly tendered before berth availability.",
+      "Documents DOC-2026-0052 through DOC-2026-0054 are voyage-order style evidence tied to the congestion thread.",
+      "Voyage event EVT-2026-00094 records the medium delay event near destination.",
+      "The recommended action is to preserve NOR, statement of facts, line-up reports, and agent updates before sharing any laytime position externally."
+    ],
+    "evidence": {
+      "threads": [
+        "THR-2026-023"
+      ],
+      "emails": [
+        "EML-2026-0069",
+        "EML-2026-0070",
+        "EML-2026-0071",
+        "EML-2026-0072"
+      ],
+      "documents": [
+        {
+          "document_id": "DOC-2026-0052",
+          "path": "demo-data/documents/doc-2026-0052-voyage-order-voy-2026-0523.md"
+        },
+        {
+          "document_id": "DOC-2026-0053",
+          "path": "demo-data/documents/doc-2026-0053-voyage-order-voy-2026-0523.md"
+        },
+        {
+          "document_id": "DOC-2026-0054",
+          "path": "demo-data/documents/doc-2026-0054-voyage-order-voy-2026-0523.md"
+        }
+      ],
+      "structured_records": {
+        "compliance_flags": [
+          "CFL-2026-0023"
+        ],
+        "voyage_events": [
+          "EVT-2026-00093",
+          "EVT-2026-00094",
+          "EVT-2026-00095"
+        ],
+        "bunker_invoices": [
+          "BINV-2026-0031"
+        ],
+        "ais_positions": [
+          "AIS-2026-00025",
+          "AIS-2026-00026",
+          "AIS-2026-00027",
+          "AIS-2026-00028",
+          "AIS-2026-00029",
+          "AIS-2026-00030"
+        ]
+      }
+    },
+    "suggested_actions": [
+      "Ask the agent for written berth prospects and anchorage NOR rules.",
+      "Preserve all terminal line-up and statement-of-facts evidence.",
+      "Use this scenario for claims, demurrage, and operational risk demos."
+    ]
+  },
+  {
+    "scenario_id": "SCN-003",
+    "title": "Charterparty Revision With ETS and CII Allocation Questions",
+    "primary_voyage_id": "VOY-2026-0521",
+    "primary_vessel_name": "AMS Helios",
+    "severity": "high",
+    "status": "in_review",
+    "business_problem": "A crude tanker voyage has charterparty revisions that affect emissions evidence, demurrage wording, and cost allocation. The compliance flag also marks the voyage high risk because EU ETS, FuelEU, and CII are all active.",
+    "narrative": "AMS Helios is in transit from Ionia Liquid Terminal to Helike Oil Terminal with condensate blend. The charterparty thread includes revision documents and fixture language around emissions evidence. Structured events show bunker, weather, delay, transit, and destination-watch records. The high compliance flag makes this scenario a good test for connecting commercial clauses to operational and regulatory data.",
+    "recommended_demo_questions": [
+      "What charterparty clauses matter for VOY-2026-0521?",
+      "Why is AMS Helios high risk in compliance flags?",
+      "Which evidence supports ETS and CII allocation for this voyage?",
+      "Summarize the commercial risk in plain English."
+    ],
+    "expected_insights": [
+      "The charterparty excerpt documents discuss laycan, emissions evidence, and demurrage reservations.",
+      "CFL-2026-0021 marks EU ETS exposure, FuelEU risk, and CII risk as true.",
+      "The single bunker invoice BINV-2026-0028 is a key structured fuel record for the voyage.",
+      "The scenario is ideal for demonstrating citation-backed contract and compliance analysis."
+    ],
+    "evidence": {
+      "threads": [
+        "THR-2026-021"
+      ],
+      "emails": [
+        "EML-2026-0061",
+        "EML-2026-0062",
+        "EML-2026-0063",
+        "EML-2026-0064"
+      ],
+      "documents": [
+        {
+          "document_id": "DOC-2026-0046",
+          "path": "demo-data/documents/doc-2026-0046-charterparty-excerpt-voy-2026-0521.md"
+        },
+        {
+          "document_id": "DOC-2026-0047",
+          "path": "demo-data/documents/doc-2026-0047-charterparty-excerpt-voy-2026-0521.md"
+        },
+        {
+          "document_id": "DOC-2026-0048",
+          "path": "demo-data/documents/doc-2026-0048-charterparty-excerpt-voy-2026-0521.md"
+        }
+      ],
+      "structured_records": {
+        "compliance_flags": [
+          "CFL-2026-0021"
+        ],
+        "voyage_events": [
+          "EVT-2026-00081",
+          "EVT-2026-00082",
+          "EVT-2026-00083",
+          "EVT-2026-00084",
+          "EVT-2026-00085",
+          "EVT-2026-00086"
+        ],
+        "bunker_invoices": [
+          "BINV-2026-0028"
+        ],
+        "ais_positions": [
+          "AIS-2026-00013",
+          "AIS-2026-00014",
+          "AIS-2026-00015",
+          "AIS-2026-00016",
+          "AIS-2026-00017",
+          "AIS-2026-00018"
+        ]
+      }
+    },
+    "suggested_actions": [
+      "Confirm the final rider clause for emissions evidence exchange.",
+      "Tie bunker invoice evidence to the compliance flag before presenting an exposure summary.",
+      "Use this scenario for charterparty and regulatory-cost allocation demos."
+    ]
+  },
+  {
+    "scenario_id": "SCN-004",
+    "title": "ETA Delay, Weather Routing, and Terminal Reslotting",
+    "primary_voyage_id": "VOY-2026-0522",
+    "primary_vessel_name": "AMS Zephyr",
+    "severity": "medium",
+    "status": "active",
+    "business_problem": "A container feeder is in transit with ETA delay signals, weather routing updates, and a watched destination port call. Operations needs to understand whether the delay creates commercial or compliance exposure.",
+    "narrative": "AMS Zephyr is sailing from Azure Strait Terminal to Kydonia Container Quay with containerized apparel. The ETA delay thread includes weather and routing evidence. Voyage events show bunker stop, weather watch, high delay event, synthetic transit, and destination watch. AIS positions provide movement context, while compliance flags show FuelEU risk but no MRV gap.",
+    "recommended_demo_questions": [
+      "Explain the ETA delay for AMS Zephyr on VOY-2026-0522.",
+      "Which AIS positions and voyage events support the delay story?",
+      "Does this ETA delay also create compliance risk?",
+      "What should operations tell the terminal?"
+    ],
+    "expected_insights": [
+      "The delay is tied to weather routing and berth-window uncertainty rather than missing compliance evidence.",
+      "EVT-2026-00090 is the high-severity delay event for this scenario.",
+      "CFL-2026-0022 shows FuelEU risk but MRV data is not missing.",
+      "The recommended action is terminal reslotting and receiver notification, not compliance escalation."
+    ],
+    "evidence": {
+      "threads": [
+        "THR-2026-022"
+      ],
+      "emails": [
+        "EML-2026-0065",
+        "EML-2026-0066",
+        "EML-2026-0067",
+        "EML-2026-0068"
+      ],
+      "documents": [
+        {
+          "document_id": "DOC-2026-0049",
+          "path": "demo-data/documents/doc-2026-0049-port-weather-notice-voy-2026-0522.md"
+        },
+        {
+          "document_id": "DOC-2026-0050",
+          "path": "demo-data/documents/doc-2026-0050-port-weather-notice-voy-2026-0522.md"
+        },
+        {
+          "document_id": "DOC-2026-0051",
+          "path": "demo-data/documents/doc-2026-0051-voyage-order-voy-2026-0522.md"
+        }
+      ],
+      "structured_records": {
+        "compliance_flags": [
+          "CFL-2026-0022"
+        ],
+        "voyage_events": [
+          "EVT-2026-00087",
+          "EVT-2026-00088",
+          "EVT-2026-00089",
+          "EVT-2026-00090",
+          "EVT-2026-00091",
+          "EVT-2026-00092"
+        ],
+        "bunker_invoices": [
+          "BINV-2026-0029",
+          "BINV-2026-0030"
+        ],
+        "ais_positions": [
+          "AIS-2026-00019",
+          "AIS-2026-00020",
+          "AIS-2026-00021",
+          "AIS-2026-00022",
+          "AIS-2026-00023",
+          "AIS-2026-00024"
+        ]
+      }
+    },
+    "suggested_actions": [
+      "Notify the terminal and receivers of the revised ETA and request berth protection.",
+      "Avoid speed-up instructions unless chartering approves the fuel and emissions impact.",
+      "Use this scenario for voyage monitoring and real-time operational briefing demos."
+    ]
+  },
+  {
+    "scenario_id": "SCN-005",
+    "title": "Bunker Confirmation With Missing MRV Data and Chemical Cargo Risk",
+    "primary_voyage_id": "VOY-2026-0529",
+    "primary_vessel_name": "AMS Thalassa",
+    "severity": "high",
+    "status": "scheduled",
+    "business_problem": "A scheduled chemical tanker voyage has bunker confirmation evidence but still carries high regulatory risk because FuelEU and MRV missing-data flags are active. Operations needs to reconcile bunker documents before sailing.",
+    "narrative": "AMS Thalassa is scheduled from Helike Oil Terminal to Daphne Fertilizer Jetty with methanol blendstock. The bunker confirmation thread includes three bunker/fuel documents. Structured events show a destination delay watch and canal-style transit, while the compliance flag marks EU ETS exposure, FuelEU risk, and missing MRV data. This makes the scenario useful for showing that having invoices is not the same as having complete compliance evidence.",
+    "recommended_demo_questions": [
+      "Why does AMS Thalassa still have MRV risk if there is a bunker invoice?",
+      "Which bunker documents support VOY-2026-0529?",
+      "Summarize the compliance risk for the methanol blendstock voyage.",
+      "What evidence should be requested before departure?"
+    ],
+    "expected_insights": [
+      "The bunker thread and BINV-2026-0039 provide commercial fuel evidence.",
+      "CFL-2026-0029 remains high because FuelEU risk and MRV missing data are both true.",
+      "The correct next step is to request reconciled fuel consumption, ROB, sample seal references, and supplier declaration details.",
+      "The scenario demonstrates difference between invoice ingestion and compliance-ready evidence."
+    ],
+    "evidence": {
+      "threads": [
+        "THR-2026-029"
+      ],
+      "emails": [
+        "EML-2026-0093",
+        "EML-2026-0094",
+        "EML-2026-0095",
+        "EML-2026-0096"
+      ],
+      "documents": [
+        {
+          "document_id": "DOC-2026-0070",
+          "path": "demo-data/documents/doc-2026-0070-bunker-fuel-document-voy-2026-0529.md"
+        },
+        {
+          "document_id": "DOC-2026-0071",
+          "path": "demo-data/documents/doc-2026-0071-bunker-fuel-document-voy-2026-0529.md"
+        },
+        {
+          "document_id": "DOC-2026-0072",
+          "path": "demo-data/documents/doc-2026-0072-bunker-fuel-document-voy-2026-0529.md"
+        }
+      ],
+      "structured_records": {
+        "compliance_flags": [
+          "CFL-2026-0029"
+        ],
+        "voyage_events": [
+          "EVT-2026-00119",
+          "EVT-2026-00120",
+          "EVT-2026-00121",
+          "EVT-2026-00122"
+        ],
+        "bunker_invoices": [
+          "BINV-2026-0039"
+        ],
+        "ais_positions": [
+          "AIS-2026-00061",
+          "AIS-2026-00062",
+          "AIS-2026-00063",
+          "AIS-2026-00064",
+          "AIS-2026-00065",
+          "AIS-2026-00066"
+        ]
+      }
+    },
+    "suggested_actions": [
+      "Request final MRV fuel data before closing the voyage file.",
+      "Match bunker invoice data to BDN, ROB, and supplier declaration fields.",
+      "Use this scenario for bunker-document ingestion and compliance reconciliation demos."
+    ]
+  }
+]
