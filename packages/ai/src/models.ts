@@ -1,16 +1,25 @@
 import { google } from "@ai-sdk/google";
 import { groq } from "@ai-sdk/groq";
 import { embedMany, extractReasoningMiddleware, generateText, streamText, wrapLanguageModel } from "ai";
-import { EMBEDDING_DIMENSIONS, getServerEnv } from "@syntheci/shared";
+import { EMBEDDING_DIMENSIONS, getServerEnv, type ServerEnv } from "@syntheci/shared";
 
 type EmbeddingTask = "document" | "query";
+type ChatProvider = "google" | "groq";
 
 export function chatModel() {
   const env = getServerEnv();
   return wrapLanguageModel({
-    model: groq(env.AI_CHAT_MODEL),
+    model: getChatProvider(env) === "groq" ? groq(env.AI_CHAT_MODEL) : google(env.AI_CHAT_MODEL),
     middleware: extractReasoningMiddleware({ tagName: "think" }),
   });
+}
+
+export function isChatModelConfigured(env = getServerEnv()) {
+  return getChatProvider(env) === "groq" ? Boolean(env.GROQ_API_KEY) : Boolean(env.GOOGLE_GENERATIVE_AI_API_KEY);
+}
+
+export function chatModelConfigurationHint(env = getServerEnv()) {
+  return getChatProvider(env) === "groq" ? "Set GROQ_API_KEY" : "Set GOOGLE_GENERATIVE_AI_API_KEY";
 }
 
 export function embeddingModel() {
@@ -40,7 +49,7 @@ export async function embedTexts(values: string[], task: EmbeddingTask = "docume
 
 export async function draftAutomationBrief(question: string, evidence: string) {
   const env = getServerEnv();
-  if (!env.GROQ_API_KEY) {
+  if (!isChatModelConfigured(env)) {
     return [
       "Answer: AI provider is not configured, so this run produced a deterministic scaffold brief.",
       "",
@@ -49,7 +58,7 @@ export async function draftAutomationBrief(question: string, evidence: string) {
       "Evidence reviewed:",
       evidence || "No retrieved evidence was available.",
       "",
-      "Next actions: add GROQ_API_KEY, rerun the automation, and compare against the cited evidence trail.",
+      `Next actions: ${chatModelConfigurationHint(env)}, rerun the automation, and compare against the cited evidence trail.`,
     ].join("\n");
   }
 
@@ -63,9 +72,11 @@ export async function draftAutomationBrief(question: string, evidence: string) {
 
 export function streamGroundedAnswer(question: string, evidence: string) {
   const env = getServerEnv();
-  if (!env.GROQ_API_KEY) {
+  if (!isChatModelConfigured(env)) {
     const text = [
       "AI provider is not configured, so this scaffold is returning a deterministic cited brief.",
+      "",
+      `Configuration required: ${chatModelConfigurationHint(env)}.`,
       "",
       buildGroundedPrompt(question, evidence),
     ].join("\n");
@@ -116,4 +127,8 @@ export function buildGroundedPrompt(question: string, evidence: string) {
     "Return a concise decision brief with: answer, evidence, assumptions, and recommended next actions.",
     "Use bracket citations inline, and do not include an uncited evidence section.",
   ].join("\n");
+}
+
+function getChatProvider(env: ServerEnv): ChatProvider {
+  return env.AI_PROVIDER.toLowerCase().includes("groq") ? "groq" : "google";
 }

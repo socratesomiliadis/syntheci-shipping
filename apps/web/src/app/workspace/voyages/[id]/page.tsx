@@ -10,6 +10,17 @@ import { WorkflowActions } from "../workflow-actions";
 
 export const dynamic = "force-dynamic";
 
+const workflowResultCards = [
+  { id: "payment-risk", title: "Payment Risk", description: "Invoices, remittance, approvals, and payment holds." },
+  { id: "pda-fda", title: "PDA/FDA", description: "Disbursement account evidence and finance reconciliation." },
+  { id: "claims-pack", title: "Claims Pack", description: "Claim support, delay evidence, SOF/NOR, and laytime signals." },
+  { id: "reconciliation", title: "Reconciliation", description: "Contradictions and mismatches across voyage sources." },
+  { id: "missing-documents", title: "Source Gaps", description: "Missing, stale, or referenced-but-unavailable evidence." },
+  { id: "change-monitor", title: "Changes", description: "Material changes in ETA, status, documents, or instructions." },
+  { id: "audit", title: "Audit", description: "Traceability, supportability, and source-confidence issues." },
+  { id: "action-plan", title: "Action Plan", description: "Prioritized operator actions from the strongest cited evidence." },
+];
+
 export default async function VoyageCockpitPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const workspaceId = await ensureDefaultWorkspace();
@@ -18,9 +29,14 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
 
   const { context } = cockpit;
   const aiJobs = cockpit.jobs.filter((job) => job.payload && (job.payload as Record<string, unknown>).generatedBy === "ai");
+  const workflowResults = buildWorkflowResults(
+    aiJobs,
+    cockpit.reconciliationFindings.filter((finding) => finding.findingType !== "risk_assessment"),
+  );
   const latestSummary = aiJobs
     .map((job) => (job.payload as Record<string, unknown>).runSummary)
     .find((value): value is string => typeof value === "string" && value.length > 0);
+  const riskAssessment = cockpit.riskAssessment;
   const evidenceCount =
     context.documents.length +
     context.emails.length +
@@ -44,6 +60,7 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
           </div>
           <div className="grid gap-2 text-sm sm:grid-cols-3">
             <Metric label="ETA" value={context.voyage.eta ? formatDate(context.voyage.eta) : "Unknown"} />
+            <Metric label="AI risk" value={riskAssessment ? `${formatLabel(riskAssessment.riskLevel)} ${riskAssessment.riskScore}` : "Unscored"} />
             <Metric label="Open AI jobs" value={String(aiJobs.filter((job) => job.status === "open").length)} />
             <Metric label="Evidence sources" value={String(evidenceCount)} />
           </div>
@@ -87,8 +104,46 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
             <p className="text-sm leading-6 text-slate-600">
               {latestSummary ?? "Run a workflow action to produce an AI summary from the voyage evidence packet."}
             </p>
+            {riskAssessment ? (
+              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline">Risk {riskAssessment.riskScore}</Badge>
+                  <Badge variant="outline">{formatLabel(riskAssessment.riskLevel)}</Badge>
+                  <span className="text-xs text-slate-500">{Math.round(riskAssessment.confidence * 100)}% confidence</span>
+                </div>
+                <p className="mt-2 text-sm text-slate-600">{riskAssessment.summary}</p>
+                {riskAssessment.rationale.length > 0 ? (
+                  <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-slate-500">
+                    {riskAssessment.rationale.slice(0, 3).map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ) : null}
           </CardContent>
         </Card>
+      </section>
+
+      <section>
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <h2 className="text-base font-semibold text-slate-950">Workflow Results</h2>
+            <p className="mt-1 text-sm text-slate-500">Latest AI jobs and findings grouped by the workflow button that produced them.</p>
+          </div>
+          <Badge variant="outline">{workflowResults.total} persisted outputs</Badge>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {workflowResultCards.map((workflow) => (
+            <WorkflowResultCard
+              description={workflow.description}
+              findings={workflowResults.byWorkflow.get(workflow.id)?.findings ?? []}
+              jobs={workflowResults.byWorkflow.get(workflow.id)?.jobs ?? []}
+              key={workflow.id}
+              title={workflow.title}
+            />
+          ))}
+        </div>
       </section>
 
       <section className="grid gap-5 xl:grid-cols-2">
@@ -199,6 +254,77 @@ export default async function VoyageCockpitPage({ params }: { params: Promise<{ 
   );
 }
 
+type AiJob = {
+  id: string;
+  title: string;
+  summary: string;
+  priority: string;
+  status: string;
+  payload: unknown;
+};
+
+type AiFinding = {
+  title: string;
+  summary: string;
+  severity: string;
+  confidence: number;
+  suggestedAction?: string;
+  payload: unknown;
+};
+
+function WorkflowResultCard({
+  description,
+  findings,
+  jobs,
+  title,
+}: {
+  description: string;
+  findings: AiFinding[];
+  jobs: AiJob[];
+  title: string;
+}) {
+  const hasResults = jobs.length > 0 || findings.length > 0;
+  return (
+    <Card>
+      <CardHeader className="space-y-2">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <CardTitle className="text-base">{title}</CardTitle>
+            <CardDescription className="mt-1">{description}</CardDescription>
+          </div>
+          <Badge variant="outline">{jobs.length + findings.length}</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {hasResults ? (
+          <div className="space-y-3">
+            {jobs.slice(0, 2).map((job) => (
+              <Link className="block rounded-lg border border-slate-200 p-3 transition hover:bg-slate-50" href={`/workspace/jobs/${job.id}`} key={job.id}>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="font-medium text-slate-950">{job.title}</div>
+                  <Badge variant="outline">{job.priority}</Badge>
+                </div>
+                <p className="mt-1 line-clamp-2 text-sm text-slate-500">{job.summary}</p>
+              </Link>
+            ))}
+            {findings.slice(0, 2).map((finding) => (
+              <div className="rounded-lg border border-slate-200 p-3" key={`${finding.title}:${finding.summary}`}>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="font-medium text-slate-950">{finding.title}</div>
+                  <Badge variant="outline">{finding.severity} · {Math.round(finding.confidence * 100)}%</Badge>
+                </div>
+                <p className="mt-1 line-clamp-2 text-sm text-slate-500">{finding.summary}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-slate-500">No AI output from this workflow yet.</p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 function JobMeta({ payload }: { payload: Record<string, unknown> }) {
   const confidence = typeof payload.confidence === "number" ? payload.confidence : undefined;
   const suggestedAction = typeof payload.suggestedAction === "string" ? payload.suggestedAction : undefined;
@@ -241,6 +367,40 @@ function Metric({ label, value }: { label: string; value: string }) {
       <div className="mt-1 font-medium text-slate-950">{value}</div>
     </div>
   );
+}
+
+function buildWorkflowResults(jobs: AiJob[], findings: AiFinding[]) {
+  const byWorkflow = new Map<string, { jobs: AiJob[]; findings: AiFinding[] }>();
+  for (const workflow of workflowResultCards) {
+    byWorkflow.set(workflow.id, { jobs: [], findings: [] });
+  }
+
+  for (const job of jobs) {
+    const workflow = workflowFromPayload(job.payload);
+    if (!workflow) continue;
+    const bucket = byWorkflow.get(workflow) ?? { jobs: [], findings: [] };
+    bucket.jobs.push(job);
+    byWorkflow.set(workflow, bucket);
+  }
+
+  for (const finding of findings) {
+    const workflow = workflowFromPayload(finding.payload);
+    if (!workflow) continue;
+    const bucket = byWorkflow.get(workflow) ?? { jobs: [], findings: [] };
+    bucket.findings.push(finding);
+    byWorkflow.set(workflow, bucket);
+  }
+
+  return {
+    byWorkflow,
+    total: [...byWorkflow.values()].reduce((count, result) => count + result.jobs.length + result.findings.length, 0),
+  };
+}
+
+function workflowFromPayload(payload: unknown) {
+  if (!payload || typeof payload !== "object") return null;
+  const workflow = (payload as Record<string, unknown>).workflow;
+  return typeof workflow === "string" ? workflow : null;
 }
 
 function formatDate(value: string) {

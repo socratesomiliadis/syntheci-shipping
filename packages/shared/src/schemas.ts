@@ -63,10 +63,32 @@ export const aiVoyageIntelligenceJobSchema = z.object({
   payload: z.record(z.string(), z.unknown()).default({}),
 });
 
+export const aiVoyageRiskAssessmentSchema = z.object({
+  riskScore: z.number().int().min(0).max(100),
+  riskLevel: z.enum(operationalJobPriorities),
+  summary: z.string().min(1),
+  rationale: z.array(z.string().min(1)).min(1),
+  confidence: z.number().min(0).max(1),
+  evidenceRefs: z.array(z.string().min(1)).min(1),
+  payload: z.record(z.string(), z.unknown()).default({}),
+});
+
+export const aiVoyageIntelligenceFindingSchema = z.object({
+  findingType: z.string().min(1),
+  severity: z.enum(operationalJobPriorities),
+  confidence: z.number().min(0).max(1),
+  title: z.string().min(1),
+  summary: z.string().min(1),
+  suggestedAction: z.string().min(1),
+  evidenceRefs: z.array(z.string().min(1)).min(1),
+  payload: z.record(z.string(), z.unknown()).default({}),
+});
+
 export const aiVoyageIntelligenceOutputSchema = z.object({
   runSummary: z.string().min(1),
+  riskAssessment: aiVoyageRiskAssessmentSchema.nullable().default(null),
   jobs: z.array(aiVoyageIntelligenceJobSchema).default([]),
-  findings: z.array(reconciliationFindingSchema).default([]),
+  findings: z.array(aiVoyageIntelligenceFindingSchema).default([]),
 });
 
 export const sourceConfidenceSchema = z.object({
@@ -209,6 +231,8 @@ export type UpdateOperationalJobInput = z.infer<typeof updateOperationalJobSchem
 export type ChatFeedbackInput = z.infer<typeof chatFeedbackSchema>;
 export type IntelligenceWorkflowInput = z.infer<typeof intelligenceWorkflowSchema>;
 export type AiVoyageIntelligenceJobInput = z.infer<typeof aiVoyageIntelligenceJobSchema>;
+export type AiVoyageRiskAssessmentInput = z.infer<typeof aiVoyageRiskAssessmentSchema>;
+export type AiVoyageIntelligenceFindingInput = z.infer<typeof aiVoyageIntelligenceFindingSchema>;
 export type AiVoyageIntelligenceOutputInput = z.infer<typeof aiVoyageIntelligenceOutputSchema>;
 export type DocumentExtractionInput = z.infer<typeof documentExtractionSchema>;
 export type ReconciliationFindingInput = z.infer<typeof reconciliationFindingSchema>;

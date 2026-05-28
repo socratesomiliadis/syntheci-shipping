@@ -197,11 +197,13 @@ async function processWorkflowAutomation(payload: WorkflowAutomationJob) {
 
     for (const voyageId of voyageIds) {
       const context = await loadWorkflowContext(payload.workspaceId, voyageId);
-      const intelligence = await generateAiWorkflowIntelligence(payload.workspaceId, context, payload.workflow);
-      await persistReconciliationFindings(payload.workspaceId, intelligence.findings);
-      const result = await persistWorkflowJobs(payload.workspaceId, voyageId, intelligence.jobs);
-      inserted += result.inserted;
-      available += result.available;
+      for (const workflow of workflowsForRun(payload.workflow)) {
+        const intelligence = await generateAiWorkflowIntelligence(payload.workspaceId, context, workflow);
+        await persistReconciliationFindings(payload.workspaceId, intelligence.findings);
+        const result = await persistWorkflowJobs(payload.workspaceId, voyageId, intelligence.jobs);
+        inserted += result.inserted;
+      }
+      available += await availableWorkflowJobs(payload.workspaceId, voyageId);
     }
 
     await db
@@ -412,9 +414,33 @@ async function persistWorkflowJobs(workspaceId: string, voyageId: string, drafts
   return { inserted: insertable.length, available: existing.length + insertable.length };
 }
 
+async function availableWorkflowJobs(workspaceId: string, voyageId: string) {
+  const rows = await db
+    .select({ id: operationalJobs.id })
+    .from(operationalJobs)
+    .where(and(eq(operationalJobs.workspaceId, workspaceId), eq(operationalJobs.voyageId, voyageId), ne(operationalJobs.status, "dismissed")));
+  return rows.length;
+}
+
 function workflowJobKey(jobType: string, title: string) {
   return `${jobType}:${title.toLowerCase()}`;
 }
+
+function workflowsForRun(workflow: string) {
+  if (workflow !== "all") return [workflow];
+  return runnableWorkflowIds;
+}
+
+const runnableWorkflowIds = [
+  "missing-documents",
+  "pda-fda",
+  "reconciliation",
+  "change-monitor",
+  "audit",
+  "action-plan",
+  "claims-pack",
+  "payment-risk",
+];
 
 function buildVoyageRetrievalQuery(context: WorkflowContext, workflow: string) {
   return [
@@ -424,10 +450,27 @@ function buildVoyageRetrievalQuery(context: WorkflowContext, workflow: string) {
     context.voyage.destinationPort,
     context.voyage.cargo,
     workflow,
+    workflowRetrievalTerms(workflow),
     "operational risk evidence missing documents payment claims compliance AIS bunker voyage changes",
   ]
     .filter(Boolean)
     .join(" ");
+}
+
+function workflowRetrievalTerms(workflow: string) {
+  const terms: Record<string, string> = {
+    all: "risk findings jobs contradictions evidence",
+    "missing-documents": "missing document attachment pending unavailable stale required certificate source evidence",
+    watchlist: "watchlist blocker urgent risk latest update monitor active voyage",
+    "pda-fda": "PDA FDA disbursement account proforma final port costs remittance dues",
+    "claims-pack": "claim demurrage laytime statement of facts SOF notice of readiness NOR delay cargo invoice",
+    "payment-risk": "payment invoice remittance beneficiary approval hold bank FDA amount compliance",
+    reconciliation: "reconcile mismatch contradiction discrepancy inconsistent compare documents email AIS bunker finance",
+    "change-monitor": "change updated revised latest previous ETA destination status cargo instruction",
+    audit: "audit source traceability unsupported missing evidence confidence control verify",
+    "action-plan": "action plan next step operator assign resolve urgent high confidence",
+  };
+  return terms[workflow] ?? terms.all;
 }
 
 async function objectBodyToBytes(body: unknown) {

@@ -48,6 +48,15 @@ describe("voyage AI intelligence validation", () => {
     const output = validateVoyageIntelligenceOutput(
       {
         runSummary: "Finance evidence needs review.",
+        riskAssessment: {
+          riskScore: 74,
+          riskLevel: "high",
+          summary: "Pending FDA creates payment release risk.",
+          rationale: ["The agent email says FDA remains pending before remittance."],
+          confidence: 0.86,
+          evidenceRefs: ["email:EML-1"],
+          payload: {},
+        },
         jobs: [
           {
             jobType: "payment review",
@@ -63,13 +72,12 @@ describe("voyage AI intelligence validation", () => {
         findings: [
           {
             findingType: "payment_gap",
-            voyageId: "VOY-2026-0523",
             severity: "medium",
             confidence: 0.82,
             title: "FDA pending",
             summary: "FDA remains pending before remittance.",
-            evidence: [{ sourceType: "email", sourceId: "EML-1", label: "FDA pending" }],
             suggestedAction: "Request final disbursement evidence.",
+            evidenceRefs: ["email:EML-1"],
             payload: {},
           },
         ],
@@ -81,7 +89,9 @@ describe("voyage AI intelligence validation", () => {
     expect(output.jobs).toHaveLength(1);
     expect(output.jobs[0]?.jobType).toBe("payment_review");
     expect(output.jobs[0]?.payload).toMatchObject({ generatedBy: "ai", model: "test-model", runSummary: "Finance evidence needs review." });
-    expect(output.findings).toHaveLength(1);
+    expect(output.riskAssessment).toMatchObject({ riskScore: 74, riskLevel: "high" });
+    expect(output.findings).toHaveLength(2);
+    expect(output.findings[0]?.findingType).toBe("risk_assessment");
   });
 
   it("drops jobs and findings without known evidence", () => {
@@ -89,6 +99,15 @@ describe("voyage AI intelligence validation", () => {
     const output = validateVoyageIntelligenceOutput(
       {
         runSummary: "Unsupported claims were removed.",
+        riskAssessment: {
+          riskScore: 66,
+          riskLevel: "medium",
+          summary: "Unsupported risk.",
+          rationale: ["No known source."],
+          confidence: 0.7,
+          evidenceRefs: ["file:DOES-NOT-EXIST"],
+          payload: {},
+        },
         jobs: [
           {
             jobType: "unsupported",
@@ -104,13 +123,12 @@ describe("voyage AI intelligence validation", () => {
         findings: [
           {
             findingType: "unsupported",
-            voyageId: "VOY-2026-0523",
             severity: "medium",
             confidence: 0.7,
             title: "Unsupported finding",
             summary: "This has no known source.",
-            evidence: [{ sourceType: "file", sourceId: "DOES-NOT-EXIST", label: "Missing" }],
             suggestedAction: "Do something.",
+            evidenceRefs: ["file:DOES-NOT-EXIST"],
             payload: {},
           },
         ],
@@ -121,10 +139,13 @@ describe("voyage AI intelligence validation", () => {
 
     expect(output.jobs).toHaveLength(0);
     expect(output.findings).toHaveLength(0);
-    expect(output.dropped).toEqual({ jobs: 1, findings: 1 });
+    expect(output.riskAssessment).toBeNull();
+    expect(output.dropped).toEqual({ jobs: 1, findings: 1, riskAssessments: 1 });
   });
 
   it("exposes a clear missing-provider error", () => {
-    expect(new AiIntelligenceConfigurationError().message).toContain("GROQ_API_KEY");
+    expect(new AiIntelligenceConfigurationError("AI intelligence is not configured. Set GOOGLE_GENERATIVE_AI_API_KEY.").message).toContain(
+      "GOOGLE_GENERATIVE_AI_API_KEY",
+    );
   });
 });

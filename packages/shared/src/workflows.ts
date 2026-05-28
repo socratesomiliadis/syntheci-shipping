@@ -17,6 +17,17 @@ export type WorkflowJobDraft = {
   payload: Record<string, unknown>;
 };
 
+export type VoyageRiskAssessmentDraft = {
+  voyageId: string;
+  riskScore: number;
+  riskLevel: OperationalJobPriority;
+  summary: string;
+  rationale: string[];
+  confidence: number;
+  evidence: WorkflowEvidence[];
+  payload: Record<string, unknown>;
+};
+
 export type WorkflowVoyage = {
   id: string;
   vesselName: string;

@@ -68,7 +68,7 @@ export async function loadVoyageSummaries(workspaceId: string, query = ""): Prom
       )
     : eq(maritimeVoyages.workspaceId, workspaceId);
 
-  const [voyages, flags, jobs] = await Promise.all([
+  const [voyages, flags, jobs, findings] = await Promise.all([
     db
       .select()
       .from(maritimeVoyages)
@@ -80,13 +80,20 @@ export async function loadVoyageSummaries(workspaceId: string, query = ""): Prom
       .select()
       .from(operationalJobs)
       .where(and(eq(operationalJobs.workspaceId, workspaceId), ne(operationalJobs.status, "resolved"), ne(operationalJobs.status, "dismissed"))),
+    db
+      .select()
+      .from(maritimeReconciliationFindings)
+      .where(and(eq(maritimeReconciliationFindings.workspaceId, workspaceId), eq(maritimeReconciliationFindings.findingType, "risk_assessment"))),
   ]);
 
   const flagByVoyage = new Map(flags.map((flag) => [flag.voyageId, flag]));
   const jobsByVoyage = groupBy(jobs, (job) => job.voyageId);
+  const riskByVoyage = latestRiskByVoyage(findings);
 
   return voyages.map((voyage) => {
     const voyageJobs = jobsByVoyage.get(voyage.id) ?? [];
+    const aiRisk = riskByVoyage.get(voyage.id);
+    const legacyRisk = flagByVoyage.get(voyage.id);
     return {
       id: voyage.id,
       vesselName: voyage.vesselName,
@@ -95,8 +102,8 @@ export async function loadVoyageSummaries(workspaceId: string, query = ""): Prom
       cargo: voyage.cargo,
       eta: voyage.eta,
       status: voyage.status,
-      riskLevel: flagByVoyage.get(voyage.id)?.riskLevel ?? null,
-      riskScore: flagByVoyage.get(voyage.id)?.riskScore ?? null,
+      riskLevel: aiRisk?.riskLevel ?? legacyRisk?.riskLevel ?? null,
+      riskScore: aiRisk?.riskScore ?? legacyRisk?.riskScore ?? null,
       openJobs: voyageJobs.length,
       missingDocuments: voyageJobs.filter((job) => job.jobType === "missing_document").length,
     };
@@ -160,6 +167,7 @@ export async function loadVoyageCockpit(workspaceId: string, voyageId: string) {
     paymentRiskDrafts: detectPaymentRisk(context),
     documentExtractions: persistedExtractions.length ? persistedExtractions : extractDocumentFields(context),
     reconciliationFindings: persistedFindings,
+    riskAssessment: latestRiskAssessment(persistedFindings),
     auditChecks,
     citedDraftReply,
     claimsPackSummary,
@@ -327,9 +335,32 @@ export async function persistWorkflowJobs(workspaceId: string, voyageId: string,
 
 export async function generateWorkflow(workspaceId: string, voyageId: string, workflow: string) {
   const context = await loadWorkflowContext(workspaceId, voyageId);
-  if (isSupportedWorkflow(workflow)) return generateAiWorkflow(workspaceId, context, workflow);
-  throw new Error(`Unsupported workflow: ${workflow}`);
+  if (!isSupportedWorkflow(workflow)) {
+    throw new Error(`Unsupported workflow: ${workflow}`);
+  }
+
+  for (const workflowId of workflowsForRun(workflow)) {
+    await generateAiWorkflow(workspaceId, context, workflowId);
+  }
+
+  return loadOperationalJobs(workspaceId, undefined, voyageId);
 }
+
+function workflowsForRun(workflow: string) {
+  if (workflow !== "all") return [workflow];
+  return runnableWorkflowIds;
+}
+
+const runnableWorkflowIds = [
+  "missing-documents",
+  "pda-fda",
+  "reconciliation",
+  "change-monitor",
+  "audit",
+  "action-plan",
+  "claims-pack",
+  "payment-risk",
+];
 
 export async function loadOperationalJobs(workspaceId: string, status?: string, voyageId?: string) {
   const clauses = [
@@ -442,6 +473,45 @@ function buildSourceConfidence(context: WorkflowContext) {
   ].sort((left, right) => right.score - left.score);
 }
 
+function latestRiskByVoyage(
+  findings: { voyageId: string; findingType: string; severity: string; confidence: number; summary: string; payload: unknown; updatedAt: Date }[],
+) {
+  const byVoyage = new Map<string, { riskScore: number; riskLevel: string; summary: string; confidence: number }>();
+  for (const finding of findings.sort((left, right) => right.updatedAt.getTime() - left.updatedAt.getTime())) {
+    if (byVoyage.has(finding.voyageId)) continue;
+    const risk = riskFromFinding(finding);
+    if (risk) byVoyage.set(finding.voyageId, risk);
+  }
+  return byVoyage;
+}
+
+function latestRiskAssessment(
+  findings: { findingType: string; severity: string; confidence: number; summary: string; payload: unknown; updatedAt: Date }[],
+) {
+  for (const finding of findings.sort((left, right) => right.updatedAt.getTime() - left.updatedAt.getTime())) {
+    const risk = riskFromFinding(finding);
+    if (risk) return risk;
+  }
+  return null;
+}
+
+function riskFromFinding(finding: { findingType: string; severity: string; confidence: number; summary: string; payload: unknown }) {
+  if (finding.findingType !== "risk_assessment" || !finding.payload || typeof finding.payload !== "object") return null;
+  const payload = finding.payload as Record<string, unknown>;
+  const riskScore = typeof payload.riskScore === "number" ? payload.riskScore : null;
+  if (riskScore === null) return null;
+  const payloadLevel = typeof payload.riskLevel === "string" ? payload.riskLevel : finding.severity;
+  const riskLevel = ["low", "medium", "high"].includes(payloadLevel) ? payloadLevel : finding.severity;
+  const rationale = Array.isArray(payload.rationale) ? payload.rationale.filter((item): item is string => typeof item === "string") : [];
+  return {
+    riskScore,
+    riskLevel,
+    summary: finding.summary,
+    confidence: finding.confidence,
+    rationale,
+  };
+}
+
 function workflowJobKey(jobType: string, title: string) {
   return `${jobType}:${title.toLowerCase()}`;
 }
@@ -469,10 +539,27 @@ function buildVoyageRetrievalQuery(context: WorkflowContext, workflow: string) {
     context.voyage.destinationPort,
     context.voyage.cargo,
     workflow,
+    workflowRetrievalTerms(workflow),
     "operational risk evidence missing documents payment claims compliance AIS bunker voyage changes",
   ]
     .filter(Boolean)
     .join(" ");
+}
+
+function workflowRetrievalTerms(workflow: string) {
+  const terms: Record<string, string> = {
+    all: "risk findings jobs contradictions evidence",
+    "missing-documents": "missing document attachment pending unavailable stale required certificate source evidence",
+    watchlist: "watchlist blocker urgent risk latest update monitor active voyage",
+    "pda-fda": "PDA FDA disbursement account proforma final port costs remittance dues",
+    "claims-pack": "claim demurrage laytime statement of facts SOF notice of readiness NOR delay cargo invoice",
+    "payment-risk": "payment invoice remittance beneficiary approval hold bank FDA amount compliance",
+    reconciliation: "reconcile mismatch contradiction discrepancy inconsistent compare documents email AIS bunker finance",
+    "change-monitor": "change updated revised latest previous ETA destination status cargo instruction",
+    audit: "audit source traceability unsupported missing evidence confidence control verify",
+    "action-plan": "action plan next step operator assign resolve urgent high confidence",
+  };
+  return terms[workflow] ?? terms.all;
 }
 
 function groupBy<T, K>(values: T[], keyFor: (value: T) => K) {
