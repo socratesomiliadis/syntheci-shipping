@@ -3,7 +3,7 @@
   "checkpoint_id": "e1541a25bbd8",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 5,
+  "checkpoints_count": 11,
   "files_touched": [
     "apps/web/src/app/api/automations/[id]/run/route.ts",
     "apps/web/src/app/api/automations/route.ts",
@@ -15,8 +15,15 @@
     "apps/web/src/app/workspace/automations/run-automation-button.tsx",
     "apps/web/src/app/workspace/voyages/[id]/page.tsx",
     "apps/web/src/app/workspace/voyages/workflow-actions.tsx",
+    "apps/web/src/lib/demo-data-ingestion.ts",
     "apps/web/src/lib/voyage-workflows.ts",
     "apps/worker/src/index.ts",
+    "demo-data/DATA_DICTIONARY.md",
+    "demo-data/README.md",
+    "demo-data/source_manifest.json",
+    "packages/ai/src/index.ts",
+    "packages/ai/src/voyage-intelligence.test.ts",
+    "packages/ai/src/voyage-intelligence.ts",
     "packages/db/drizzle/0005_maritime_intelligence_v1.sql",
     "packages/db/drizzle/meta/_journal.json",
     "packages/db/src/index.ts",
@@ -35,13 +42,19 @@
       "transcript": "/e1/541a25bbd8/0/full.jsonl",
       "content_hash": "/e1/541a25bbd8/0/content_hash.txt",
       "prompt": "/e1/541a25bbd8/0/prompt.txt"
+    },
+    {
+      "metadata": "/e1/541a25bbd8/1/metadata.json",
+      "transcript": "/e1/541a25bbd8/1/full.jsonl",
+      "content_hash": "/e1/541a25bbd8/1/content_hash.txt",
+      "prompt": "/e1/541a25bbd8/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 729353,
+    "input_tokens": 1081838,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 16131072,
-    "output_tokens": 58590,
-    "api_call_count": 104
+    "cache_read_tokens": 26066432,
+    "output_tokens": 94062,
+    "api_call_count": 172
   }
 }

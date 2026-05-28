@@ -1,0 +1,156 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "e1541a25bbd8",
+  "session_id": "019e6e9e-928d-7f31-964b-68279cfd450c",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T13:04:42.45698Z",
+  "branch": "main",
+  "checkpoints_count": 6,
+  "files_touched": [
+    "apps/web/src/app/api/automations/[id]/run/route.ts",
+    "apps/web/src/app/api/automations/route.ts",
+    "apps/web/src/app/api/imports/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/route.ts",
+    "apps/web/src/app/page.tsx",
+    "apps/web/src/app/workspace/automations/automation-form.tsx",
+    "apps/web/src/app/workspace/automations/page.tsx",
+    "apps/web/src/app/workspace/voyages/[id]/page.tsx",
+    "apps/web/src/app/workspace/voyages/workflow-actions.tsx",
+    "apps/web/src/lib/demo-data-ingestion.ts",
+    "apps/web/src/lib/voyage-workflows.ts",
+    "apps/worker/src/index.ts",
+    "demo-data/DATA_DICTIONARY.md",
+    "demo-data/README.md",
+    "demo-data/source_manifest.json",
+    "packages/ai/src/index.ts",
+    "packages/ai/src/voyage-intelligence.test.ts",
+    "packages/ai/src/voyage-intelligence.ts",
+    "packages/db/drizzle/0005_maritime_intelligence_v1.sql",
+    "packages/db/drizzle/meta/_journal.json",
+    "packages/db/src/index.ts",
+    "packages/db/src/intelligence.ts",
+    "packages/db/src/schema.ts",
+    "packages/shared/src/index.ts",
+    "packages/shared/src/intelligence.test.ts",
+    "packages/shared/src/intelligence.ts",
+    "packages/shared/src/queues.ts",
+    "packages/shared/src/schemas.ts",
+    "packages/shared/src/workflows.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "923c0b54f45c",
+  "token_usage": {
+    "input_tokens": 352485,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 9935360,
+    "output_tokens": 35472,
+    "api_call_count": 68
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T13:04:42.424358Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 35,
+    "human_modified": 617,
+    "human_removed": 0,
+    "total_committed": 35,
+    "total_lines_changed": 652,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2567,
+      "user_lines_removed": 229,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "apps/web/src/app/api/automations/[id]/run/route.ts": 15,
+        "apps/web/src/app/api/automations/route.ts": 14,
+        "apps/web/src/app/api/imports/route.ts": 345,
+        "apps/web/src/app/api/workflows/[voyageId]/route.ts": 12,
+        "apps/web/src/app/page.tsx": 199,
+        "apps/web/src/app/workspace/automations/automation-form.tsx": 98,
+        "apps/web/src/app/workspace/automations/page.tsx": 112,
+        "apps/web/src/app/workspace/automations/run-automation-button.tsx": 26,
+        "apps/web/src/app/workspace/voyages/[id]/page.tsx": 159,
+        "apps/web/src/app/workspace/voyages/workflow-actions.tsx": 5,
+        "apps/web/src/lib/voyage-workflows.ts": 186,
+        "apps/worker/src/index.ts": 86,
+        "packages/db/drizzle/0005_maritime_intelligence_v1.sql": 91,
+        "packages/db/drizzle/meta/_journal.json": 8,
+        "packages/db/src/index.ts": 1,
+        "packages/db/src/intelligence.ts": 146,
+        "packages/db/src/schema.ts": 98,
+        "packages/shared/src/index.ts": 1,
+        "packages/shared/src/intelligence.test.ts": 146,
+        "packages/shared/src/intelligence.ts": 644,
+        "packages/shared/src/queues.ts": 23,
+        "packages/shared/src/schemas.ts": 137,
+        "packages/shared/src/workflows.ts": 15
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/api/automations/[id]/run/route.ts": 9,
+        "apps/web/src/app/api/automations/route.ts": 7,
+        "apps/web/src/app/api/workflows/[voyageId]/route.ts": 1,
+        "apps/web/src/app/page.tsx": 135,
+        "apps/web/src/app/workspace/automations/automation-form.tsx": 27,
+        "apps/web/src/app/workspace/automations/page.tsx": 28,
+        "apps/web/src/app/workspace/voyages/[id]/page.tsx": 12,
+        "apps/web/src/app/workspace/voyages/workflow-actions.tsx": 1,
+        "apps/web/src/lib/voyage-workflows.ts": 4,
+        "apps/worker/src/index.ts": 1,
+        "packages/db/drizzle/meta/_journal.json": 1,
+        "packages/shared/src/queues.ts": 2,
+        "packages/shared/src/workflows.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2567,
+      "agent_lines_removed": 229
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2567,
+      "agent_lines_removed": 229
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2567,
+      "agent_lines_removed": 229
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2567,
+      "agent_lines_removed": 229
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2567,
+      "agent_lines_removed": 229
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2567,
+      "agent_lines_removed": 229
+    }
+  ]
+}
