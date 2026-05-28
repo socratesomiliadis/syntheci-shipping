@@ -1,0 +1,13 @@
+Okay how can we demo all features?
+
+---
+
+okay, in a real not demo workflow how would all this work?
+
+---
+
+I meant the automationns
+
+---
+
+okay we should configure some of this automations then, since we already have bullmq, even though it is a hackathon
