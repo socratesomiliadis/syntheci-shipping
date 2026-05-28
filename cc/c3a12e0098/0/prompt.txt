@@ -1,0 +1,33 @@
+okay lets do this, so we can use it in our demo. While building this live mode keep in mind how we will use it in our demo like we discussed before
+
+---
+
+since we need to showcase how our app works, the jobs created should be made using ai, not just injected
+
+---
+
+no its fine being slow. We can edit the demo video
+
+---
+
+In general how would our app work with live data (emails, ais feeds etc) instead of our current mock dataset
+
+---
+
+Okay now structure a 2 minute demo (along with a concrete script) that will explain what our system does in very simple and concrete words so the judges that know nothing about shipping and how this helps will understand
+
+---
+
+Also give me a way to reset all data (open jobs, risk score etc) for a certain voyage so I can run the workflows as many times as I need for the demo
+
+---
+
+also we should have a way to see/distinguish between new jobs from already existing ones in the ui
+
+---
+
+tasks should be shown in chronological order, also if I have just run all tasks and then press the live event all tasks have the new badge and you can discern which ones where just created
+
+---
+
+when the live event runs it also generates tasks that are the same with previous existing tasks (it doesnt only react to that event)
