@@ -1,60 +1,94 @@
-# Syntheci Maritime AI
+# Syntheci Shipping
 
-Hackathon MVP scaffold for a maritime RAG and automations platform. The repo is a `pnpm` workspace with a Next.js app, a BullMQ worker, shared AI/database packages, Docker Compose services, Postgres + pgvector, Redis, and MinIO.
+Maritime operations workspace for shipping teams. Syntheci ingests voyage and operational documents, makes them searchable with cited AI retrieval, tracks voyage risk, and runs workflow automations for missing documents, watchlists, claims packs, PDA/FDA checks, and payment risk.
 
-## Layout
+## Hackathon
 
-- `apps/web` - Next.js App Router, shadcn-style components, Better Auth, upload/chat/automation UI, and API routes.
-- `apps/worker` - BullMQ processors for ingestion and automation runs.
-- `packages/db` - Drizzle schema, database client, retrieval helpers, and migrations.
-- `packages/ai` - AI SDK model wrappers, chunking, citation formatting, and maritime prompts.
-- `packages/shared` - environment parsing, queue contracts, validation schemas, roles, and demo workflows.
+Built for the Florent Venture Partners Hackathon at Panathēnea in Athens.
+
+## Stack
+
+- **Web:** Next.js App Router, React, Tailwind CSS
+- **Auth:** Better Auth
+- **Jobs:** BullMQ, Redis
+- **Database:** Postgres 16, pgvector, Drizzle ORM
+- **Storage:** MinIO / S3-compatible storage
+- **AI:** Google embeddings and Groq chat through the Vercel AI SDK
+- **Tooling:** pnpm workspaces, TypeScript, Vitest
+
+## Repository Layout
+
+```text
+apps/
+  web/          Next.js app, API routes, workspace UI
+  worker/       BullMQ ingestion and automation processors
+
+packages/
+  ai/           model wrappers, chunking, citations, extraction helpers
+  db/           schema, migrations, retrieval, seed helpers
+  shared/       env, queue contracts, validation, workflow logic
+
+demo-data/      synthetic maritime dataset for Aegean Meridian Shipping
+```
 
 ## Setup
 
+Requirements:
+
+- Node.js 20+
+- pnpm 10.33.4+
+- Docker Desktop
+
+Create an environment file:
+
+```bash
+cp .env.example .env
+```
+
+Default local services:
+
+```text
+DATABASE_URL=postgres://syntheci:syntheci@localhost:5432/syntheci
+REDIS_URL=redis://localhost:6379
+S3_ENDPOINT=http://localhost:9000
+S3_BUCKET=sources
+BETTER_AUTH_URL=http://localhost:3000
+```
+
+Optional AI keys:
+
+```text
+GOOGLE_GENERATIVE_AI_API_KEY=
+GROQ_API_KEY=
+```
+
+Run locally:
+
 ```bash
 pnpm install
-cp .env.example .env
-pnpm db:generate
-pnpm db:migrate
-```
-
-This workspace follows the local instruction not to start a dev server automatically. Start processes only when you explicitly want them:
-
-```bash
-pnpm dev
-pnpm worker:dev
-```
-
-## Docker
-
-```bash
-docker compose up --build
-```
-
-To run the backing services and worker through Compose while keeping the Next.js app local for HMR:
-
-```bash
 pnpm docker:infra
 pnpm db:migrate
-pnpm --filter @syntheci/web dev
+pnpm dev
 ```
 
-Services:
+Open `http://localhost:3000`.
 
-- Web app: `http://localhost:3000`
-- Postgres: `localhost:5432`
-- Redis: `localhost:6379`
-- MinIO API: `http://localhost:9000`
-- MinIO console: `http://localhost:9001`
+## Demo Data
 
-## MVP Flow
+`demo-data/` contains a synthetic maritime dataset for testing ingestion, search, voyage views, and automations.
 
-1. Create or sign in with an email/password account at `/login`.
-2. Upload `.txt`, `.md`, `.csv`, `.json`, or `.log` files in `/workspace/sources`.
-3. The web app creates a MinIO upload URL and enqueues an ingestion job.
-4. The worker chunks text, embeds it, and stores vectors in `document_chunks`.
-5. Ask cited questions in `/workspace/chat`.
-6. Create and run maritime automations in `/workspace/automations`.
+## Commands
 
-Set `GOOGLE_GENERATIVE_AI_API_KEY` for Google embeddings and `GROQ_API_KEY` for Groq chat/agentic work with `qwen/qwen3-32b`. Without those keys, the scaffold uses deterministic local embeddings and placeholder briefs so the queue and UI flows can still be exercised.
+```bash
+pnpm dev             # Run web and worker
+pnpm build           # Build packages
+pnpm test            # Run tests
+pnpm db:migrate      # Apply migrations
+pnpm docker:infra    # Start Postgres, Redis, MinIO, and worker
+pnpm docker:down     # Stop Docker services
+```
+
+## Authors
+
+- [Socrates Omiliadis](https://www.linkedin.com/in/socratesomiliadis/)
+- [Apostolos Kakarantzas](https://www.linkedin.com/in/akakarantzas/)
