@@ -1,0 +1,130 @@
+What is our app's core business logic currently. And what makes it more helpful that traditional shipping/maritime software
+
+---
+
+what can we do to improve our offering? Also what more ai features can we add
+
+---
+
+Okay lets start working on all of thes improvements except the stronger job lifecycle management
+
+---
+
+PLEASE IMPLEMENT THIS PLAN:
+# Syntheci Maritime Intelligence v1 Expansion
+
+## Summary
+
+Build a phased v1 that improves the offering around the existing voyage cockpit, workflow engine, RAG, and worker infrastructure. This includes document intelligence, reconciliation, source confidence, AI action plans, claims packs, AI reply drafting, voyage change monitoring, natural-language workflow creation, audit mode, and provider-neutral integration stubs.
+
+Do not add stronger job lifecycle management: no assignment, due dates, SLA aging, comments, escalation, or status-history work beyond existing `open/in_progress/resolved/dismissed`.
+
+## Key Changes
+
+- Add structured AI outputs for maritime documents:
+  - Extract fields from NOR, SOF, BDN/bunker docs, PDA, FDA, invoices, charterparty excerpts, port notices, claims notes, and compliance docs.
+  - Store extracted fields with source document, voyage, confidence, raw excerpt, and extraction status.
+  - Use deterministic regex/rule extraction first where reliable, with AI fallback when provider keys are configured.
+
+- Add reconciliation and contradiction detection:
+  - Compare voyage ETA/order data vs AIS, bunker invoice vs fuel documents, PDA vs FDA, charterparty clauses vs invoice/payment allocation, and email/document claims vs actual indexed sources.
+  - Persist findings as structured records with severity, confidence, evidence, and suggested action.
+  - Auto-create `operationalJobs` for high-confidence high/medium findings using existing job statuses and priorities.
+
+- Upgrade the voyage cockpit:
+  - Add “What changed,” “Evidence quality,” “Contradictions,” “Extracted facts,” “Recommended actions,” and “Audit checks” panels.
+  - Keep existing timeline/jobs/source evidence panels.
+  - Add a source confidence model: primary document > structured record > email thread > inferred/weak evidence.
+
+- Expand AI workflows:
+  - Generate action plans per voyage and auto-create jobs when confidence is high.
+  - Upgrade claims evidence pack generation to include extracted clauses, NOR/SOF events, delay/weather events, email evidence, and a cited position summary.
+  - Upgrade draft replies from deterministic templates to AI-generated drafts with cited supporting evidence and unsupported-claim warnings.
+  - Add audit mode that checks whether a proposed reply/job resolution has supporting evidence, missing required docs, and contradictory sources.
+
+- Add voyage change monitoring:
+  - Store per-voyage snapshots of important state: latest AIS ETA, latest docs/emails, open findings, risk flags, and extracted field hashes.
+  - On automation runs, compare current state to previous snapshot and create change-summary findings/jobs for material changes.
+
+- Add natural-language workflow creation:
+  - Extend automation creation so a user can describe a workflow in plain English.
+  - Parse it into a workflow type, target scope, trigger cadence, and condition summary.
+  - For v1, support provider-neutral internal workflows only: missing documents, watchlist, reconciliation, change monitor, claims pack, audit, and payment risk.
+
+- Add integration stubs:
+  - Add provider-neutral import APIs for email, documents, AIS positions, and finance records.
+  - These APIs should validate payloads, insert/update existing maritime tables, enqueue indexing where needed, and return import summaries.
+  - Do not implement Outlook/Gmail OAuth, real AIS vendor sync, or ERP-specific export yet.
+
+## Interfaces And Storage
+
+- Add DB tables for:
+  - `maritime_document_extractions`
+  - `maritime_reconciliation_findings`
+  - `maritime_voyage_snapshots`
+  - `external_import_batches`
+
+- Add shared Zod schemas for:
+  - extracted document fields
+  - reconciliation findings
+  - source confidence records
+  - natural-language workflow parse results
+  - external import payloads
+
+- Add worker queue support for:
+  - `document-extraction`
+  - `voyage-reconciliation`
+  - `voyage-change-monitor`
+  - `audit-check`
+  - natural-language workflow execution should reuse existing automation queue plumbing.
+
+- Keep generated operational jobs in the existing `operationalJobs` table.
+  - Use new `jobType` values such as `document_extraction_gap`, `reconciliation_conflict`, `voyage_change`, `audit_warning`, and `ai_action_plan`.
+  - Put AI confidence, source ids, finding ids, and suggested next steps in `payload`.
+
+## Test Plan
+
+- Unit tests:
+  - document-type-specific extraction helpers
+  - confidence scoring
+  - reconciliation rules
+  - audit checks
+  - natural-language workflow parsing
+  - auto-job creation deduplication
+
+- Integration-style tests:
+  - demo voyage with PDA but missing FDA creates a reconciliation finding and job
+  - bunker invoice/BDN mismatch creates cited conflict
+  - AIS ETA change creates a voyage-change finding
+  - claims pack includes CP, NOR/SOF, delay events, and email evidence
+  - unsupported draft reply claims are flagged by audit mode
+
+- Existing checks:
+  - `pnpm --filter @syntheci/shared test`
+  - `pnpm --filter @syntheci/ai test`
+  - `pnpm --recursive --if-present typecheck`
+  - Do not start a dev server.
+
+## Assumptions And Defaults
+
+- Phase 1 is demo-ready and internally integrated before real external vendor sync.
+- AI may auto-create jobs only when confidence is high; low-confidence results stay as findings and cockpit warnings.
+- All AI outputs must preserve evidence links and confidence metadata.
+- Existing job lifecycle remains unchanged.
+- Provider-neutral import stubs are in scope; real Outlook/Gmail/AIS/ERP connectors are out of scope for this v1.
+
+---
+
+Lets update our marketing homepage to reflect our current feature-set and also make it aesy for someone to VERY quickly understand what our platform does
+
+---
+
+Now give me a demo flow, that will make the hackathon judges feel wowed
+
+---
+
+how can we point out our ai features. Also automations page currently does nothing from what I can see
+
+---
+
+give me 2-minute demo flow and a script, that showcases our platform in the best way and hightlights how it makes life better for people working in maritime operations and also highlights our ai features
