@@ -1,0 +1,88 @@
+⨯ Error [AI_APICallError]: This model does not support response format `json_schema`. See supported models at https://console.groq.com/docs/structured-outputs#supported-models
+    at async generateVoyageIntelligence (../../packages/ai/src/voyage-intelligence.ts:55:22)
+    at async generateAiWorkflow (src/lib/voyage-workflows.ts:405:24)
+    at async POST (src/app/api/workflows/[voyageId]/route.ts:43:18)
+  53 |
+  54 |   const registry = buildVoyageEvidenceRegistry(context, retrievedChunks);
+> 55 |   const { object } = await generateObject({
+     |                      ^
+  56 |     model: chatModel(),
+  57 |     schema: aiVoyageIntelligenceOutputSchema,
+  58 |     system: voyageIntelligenceSystemPrompt, {
+  cause: undefined,
+  url: 'https://api.groq.com/openai/v1/chat/completions',
+  requestBodyValues: {
+    model: 'qwen/qwen3-32b',
+    user: undefined,
+    parallel_tool_calls: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    stop: undefined,
+    seed: undefined,
+    response_format: { type: 'json_schema', json_schema: [Object] },
+    reasoning_format: undefined,
+    reasoning_effort: undefined,
+    service_tier: undefined,
+    messages: [ [Object], [Object] ],
+    tools: undefined,
+    tool_choice: undefined
+  },
+  statusCode: 400,
+  responseHeaders: {
+    'alt-svc': 'h3=":443"; ma=86400',
+    'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate',
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': 'a02d7ca9afca9784-ATH',
+    connection: 'keep-alive',
+    'content-length': '230',
+    'content-type': 'application/json',
+    date: 'Thu, 28 May 2026 13:08:15 GMT',
+    server: 'cloudflare',
+    'set-cookie': 'REDACTED.982984-1.0.1.REDACTED.REDACTED; HttpOnly; SameSite=None; Secure; Path=/; Domain=groq.com; Expires=Thu, 28 May 2026 13:38:15 GMT',
+    'strict-transport-security': 'max-age=15552000',
+    vary: 'Origin',
+    via: '1.1 google',
+    'x-groq-region': 'fra',
+    'x-request-id': 'req_01ksqb69h6ejqshvz200rkc2k0'
+  },
+  responseBody: '{"error":{"message":"This model does not support response format `json_schema`. See supported models at https://console.groq.com/docs/structured-outputs#supported-models","type":"invalid_request_error","param":"response_format"}}\n',
+  isRetryable: false,
+  data: {
+    error: {
+      message: 'This model does not support response format `json_schema`. See supported models at https://console.groq.com/docs/structured-outputs#supported-models',
+      type: 'invalid_request_error'
+    }
+  }
+}
+
+---
+
+Still having some problems. Can we use google's model (gemini-2.5-flash) through ai sdk
+
+---
+
+Okay now it works. But it doesnt generate a risk score etc. Also: AI Findings
+Persisted contradictions, risks, and source-backed observations. are always empty
+
+---
+
+now that we switch to ai, are all this buttons working and real?
+
+---
+
+where do the results of like claims pack, payment risk, pda/fda etc live?
+
+---
+
+I meant in the ui, before we had a payment risk card for example, now where do we see that
+
+---
+
+okay do it
+
+---
+
+when I do run all, most of these are emtpy, and I have to run the other workflows seperately. Shouldnt run al, run them all

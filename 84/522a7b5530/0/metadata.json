@@ -1,0 +1,107 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "84522a7b5530",
+  "session_id": "019e6e9e-928d-7f31-964b-68279cfd450c",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T13:49:08.183211Z",
+  "branch": "main",
+  "checkpoints_count": 8,
+  "files_touched": [
+    ".env.example",
+    "apps/web/src/app/workspace/voyages/[id]/page.tsx",
+    "apps/web/src/lib/voyage-workflows.ts",
+    "apps/worker/src/index.ts",
+    "docker-compose.yml",
+    "packages/ai/src/models.ts",
+    "packages/ai/src/voyage-intelligence.test.ts",
+    "packages/ai/src/voyage-intelligence.ts",
+    "packages/shared/src/env.ts",
+    "packages/shared/src/schemas.ts",
+    "packages/shared/src/workflows.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "6d6a163d09c4",
+  "checkpoint_transcript_start": 578,
+  "transcript_lines_at_start": 578,
+  "token_usage": {
+    "input_tokens": 335952,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 6332032,
+    "output_tokens": 29921,
+    "api_call_count": 68
+  },
+  "session_metrics": {
+    "turn_count": 15
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T13:49:08.126238Z",
+    "agent_lines": 509,
+    "agent_removed": 55,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 509,
+    "total_lines_changed": 564,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 26,
+      "agent_lines_removed": 3
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 64,
+      "agent_lines_removed": 22
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 259,
+      "agent_lines_removed": 48
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 312,
+      "agent_lines_removed": 48
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 312,
+      "agent_lines_removed": 48
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 312,
+      "agent_lines_removed": 48
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 451,
+      "agent_lines_removed": 48
+    }
+  ]
+}
