@@ -1,5 +1,1 @@
-For our demo the mentors told us we need to present a concrete example of how our app will help a real shipping company. For example: we have a ship at X in X state and then this happens and the automations in our app help the company respond promptly and save money/time in X way. What would be the best way to do that
-
----
-
-How can we showcase this strongly in 2 minutes and also should we change our app/dataset ingestion to show how we can handle live data
+okay lets do this, so we can use it in our demo. While building this live mode keep in mind how we will use it in our demo like we discussed before
