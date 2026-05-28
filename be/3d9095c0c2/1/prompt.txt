@@ -1,0 +1,104 @@
+Now we need to build the chat interface and the rag with citations workflow. We'll use https://elements.ai-sdk.dev/ but we should base it on our current shadcn theme. We need proper citations and  document ranking etc.
+
+---
+
+PLEASE IMPLEMENT THIS PLAN:
+# Chat UI + RAG Citations Workflow
+
+## Summary
+Build `/workspace/chat` into a full AI SDK Elements chat experience using the existing shadcn theme, with a thread list, streaming answers, ranked evidence, inline citation markers, and a persistent citation trail that links back to indexed source chunks.
+
+## Key Changes
+- Install AI Elements components with `pnpm dlx ai-elements@latest add conversation message prompt-input sources inline-citation suggestion`; install any missing shadcn primitives only via `pnpm exec shadcn add ...`.
+- Add `@ai-sdk/react` to the web app if it is not added by the AI Elements install, and add the required Streamdown CSS source line for `MessageResponse`.
+- Replace the current two-panel chat with a workspace-grade layout: left thread list, center conversation, right ranked sources panel; collapse panels behind buttons/drawers on mobile.
+- Use `useChat` with `DefaultChatTransport` and send `{ threadId, messages }`; generate a client thread id before the first send so new chats can persist immediately.
+- Add full thread loading: `/workspace/chat?threadId=...` shows previous messages and citations; empty state shows suggested maritime questions.
+
+## RAG + Citations
+- Replace vector-only retrieval with hybrid ranking:
+  - vector top candidates from `document_chunks.embedding`
+  - keyword/full-text score against chunk content
+  - metadata boosts for voyage id, vessel name, document type, and file name
+  - cap repeated chunks per document so ranked evidence is diverse
+- Return ranked chunks with `rank`, `finalScore`, `vectorDistance`, `keywordScore`, `documentType`, `voyageId`, `vesselName`, and `sourceHref`.
+- Build citation labels from ranked chunks: `[1]`, `[2]`, etc.; prompt the model to cite every material claim and never cite labels outside the retrieved set.
+- Stream a `data-citations` UI message part containing ranked citations before/alongside the answer, then render:
+  - bracket citations in the answer
+  - hoverable inline citation details after stream completion
+  - a persistent right-side source ranking panel with excerpts and links to `/workspace/sources?type=file&id=...&chunk=...`
+- On finish, validate cited labels against retrieved labels; store invalid/missing citation warnings in message metadata and surface a small warning badge in the UI.
+
+## API / Persistence
+- Update `chatRequestSchema` to accept `{ threadId, messages }`, while optionally keeping the old `{ message }` path only for compatibility.
+- Add thread endpoints:
+  - `GET /api/chat/threads` returns recent threads with last message timestamp.
+  - `GET /api/chat/threads/[id]` returns persisted messages plus citation data reconstructed as UI message parts.
+- Extend citation persistence with rank/score/source metadata, either by adding columns to `citations` or storing a structured citation payload in assistant message metadata; prefer columns if the migration is straightforward.
+- Store assistant messages with final streamed content in `onFinish`; keep citation rows tied to the assistant message id.
+
+## Test Plan
+- Add unit tests for hybrid ranking normalization, document diversity caps, citation label parsing, invalid citation detection, and source href generation.
+- Update existing citation tests for ranked citation metadata.
+- Run `pnpm --filter @syntheci/ai test`, `pnpm --filter @syntheci/db typecheck`, `pnpm --filter @syntheci/web typecheck`, and `pnpm --filter @syntheci/web lint`.
+- Do not start a dev server. If one is already running, verify `/workspace/chat` visually in the browser.
+
+## Assumptions
+- V1 uses hybrid retrieval without a second LLM reranker.
+- Inline citations mean model-visible `[n]` markers plus hover/details after streaming; this follows AI Elements guidance because `InlineCitation` is not officially integrated with `MessageResponse`/Streamdown yet.
+- The existing source preview route remains the canonical document viewer.
+- References checked: [AI Elements Sources](https://elements.ai-sdk.dev/components/sources), [AI Elements Message](https://elements.ai-sdk.dev/components/message), [AI Elements Inline Citation](https://elements.ai-sdk.dev/components/inline-citation), [AI SDK custom data streaming](https://v6.ai-sdk.dev/docs/ai-sdk-ui/streaming-data).
+
+---
+
+we are not handling thinking tokens correctly since now they just appear as normal in answer:
+<think>
+Okay, let's tackle this query. The user is asking about current voyages with EU ETS or FuelEU exposure this week and the supporting evidence. 
+
+First, I need to check the retrieved evidence documents provided. The documents are from voyages of different vessels. Let me go through each one.
+
+Looking at document [1], it's about the AMS Nisos with voyage VOY-2026-0505. The date here is from May 4 to May 6, 2026. The voyage status is completed. EU ETS typically applies to emissions from maritime transport in European waters. But the document mention is about port/weather notices, berth availability, congestion, etc., but there's no mention of EU ETS or FuelEU. The same goes for documents [2], [3], [5], [6], [8]. They all have completed voyage statuses and no mention of EU ETS or FuelEU compliance.
+
+Document [4] is a voyage order for AMS Notos, but it's also completed. Similarly, document [7] is about AMS Zephyr with voyage status in_transit. However, the cargo is containerized apparel, and there's no direct mention of EU ETS or FuelEU exposure here either.
+
+Wait, EU ETS and FuelEU are regulatory frameworks. EU ETS might apply to certain voyages, especially those operating in EU waters. FuelEU relates to the use of sustainable fuels. The question is whether these voyages have exposure this week. The problem is that none of the documents mention these regulations explicitly. The retrieved evidence doesn't include information about the specific regulations affecting these voyages. 
+
+The user might be expecting that certain voyages are subject to these regulations based on their ports or cargo. For example, EU ETS generally applies to emissions in EU ports, so if a voyage is arriving at a EU port, it would be subject. But the voyages here, like VOY-2026-0522 (AMS Zephyr) to Kydonia Container Quay and VOY-2026-0509 (Helios) are within EU territories. However, the documents don't mention compliance with EU ETS or FuelEU. So, even if those voyages are in EU ports, the evidence provided doesn't confirm their exposure.
+
+Since the user's query is about EU ETS or FuelEU exposure and the retrieved documents don't provide that information, the answer should state that there's no evidence found. The necessary details about regulatory compliance aren't present in the provided documents.
+</think>
+
+---
+
+no we need to make them work properly with ai-sdk and ai-elements. search their docs and make it work
+
+---
+
+also makrdown is not rendering correctly as you can see
+
+---
+
+For sources in the chat use: https://elements.ai-sdk.dev/components/sources and show them inline instead of a seperate panel. Also we seem to always have 8 citations
+
+---
+
+What documents are used for the chat?
+
+---
+
+this is incorrect for example:
+AMS Dorian absolutely exists, and there is a specific claims/demurrage-style storyline for it:
+Vessel exists in vessels.json (line 124)
+AMS Dorian has voyage VOY-2026-0523 in voyages.json (line 377)
+Related emails exist: EML-2026-0069 through EML-2026-0072
+Related documents exist: DOC-2026-0052, DOC-2026-0053, DOC-2026-0054
+Related delay event exists: EVT-2026-00094
+The app’s answer likely means retrieval failed, not that the dataset lacks the evidence. It retrieved unrelated records for AMS Thalassa, AMS Eirini, AMS Pelagos, etc., instead of the AMS Dorian storyline.
+
+---
+
+we want citations to include emails as well
+
+---
+
+no we need to make emails have embeddings
