@@ -1,5 +1,5 @@
 import { Queue } from "bullmq";
-import { getServerEnv, QUEUES, type AutomationJob, type IngestionJob } from "@syntheci/shared";
+import { getServerEnv, QUEUES, type AutomationQueueJob, type IngestionJob } from "@syntheci/shared";
 
 function redisConnection() {
   const url = new URL(getServerEnv().REDIS_URL);
@@ -16,5 +16,5 @@ export function ingestionQueue() {
 }
 
 export function automationQueue() {
-  return new Queue<AutomationJob>(QUEUES.automation, { connection: redisConnection() });
+  return new Queue<AutomationQueueJob>(QUEUES.automation, { connection: redisConnection() });
 }

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     });
     const job = await automationQueue().add(
       "scheduled-automation",
-      { automationRuleId: ruleId, workspaceId, runId, question: input.question },
+      { automationRuleId: ruleId, workspaceId, runId, question: input.question, kind: "brief" },
       { repeat: repeatForCadence(input.cadence) },
     );
     await db.insert(queueJobs).values({

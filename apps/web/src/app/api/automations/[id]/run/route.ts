@@ -25,6 +25,7 @@ export async function POST(_request: Request, context: { params: Promise<{ id: s
     workspaceId,
     runId,
     question: rule.question,
+    kind: "brief",
   });
 
   await db.insert(queueJobs).values({
