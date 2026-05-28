@@ -1,0 +1,120 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "be3d9095c0c2",
+  "session_id": "019e6d8b-6463-7232-87d1-281fdfabd1e9",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T10:58:57.290961Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "apps/web/package.json",
+    "apps/web/src/app/api/chat/route.ts",
+    "apps/web/src/app/globals.css",
+    "apps/web/src/app/workspace/chat/chat-panel.tsx",
+    "apps/web/src/app/workspace/chat/page.tsx",
+    "apps/web/src/app/workspace/layout.tsx",
+    "packages/ai/src/citations.test.ts",
+    "packages/ai/src/citations.ts",
+    "packages/ai/src/models.ts",
+    "packages/db/src/retrieval.ts",
+    "packages/shared/src/index.ts",
+    "packages/shared/src/schemas.ts",
+    "pnpm-lock.yaml"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "a19cfdb76066",
+  "token_usage": {
+    "input_tokens": 422289,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1797888,
+    "output_tokens": 57438,
+    "api_call_count": 42
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T10:58:57.267576Z",
+    "agent_lines": 155,
+    "agent_removed": 7,
+    "human_added": 3397,
+    "human_modified": 110,
+    "human_removed": 0,
+    "total_committed": 3662,
+    "total_lines_changed": 3671,
+    "agent_percentage": 4.412966494143285,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 7808,
+      "user_lines_removed": 110,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "apps/web/package.json": 12,
+        "apps/web/src/app/api/chat/route.ts": 179,
+        "apps/web/src/app/api/chat/threads/[id]/route.ts": 81,
+        "apps/web/src/app/api/chat/threads/route.ts": 50,
+        "apps/web/src/app/globals.css": 2,
+        "apps/web/src/app/workspace/chat/chat-panel.tsx": 465,
+        "apps/web/src/app/workspace/chat/page.tsx": 128,
+        "apps/web/src/components/ai-elements/conversation.tsx": 168,
+        "apps/web/src/components/ai-elements/inline-citation.tsx": 296,
+        "apps/web/src/components/ai-elements/message.tsx": 360,
+        "apps/web/src/components/ai-elements/prompt-input.tsx": 1464,
+        "apps/web/src/components/ai-elements/reasoning.tsx": 226,
+        "apps/web/src/components/ai-elements/shimmer.tsx": 60,
+        "apps/web/src/components/ai-elements/sources.tsx": 77,
+        "apps/web/src/components/ai-elements/suggestion.tsx": 57,
+        "apps/web/src/components/ui/button-group.tsx": 83,
+        "apps/web/src/components/ui/carousel.tsx": 243,
+        "apps/web/src/components/ui/collapsible.tsx": 33,
+        "apps/web/src/components/ui/command.tsx": 196,
+        "apps/web/src/components/ui/dialog.tsx": 168,
+        "apps/web/src/components/ui/dropdown-menu.tsx": 268,
+        "apps/web/src/components/ui/hover-card.tsx": 44,
+        "apps/web/src/components/ui/input-group.tsx": 155,
+        "apps/web/src/components/ui/scroll-area.tsx": 55,
+        "apps/web/src/components/ui/select.tsx": 191,
+        "apps/web/src/components/ui/spinner.tsx": 12,
+        "packages/ai/src/citations.test.ts": 5,
+        "packages/ai/src/citations.ts": 27,
+        "packages/ai/src/models.ts": 8,
+        "packages/db/src/retrieval.ts": 117,
+        "packages/shared/src/index.ts": 1,
+        "packages/shared/src/rag.test.ts": 71,
+        "packages/shared/src/rag.ts": 104,
+        "packages/shared/src/schemas.ts": 9,
+        "pnpm-lock.yaml": 2393
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/api/chat/route.ts": 36,
+        "apps/web/src/app/globals.css": 1,
+        "apps/web/src/app/workspace/chat/chat-panel.tsx": 37,
+        "apps/web/src/app/workspace/chat/page.tsx": 3,
+        "apps/web/src/app/workspace/layout.tsx": 1,
+        "packages/ai/src/citations.ts": 18,
+        "packages/ai/src/models.ts": 3,
+        "packages/db/src/retrieval.ts": 7,
+        "packages/shared/src/schemas.ts": 4
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 7846,
+      "agent_lines_removed": 113
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 7846,
+      "agent_lines_removed": 113
+    }
+  ]
+}
