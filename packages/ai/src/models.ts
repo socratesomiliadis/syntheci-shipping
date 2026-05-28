@@ -1,13 +1,16 @@
 import { google } from "@ai-sdk/google";
 import { groq } from "@ai-sdk/groq";
-import { embedMany, generateText, streamText } from "ai";
+import { embedMany, extractReasoningMiddleware, generateText, streamText, wrapLanguageModel } from "ai";
 import { EMBEDDING_DIMENSIONS, getServerEnv } from "@syntheci/shared";
 
 type EmbeddingTask = "document" | "query";
 
 export function chatModel() {
   const env = getServerEnv();
-  return groq(env.AI_CHAT_MODEL);
+  return wrapLanguageModel({
+    model: groq(env.AI_CHAT_MODEL),
+    middleware: extractReasoningMiddleware({ tagName: "think" }),
+  });
 }
 
 export function embeddingModel() {
@@ -97,7 +100,8 @@ function deterministicEmbedding(value: string) {
 export const maritimeSystemPrompt = [
   "You are Syntheci, a private maritime intelligence layer.",
   "Answer only from retrieved evidence. If evidence is missing, say what is missing.",
-  "Keep assumptions explicit and cite source labels such as [1] or [2].",
+  "Cite every material factual claim with retrieved source labels such as [1] or [2].",
+  "Never cite labels that are not present in the retrieved evidence block.",
   "Prioritize voyage risk, charterparty clauses, compliance exposure, emissions, vessel movements, ports, cargo, and auditability.",
 ].join(" ");
 
@@ -110,5 +114,6 @@ export function buildGroundedPrompt(question: string, evidence: string) {
     evidence || "No retrieved evidence was available.",
     "",
     "Return a concise decision brief with: answer, evidence, assumptions, and recommended next actions.",
+    "Use bracket citations inline, and do not include an uncited evidence section.",
   ].join("\n");
 }

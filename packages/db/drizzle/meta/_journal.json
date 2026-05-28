@@ -15,6 +15,13 @@
       "when": 1779956289754,
       "tag": "0001_previous_ghost_rider",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779965595571,
+      "tag": "0002_jittery_miracleman",
+      "breakpoints": true
     }
   ]
 }

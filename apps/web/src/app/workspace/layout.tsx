@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
@@ -28,9 +27,7 @@ export default function WorkspaceLayout({
               </div>
             </div>
           </header>
-          <main className="mx-auto w-full max-w-7xl px-4 py-6 lg:px-8">
-            {children}
-          </main>
+          <main className="mx-auto w-full px-4 py-6 lg:px-8">{children}</main>
         </SidebarInset>
       </SidebarProvider>
     </TooltipProvider>

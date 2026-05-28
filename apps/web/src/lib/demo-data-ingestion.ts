@@ -10,6 +10,7 @@ import {
   maritimeBunkerReports,
   maritimeComplianceFlags,
   maritimeDocuments,
+  maritimeEmailChunks,
   maritimeEmails,
   maritimePeople,
   maritimePorts,
@@ -198,7 +199,7 @@ export async function ingestDemoData(input: z.infer<typeof ingestDemoDataInputSc
   counts.ports = await ingestPorts(root, workspaceId);
   counts.people = await ingestPeople(root, workspaceId);
   counts.voyages = await ingestVoyages(root, workspaceId);
-  counts.emails = await ingestEmails(root, workspaceId);
+  counts.emails = await ingestEmails(root, workspaceId, input.indexDocuments);
   counts.bunkerReports = await ingestBunkerReports(root, workspaceId);
   counts.aisPositions = await ingestAisPositions(root, workspaceId);
   counts.voyageEvents = await ingestVoyageEvents(root, workspaceId);
@@ -374,7 +375,7 @@ async function ingestVoyages(root: string, workspaceId: string) {
   return records.length;
 }
 
-async function ingestEmails(root: string, workspaceId: string) {
+async function ingestEmails(root: string, workspaceId: string, indexEmails: boolean) {
   const records = emailSchema.array().parse(await readJson(path.join(root, "emails/emails.json")));
   const now = new Date();
   await db
@@ -414,6 +415,20 @@ async function ingestEmails(root: string, workspaceId: string) {
         updatedAt: now,
       },
     });
+
+  if (indexEmails) {
+    for (const record of records) {
+      await indexEmailContent(record.email_id, workspaceId, formatEmailForIndex(record), {
+        subject: record.subject,
+        from: record.from,
+        sentAt: record.date,
+        relatedVoyageId: record.related_voyage_id,
+        relatedVesselName: record.related_vessel_name,
+        source: "demo-data",
+      });
+    }
+  }
+
   return records.length;
 }
 
@@ -834,6 +849,52 @@ async function indexDocumentContent(
       metadata,
     })),
   );
+}
+
+async function indexEmailContent(
+  emailId: string,
+  workspaceId: string,
+  content: string,
+  metadata: Record<string, unknown>,
+) {
+  const chunks = chunkText(content);
+  const embeddings = await embedTexts(
+    chunks.map((chunk) => chunk.content),
+    "document",
+  );
+
+  await db.delete(maritimeEmailChunks).where(eq(maritimeEmailChunks.emailId, emailId));
+
+  if (chunks.length === 0) return;
+
+  await db.insert(maritimeEmailChunks).values(
+    chunks.map((chunk, index) => ({
+      id: crypto.randomUUID(),
+      emailId,
+      workspaceId,
+      chunkIndex: chunk.index,
+      content: chunk.content,
+      tokenEstimate: chunk.tokenEstimate,
+      embedding: embeddings[index],
+      metadata,
+    })),
+  );
+}
+
+function formatEmailForIndex(record: z.infer<typeof emailSchema>) {
+  return [
+    `Email: ${record.subject}`,
+    `From: ${record.from}`,
+    `To: ${record.to.join(", ")}`,
+    record.cc.length > 0 ? `Cc: ${record.cc.join(", ")}` : undefined,
+    `Sent: ${record.date}`,
+    `Voyage: ${record.related_voyage_id}`,
+    `Vessel: ${record.related_vessel_name}`,
+    "",
+    record.body,
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 async function resolveDemoDataRoot() {

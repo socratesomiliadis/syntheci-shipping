@@ -369,6 +369,32 @@ export const maritimeEmails = pgTable(
   ],
 );
 
+export const maritimeEmailChunks = pgTable(
+  "maritime_email_chunks",
+  {
+    id: text("id").primaryKey(),
+    emailId: text("email_id")
+      .notNull()
+      .references(() => maritimeEmails.id, { onDelete: "cascade" }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    chunkIndex: integer("chunk_index").notNull(),
+    content: text("content").notNull(),
+    tokenEstimate: integer("token_estimate").notNull(),
+    embedding: vector("embedding", { dimensions: EMBEDDING_DIMENSIONS }),
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("maritime_email_chunks_email_idx").on(table.emailId),
+    index("maritime_email_chunks_workspace_idx").on(table.workspaceId),
+    index("maritime_email_chunks_embedding_idx")
+      .using("hnsw", table.embedding.op("vector_cosine_ops"))
+      .with({ m: 16, ef_construction: 64 }),
+  ],
+);
+
 export const maritimeDocuments = pgTable(
   "maritime_documents",
   {
@@ -539,6 +565,7 @@ export const workspaceRelations = relations(workspaces, ({ many }) => ({
   documents: many(documents),
   maritimeVessels: many(maritimeVessels),
   maritimeVoyages: many(maritimeVoyages),
+  maritimeEmails: many(maritimeEmails),
 }));
 
 export const documentRelations = relations(documents, ({ many }) => ({
@@ -547,6 +574,10 @@ export const documentRelations = relations(documents, ({ many }) => ({
 
 export const chatThreadRelations = relations(chatThreads, ({ many }) => ({
   messages: many(chatMessages),
+}));
+
+export const maritimeEmailRelations = relations(maritimeEmails, ({ many }) => ({
+  chunks: many(maritimeEmailChunks),
 }));
 
 export const vectorExtensionSql = sql`CREATE EXTENSION IF NOT EXISTS vector`;

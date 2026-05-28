@@ -11,10 +11,15 @@ export const enqueueIngestionSchema = z.object({
   documentId: z.string().min(1),
 });
 
-export const chatRequestSchema = z.object({
-  threadId: z.string().optional(),
-  message: z.string().min(1),
-});
+export const chatRequestSchema = z
+  .object({
+    threadId: z.string().optional(),
+    message: z.string().min(1).optional(),
+    messages: z.array(z.unknown()).optional(),
+  })
+  .refine((input) => input.message || (input.messages && input.messages.length > 0), {
+    message: "A message or message history is required.",
+  });
 
 export const createAutomationSchema = z.object({
   name: z.string().min(1),
