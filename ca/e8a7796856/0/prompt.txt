@@ -1,0 +1,17 @@
+okay lets do this, so we can use it in our demo. While building this live mode keep in mind how we will use it in our demo like we discussed before
+
+---
+
+since we need to showcase how our app works, the jobs created should be made using ai, not just injected
+
+---
+
+no its fine being slow. We can edit the demo video
+
+---
+
+In general how would our app work with live data (emails, ais feeds etc) instead of our current mock dataset
+
+---
+
+Okay now structure a 2 minute demo (along with a concrete script) that will explain what our system does in very simple and concrete words so the judges that know nothing about shipping and how this helps will understand

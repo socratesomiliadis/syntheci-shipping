@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "cae8a7796856",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "apps/web/src/app/api/live-demo/ams-dorian/route.ts",
+    "apps/web/src/app/workspace/voyages/[id]/page.tsx",
+    "apps/web/src/app/workspace/voyages/live-event-demo.tsx",
+    "apps/web/src/lib/live-demo-events.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ca/e8a7796856/0/metadata.json",
+      "transcript": "/ca/e8a7796856/0/full.jsonl",
+      "content_hash": "/ca/e8a7796856/0/content_hash.txt",
+      "prompt": "/ca/e8a7796856/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 163667,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5578496,
+    "output_tokens": 22478,
+    "api_call_count": 50
+  }
+}
