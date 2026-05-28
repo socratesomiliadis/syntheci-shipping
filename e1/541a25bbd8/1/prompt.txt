@@ -19,3 +19,68 @@ how do they get created without ai though
 ---
 
 We should completely revamp this to use ai. These heuristics only work in this controlled demo environent. We want only realistic data to be in our demo-data and then using ai our platform should generate actinable intel
+
+---
+
+PLEASE IMPLEMENT THIS PLAN:
+# AI-First Voyage Intelligence Revamp
+
+## Summary
+Replace heuristic job generation with an AI-first workflow. `Run all` and automation runs will gather a hybrid voyage evidence packet, call the existing Groq-backed AI layer, validate structured output, and persist only evidence-backed actionable intelligence. Demo data will stop carrying precomputed answers like risk scores, risk rationales, severities-as-priority, and curated expected insights.
+
+## Key Changes
+- Add an AI intelligence generator in `@syntheci/ai` using AI SDK structured output with the existing Groq chat model.
+- Define a shared Zod output schema for AI voyage intelligence:
+  - `jobs[]`: `jobType`, `priority`, `title`, `summary`, `suggestedAction`, `confidence`, `evidenceRefs[]`, `payload`.
+  - `findings[]`: optional supporting contradictions/risks using the existing reconciliation finding shape.
+  - `runSummary`: short operator-facing summary.
+- Build a hybrid evidence packet per voyage:
+  - Compact structured context: voyage metadata, documents list/excerpts, emails, AIS, bunker/finance records, raw operational events.
+  - Top retrieved chunks from existing embedding retrieval for the voyage.
+  - A source registry keyed by stable IDs so AI output can only cite known sources.
+- Validate AI output before persistence:
+  - Fail `Run all` with a clear config error if `GROQ_API_KEY` is absent.
+  - Reject jobs/findings with no valid source references.
+  - Normalize priority to `low | medium | high`.
+  - Deduplicate against existing `operational_jobs` by `jobType:title`.
+  - Persist accepted jobs to `operational_jobs` and accepted findings to `maritime_reconciliation_findings`.
+  - Mark payloads with `generatedBy: "ai"`, model name, confidence, evidence source IDs, and workflow name.
+- Replace deterministic workflow creation in both the web path and worker automation path:
+  - `apps/web/src/lib/voyage-workflows.ts` `generateWorkflow(...)`.
+  - `apps/worker/src/index.ts` workflow automation/intelligence job handling.
+  - Existing heuristic functions may remain for non-job UI utilities only, but must not create actionable jobs.
+
+## Demo Data And UI
+- Make demo data raw-evidence-only:
+  - Remove or stop ingesting `structured/compliance_flags.json`.
+  - Remove or stop ingesting `scenarios/storylines.json`.
+  - Change `structured/voyage_events.json` to represent factual events, not prioritized risk labels; ingestion should default any missing/legacy severity to `unclassified`.
+  - Update README, data dictionary, and source manifest to describe raw evidence rather than expected insights.
+- Replace cockpit surfaces that currently expose deterministic drafts:
+  - Remove “Source gaps”, deterministic audit warnings, and “High-confidence AI action-plan jobs ready to persist” language.
+  - Show AI-generated intelligence/run summary, persisted AI jobs, and their cited evidence.
+  - Existing timeline/source preview can stay because it is evidence display, not generated intelligence.
+
+## Test Plan
+- Unit tests for AI output validation:
+  - Accepts valid jobs with source-backed evidence.
+  - Drops jobs with unknown source IDs.
+  - Fails clearly when Groq is not configured.
+  - Dedupes against existing persisted jobs.
+- Integration tests with a mocked AI generator:
+  - `Run all` creates jobs from mocked AI output, not heuristic builders.
+  - Worker workflow automation uses the same AI generation path.
+  - Empty/invalid AI output creates no jobs and returns a useful message.
+- Demo-data tests:
+  - Ingestion succeeds without compliance flags or storylines.
+  - Voyage events without priority-like severity still ingest.
+  - No operational jobs exist until AI workflow runs.
+- Regression checks:
+  - `pnpm --recursive --if-present typecheck`.
+  - Targeted Vitest suites for `@syntheci/ai`, `@syntheci/shared`, web workflow code, and worker workflow code.
+
+## Assumptions
+- Use the existing Groq provider first.
+- `Run all` must fail visibly and create no jobs if AI is not configured.
+- The AI receives a hybrid evidence packet, not heuristics or precomputed risk flags.
+- Database tables for legacy compliance/scenario records can remain for compatibility, but demo ingestion and workflow generation should no longer rely on them.
