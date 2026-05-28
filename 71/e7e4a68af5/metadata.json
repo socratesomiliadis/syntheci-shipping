@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "71e7e4a68af5",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/ai/src/chunking.test.ts",
+    "packages/ai/src/chunking.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/71/e7e4a68af5/0/metadata.json",
+      "transcript": "/71/e7e4a68af5/0/full.jsonl",
+      "content_hash": "/71/e7e4a68af5/0/content_hash.txt",
+      "prompt": "/71/e7e4a68af5/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 115783,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3292928,
+    "output_tokens": 6252,
+    "api_call_count": 34
+  }
+}

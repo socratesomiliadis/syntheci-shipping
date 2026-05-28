@@ -1,0 +1,89 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "71e7e4a68af5",
+  "session_id": "019e6da3-2762-7900-b3ba-f657b9d43123",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T09:03:58.997701Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "packages/ai/src/chunking.test.ts",
+    "packages/ai/src/chunking.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "a6ca90ddce34",
+  "checkpoint_transcript_start": 307,
+  "transcript_lines_at_start": 307,
+  "token_usage": {
+    "input_tokens": 115783,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3292928,
+    "output_tokens": 6252,
+    "api_call_count": 34
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T09:03:58.978565Z",
+    "agent_lines": 9,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 9,
+    "total_lines_changed": 10,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 5620,
+      "user_lines_removed": 206,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "apps/web/components.json": 25,
+        "apps/web/package.json": 5,
+        "apps/web/src/app/globals.css": 125,
+        "apps/web/src/app/layout.tsx": 5,
+        "apps/web/src/app/login/page.tsx": 137,
+        "apps/web/src/app/page.tsx": 246,
+        "apps/web/src/app/workspace/layout.tsx": 34,
+        "apps/web/src/components/ui/badge.tsx": 44,
+        "apps/web/src/components/ui/button.tsx": 49,
+        "apps/web/src/components/ui/card.tsx": 90,
+        "apps/web/src/components/ui/input.tsx": 11,
+        "apps/web/src/components/ui/separator.tsx": 28,
+        "apps/web/src/components/ui/sheet.tsx": 147,
+        "apps/web/src/components/ui/sidebar.tsx": 706,
+        "apps/web/src/components/ui/skeleton.tsx": 13,
+        "apps/web/src/components/ui/table.tsx": 100,
+        "apps/web/src/components/ui/textarea.tsx": 10,
+        "apps/web/src/components/ui/tooltip.tsx": 57,
+        "apps/web/src/components/workspace-sidebar.tsx": 125,
+        "apps/web/src/hooks/use-mobile.ts": 15,
+        "apps/web/src/lib/utils.ts": 3,
+        "pnpm-lock.yaml": 3645
+      },
+      "user_removed_per_file": {
+        "apps/web/src/app/globals.css": 11,
+        "apps/web/src/app/layout.tsx": 1,
+        "apps/web/src/app/login/page.tsx": 28,
+        "apps/web/src/app/page.tsx": 2,
+        "apps/web/src/app/workspace/layout.tsx": 48,
+        "apps/web/src/components/ui/badge.tsx": 9,
+        "apps/web/src/components/ui/button.tsx": 22,
+        "apps/web/src/components/ui/card.tsx": 12,
+        "apps/web/src/components/ui/input.tsx": 11,
+        "apps/web/src/components/ui/table.tsx": 15,
+        "apps/web/src/components/ui/textarea.tsx": 6,
+        "apps/web/src/lib/utils.ts": 3,
+        "components.json": 21,
+        "pnpm-lock.yaml": 17
+      }
+    }
+  ]
+}
