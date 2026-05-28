@@ -3,7 +3,7 @@
   "checkpoint_id": "ccc3a12e0098",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 6,
+  "checkpoints_count": 7,
   "files_touched": [
     "apps/web/public/syntheci-logo.svg",
     "apps/web/public/syntheci-mark.svg",
@@ -23,6 +23,9 @@
     "apps/web/src/app/workspace/jobs/[id]/page.tsx",
     "apps/web/src/app/workspace/jobs/page.tsx",
     "apps/web/src/app/workspace/page.tsx",
+    "apps/web/src/app/workspace/tasks/[id]/page.tsx",
+    "apps/web/src/app/workspace/tasks/[id]/task-status-actions.tsx",
+    "apps/web/src/app/workspace/tasks/page.tsx",
     "apps/web/src/app/workspace/voyages/[id]/page.tsx",
     "apps/web/src/app/workspace/voyages/live-event-demo.tsx",
     "apps/web/src/app/workspace/voyages/page.tsx",
@@ -49,13 +52,19 @@
       "transcript": "/cc/c3a12e0098/1/full.jsonl",
       "content_hash": "/cc/c3a12e0098/1/content_hash.txt",
       "prompt": "/cc/c3a12e0098/1/prompt.txt"
+    },
+    {
+      "metadata": "/cc/c3a12e0098/2/metadata.json",
+      "transcript": "/cc/c3a12e0098/2/full.jsonl",
+      "content_hash": "/cc/c3a12e0098/2/content_hash.txt",
+      "prompt": "/cc/c3a12e0098/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 470498,
+    "input_tokens": 589924,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 13597056,
-    "output_tokens": 63999,
-    "api_call_count": 121
+    "cache_read_tokens": 16111232,
+    "output_tokens": 81409,
+    "api_call_count": 151
   }
 }
