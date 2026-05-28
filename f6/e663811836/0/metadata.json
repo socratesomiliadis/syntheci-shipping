@@ -1,0 +1,79 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "f6e663811836",
+  "session_id": "019e6e3b-e274-70f1-890d-d73e8e6e118a",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T11:17:52.012707Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "apps/web/src/app/workspace/sources/page.tsx",
+    "apps/web/src/lib/demo-data-ingestion.ts",
+    "apps/worker/src/index.ts",
+    "demo-data/DATA_DICTIONARY.md",
+    "demo-data/README.md",
+    "demo-data/documents/doc-2026-0136-notice-of-readiness-voy-2026-0523.md",
+    "demo-data/documents/doc-2026-0137-statement-of-facts-voy-2026-0523.md",
+    "demo-data/documents/doc-2026-0138-pda-voy-2026-0523.md",
+    "demo-data/documents/doc-2026-0139-fda-pending-voy-2026-0523.md",
+    "demo-data/documents/doc-2026-0140-bunker-invoice-voy-2026-0529.md",
+    "demo-data/documents/doc-2026-0141-bdn-sulphur-voy-2026-0529.md",
+    "demo-data/documents/doc-2026-0142-inspection-report-voy-2026-0529.md",
+    "demo-data/documents/doc-2026-0143-mrv-correction-voy-2026-0525.md",
+    "demo-data/documents/doc-2026-0144-supplier-declaration-voy-2026-0525.md",
+    "demo-data/documents/doc-2026-0145-freight-invoice-voy-2026-0521.md",
+    "demo-data/documents/doc-2026-0146-claim-support-voy-2026-0521.md",
+    "demo-data/documents/doc-2026-0147-terminal-reslotting-voy-2026-0522.md",
+    "demo-data/emails/emails.json",
+    "demo-data/scenarios/storylines.json",
+    "demo-data/source_manifest.json",
+    "packages/ai/package.json",
+    "packages/ai/src/citations.test.ts",
+    "packages/ai/src/extraction.ts",
+    "packages/ai/src/index.ts",
+    "packages/ai/src/maritime-embeddings.test.ts",
+    "packages/ai/src/maritime-embeddings.ts",
+    "packages/db/drizzle/0003_little_frank_castle.sql",
+    "packages/db/drizzle/meta/0003_snapshot.json",
+    "packages/db/drizzle/meta/_journal.json",
+    "packages/db/src/retrieval.ts",
+    "packages/db/src/schema.ts",
+    "packages/shared/src/rag.test.ts",
+    "packages/shared/src/rag.ts",
+    "pnpm-lock.yaml"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "b6a280ad632d",
+  "token_usage": {
+    "input_tokens": 209949,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 9463552,
+    "output_tokens": 43940,
+    "api_call_count": 82
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T11:17:51.986675Z",
+    "agent_lines": 6125,
+    "agent_removed": 90,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 6125,
+    "total_lines_changed": 6215,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

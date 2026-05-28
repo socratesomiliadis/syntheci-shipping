@@ -1,0 +1,218 @@
+We need to rework our system to have the following embeddings: (Also some of this stuff may be missing from our demo-data so we need to make additions based on our current vessels, storylines etc)
+
+What should become embeddings?
+1. Emails
+
+Embed emails, but not as one huge blob.
+
+For each email, create chunks like:
+
+Subject
+Sender / recipients
+Date
+Cleaned body
+Important quoted context, if needed
+Linked attachments
+Detected vessel / voyage / job / port
+
+Example embedding text:
+
+Email subject: MV ATHENA / Piraeus / PDA Rev 2
+From: Piraeus Agent
+To: Operations Greece
+Date: 2026-04-27
+Body:
+Please find attached PDA Revision 2 for MV ATHENA. Berth prospects have changed and ETA is now 19:30 local time...
+Detected entities:
+Vessel: MV ATHENA
+Port: Piraeus
+Document: PDA Revision 2
+Voyage: VOY-2026-018
+
+Do not embed raw email HTML, signatures, disclaimers, huge quoted chains, tracking pixels, or repeated footer text.
+
+2. Email threads
+
+Also create a thread-level summary embedding.
+
+This is very useful because users often ask:
+
+What is the latest status of this voyage?
+What changed in this thread?
+What are the open items?
+
+For each thread, store:
+
+Thread summary
+Timeline
+Latest status
+Open questions
+Decisions
+Missing documents
+Linked attachments
+
+So you have both:
+
+individual email embeddings
+thread summary embeddings
+
+This gives better retrieval than only embedding every email separately.
+
+3. Attachments
+
+Yes, definitely embed attachments.
+
+Especially:
+
+PDFs;
+DOCX files;
+charter parties;
+recaps;
+SOFs;
+NORs;
+PDAs;
+FDAs;
+invoices;
+port documents;
+inspection reports;
+bunker docs;
+claim documents.
+
+For long documents, chunk by:
+
+page
+section
+clause
+heading
+table
+
+For a charter party, do not just chunk every 1,000 tokens blindly. Try to preserve clauses.
+
+Example:
+
+Document: CharterParty_MV_Athena.pdf
+Page: 7
+Section: Laytime and Demurrage
+Text:
+Laytime shall be 72 hours SHINC...
+4. Contacts
+
+Usually do not embed full contacts as primary content.
+
+Instead, store contacts as structured data:
+
+name
+email
+company
+role
+phone
+associated vessels/voyages
+counterparty type
+
+But you can embed a small contact profile if useful:
+
+Contact: John Smith
+Company: Piraeus Port Agency
+Role: Port agent
+Known for: Handles Piraeus port calls
+Related voyages: VOY-2026-018, VOY-2026-021
+
+This helps with questions like:
+
+Who is the agent for Piraeus?
+Have we worked with this counterparty before?
+5. Vessels, voyages, jobs
+
+Yes, but as entity profiles, not raw database rows.
+
+Create an embedding for each vessel/voyage/job summary:
+
+Voyage: VOY-2026-018
+Vessel: MV ATHENA
+Load port: Alexandria
+Discharge port: Piraeus
+Cargo: wheat
+Current status: awaiting berth
+Open issues: final SOF missing, PDA Rev 2 pending finance review
+Related documents: charter party, PDA Rev 2, draft SOF
+
+This is one of the most important things for maritime RAG.
+
+The user does not always ask for a document. They ask about an operational object:
+
+What is going on with MV Athena?
+What are the risks for this voyage?
+What changed since yesterday?
+
+A voyage summary embedding helps answer that.
+
+6. Structured operational records
+
+Embed summaries of records from systems like IMOS, Dataloy, or custom databases.
+
+For example:
+
+Port call record
+Voyage record
+Bunker record
+Claim record
+Invoice record
+Inspection record
+
+Do not embed every field blindly. Convert important fields into readable text.
+
+Example:
+
+Port call record:
+Vessel MV ATHENA arrived Piraeus on 2026-04-27. Agent is Piraeus Port Agency. Current status is awaiting berth. PDA Revision 2 received. FDA pending.
+
+Store the raw fields separately as metadata.
+
+---
+
+PLEASE IMPLEMENT THIS PLAN:
+# Maritime Embedding Rework
+
+## Summary
+Implement the full embedding rework by keeping raw maritime data structured, then generating readable embedding content for emails, email threads, attachments, contacts, vessels, voyages, scenarios, and operational records. Existing `document_chunks` and `maritime_email_chunks` stay in place; add one new generalized maritime embedding table for thread/profile/record summaries and expand retrieval to search all three stores.
+
+## Key Changes
+- Add `maritime_embedding_chunks` in `packages/db/src/schema.ts` with `sourceType`, `sourceId`, `chunkIndex`, `content`, `tokenEstimate`, `embedding`, `relatedVoyageId`, `relatedVesselName`, `recordType`, `entityName`, and `metadata`.
+- Expand shared RAG types from `document | email` to include `email_thread`, `vessel_profile`, `voyage_profile`, `contact_profile`, `structured_record`, and `scenario_profile`; update citation links and source previews accordingly.
+- Add maritime embedding builders in `packages/ai`:
+  - Email chunks: subject/header chunk, cleaned body chunks, linked attachments, detected entities; strip HTML, signatures, disclaimers, tracking noise, and repeated quoted chains.
+  - Thread summaries: timeline, latest status, open questions, decisions, missing documents, linked attachments.
+  - Attachment/document chunks: section-aware Markdown/PDF/DOCX chunking by heading, clause, page, and table where available.
+  - Profiles: vessels, voyages, contacts, scenarios, and structured operational records as concise readable summaries.
+- Add PDF/DOCX extraction for uploaded attachments/documents using server-side parsers, with text/Markdown/JSON/CSV continuing through existing text paths.
+- Update demo ingestion to index emails with semantic chunks, create thread/profile/record embeddings after all source data is loaded, and reindex idempotently by workspace/source.
+- Update `findHybridRelevantChunks` to query document chunks, email chunks, and generalized maritime embeddings, then merge/rank with the existing vector + keyword + metadata scoring model.
+
+## Demo Data Additions
+- Add missing attachment/document categories using current vessels, voyages, and storylines rather than inventing unrelated examples.
+- Add new synthetic records starting after current IDs, e.g. `EML-2026-0201+` and `DOC-2026-0136+`, linked into existing scenario threads where appropriate.
+- Cover these missing evidence types: PDA, FDA, Statement of Facts, NOR, invoice, port clearance/document, inspection report, and supplier/compliance declaration.
+- Prioritize current open/high-value storylines:
+  - `VOY-2026-0523` / AMS Dorian: NOR, SOF, PDA Rev 2, FDA pending note.
+  - `VOY-2026-0529` / AMS Thalassa: bunker invoice, BDN/sulphur evidence, inspection report.
+  - `VOY-2026-0525` / AMS Eirini: MRV correction request and supplier declaration.
+  - `VOY-2026-0521` / AMS Helios: invoice/claim support around charterparty/compliance exposure.
+  - `VOY-2026-0522` / AMS Zephyr: port reslotting/terminal notice.
+- Update `source_manifest.json`, `DATA_DICTIONARY.md`, emails, attachments, and markdown documents consistently.
+
+## Retrieval And UI
+- Keep document/email citations working as they do today, while allowing profile/thread/record citations through chat metadata and `sourceHref`.
+- Extend `/workspace/sources` to list and preview generalized embedding sources, with simple source-type badges and readable preview content.
+- Preserve existing document citation persistence for compatibility; generalized citations remain stored in assistant message metadata, matching current email citation behavior.
+- Use per-source caps so profiles and summaries improve recall without crowding out primary documents/emails.
+
+## Test Plan
+- Add unit tests for email cleaning/chunk building, thread summary formatting, section-aware document chunking, profile/record summary builders, and expanded citation URL generation.
+- Extend RAG ranking tests to include thread/profile/structured-record candidates and source caps.
+- Run `pnpm --filter @syntheci/ai test`, `pnpm --filter @syntheci/shared test`, and repo `pnpm typecheck`.
+- Do not start a dev server; assume the existing app server is already running if browser/UI verification is needed later.
+
+## Assumptions
+- There is no separate jobs table today, so “jobs” will be represented by voyage profiles and structured operational records rather than inventing a new job schema.
+- Contacts remain structured in `maritime_people`; only small searchable contact profiles are embedded.
+- AIS positions are treated as voyage movement summaries, not one embedding per raw position, to avoid noisy high-volume vector rows.
