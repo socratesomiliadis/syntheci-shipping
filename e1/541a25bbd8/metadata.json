@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "e1541a25bbd8",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "apps/web/src/app/api/automations/[id]/run/route.ts",
+    "apps/web/src/app/api/automations/route.ts",
+    "apps/web/src/app/api/imports/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/route.ts",
+    "apps/web/src/app/page.tsx",
+    "apps/web/src/app/workspace/automations/automation-form.tsx",
+    "apps/web/src/app/workspace/automations/page.tsx",
+    "apps/web/src/app/workspace/automations/run-automation-button.tsx",
+    "apps/web/src/app/workspace/voyages/[id]/page.tsx",
+    "apps/web/src/app/workspace/voyages/workflow-actions.tsx",
+    "apps/web/src/lib/voyage-workflows.ts",
+    "apps/worker/src/index.ts",
+    "packages/db/drizzle/0005_maritime_intelligence_v1.sql",
+    "packages/db/drizzle/meta/_journal.json",
+    "packages/db/src/index.ts",
+    "packages/db/src/intelligence.ts",
+    "packages/db/src/schema.ts",
+    "packages/shared/src/index.ts",
+    "packages/shared/src/intelligence.test.ts",
+    "packages/shared/src/intelligence.ts",
+    "packages/shared/src/queues.ts",
+    "packages/shared/src/schemas.ts",
+    "packages/shared/src/workflows.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e1/541a25bbd8/0/metadata.json",
+      "transcript": "/e1/541a25bbd8/0/full.jsonl",
+      "content_hash": "/e1/541a25bbd8/0/content_hash.txt",
+      "prompt": "/e1/541a25bbd8/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 729353,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 16131072,
+    "output_tokens": 58590,
+    "api_call_count": 104
+  }
+}

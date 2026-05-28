@@ -1,0 +1,96 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "e1541a25bbd8",
+  "session_id": "019e6e73-ff84-7db0-9424-41605294929b",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-28T13:04:41.680031Z",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "apps/web/src/app/api/automations/[id]/run/route.ts",
+    "apps/web/src/app/api/automations/route.ts",
+    "apps/web/src/app/api/imports/route.ts",
+    "apps/web/src/app/api/workflows/[voyageId]/route.ts",
+    "apps/web/src/app/page.tsx",
+    "apps/web/src/app/workspace/automations/automation-form.tsx",
+    "apps/web/src/app/workspace/automations/page.tsx",
+    "apps/web/src/app/workspace/automations/run-automation-button.tsx",
+    "apps/web/src/app/workspace/voyages/[id]/page.tsx",
+    "apps/web/src/app/workspace/voyages/workflow-actions.tsx",
+    "apps/web/src/lib/voyage-workflows.ts",
+    "apps/worker/src/index.ts",
+    "packages/db/drizzle/0005_maritime_intelligence_v1.sql",
+    "packages/db/drizzle/meta/_journal.json",
+    "packages/db/src/index.ts",
+    "packages/db/src/intelligence.ts",
+    "packages/db/src/schema.ts",
+    "packages/shared/src/index.ts",
+    "packages/shared/src/intelligence.test.ts",
+    "packages/shared/src/intelligence.ts",
+    "packages/shared/src/queues.ts",
+    "packages/shared/src/schemas.ts",
+    "packages/shared/src/workflows.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-5.5",
+  "turn_id": "3855cb14c549",
+  "token_usage": {
+    "input_tokens": 729353,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 16131072,
+    "output_tokens": 58590,
+    "api_call_count": 104
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-28T13:04:41.628242Z",
+    "agent_lines": 2220,
+    "agent_removed": 229,
+    "human_added": 305,
+    "human_modified": 347,
+    "human_removed": 0,
+    "total_committed": 2872,
+    "total_lines_changed": 3142,
+    "agent_percentage": 77.9439847231063,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2132,
+      "agent_lines_removed": 39
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2331,
+      "agent_lines_removed": 174
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2331,
+      "agent_lines_removed": 174
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2567,
+      "agent_lines_removed": 229
+    }
+  ]
+}
