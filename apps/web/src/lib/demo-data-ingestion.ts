@@ -18,14 +18,12 @@ import {
   ensureDefaultWorkspace,
   maritimeAisPositions,
   maritimeBunkerReports,
-  maritimeComplianceFlags,
   maritimeDocuments,
   maritimeEmbeddingChunks,
   maritimeEmailChunks,
   maritimeEmails,
   maritimePeople,
   maritimePorts,
-  maritimeScenarios,
   maritimeVessels,
   maritimeVoyageEvents,
   maritimeVoyages,
@@ -151,35 +149,6 @@ const voyageEventSchema = z.object({
   location: z.string(),
   severity: z.string().default("unclassified"),
   description: z.string(),
-});
-
-const complianceFlagSchema = z.object({
-  flag_id: z.string(),
-  voyage_id: z.string(),
-  vessel_name: z.string(),
-  eu_ets_exposure: z.boolean(),
-  fueleu_risk: z.boolean(),
-  mrv_missing_data: z.boolean(),
-  cii_risk: z.boolean(),
-  risk_score: z.number(),
-  risk_level: z.string(),
-  rationale: z.array(z.string()),
-  last_evaluated_at: z.string(),
-});
-
-const scenarioSchema = z.object({
-  scenario_id: z.string(),
-  title: z.string(),
-  primary_voyage_id: z.string(),
-  primary_vessel_name: z.string(),
-  severity: z.string(),
-  status: z.string(),
-  business_problem: z.string(),
-  narrative: z.string(),
-  recommended_demo_questions: z.array(z.string()),
-  expected_insights: z.array(z.string()),
-  evidence: z.record(z.string(), z.unknown()),
-  suggested_actions: z.array(z.string()),
 });
 
 const frontMatterSchema = z.object({
@@ -563,94 +532,6 @@ async function ingestVoyageEvents(root: string, workspaceId: string) {
   return records.length;
 }
 
-async function ingestComplianceFlags(root: string, workspaceId: string) {
-  const records = complianceFlagSchema.array().parse(await readJson(path.join(root, "structured/compliance_flags.json")));
-  const now = new Date();
-  await db
-    .insert(maritimeComplianceFlags)
-    .values(
-      records.map((record) => ({
-        id: record.flag_id,
-        workspaceId,
-        voyageId: record.voyage_id,
-        vesselName: record.vessel_name,
-        euEtsExposure: record.eu_ets_exposure,
-        fueleuRisk: record.fueleu_risk,
-        mrvMissingData: record.mrv_missing_data,
-        ciiRisk: record.cii_risk,
-        riskScore: record.risk_score,
-        riskLevel: record.risk_level,
-        rationale: record.rationale,
-        lastEvaluatedAt: record.last_evaluated_at,
-        raw: record,
-        updatedAt: now,
-      })),
-    )
-    .onConflictDoUpdate({
-      target: maritimeComplianceFlags.id,
-      set: {
-        voyageId: sqlExcluded("voyage_id"),
-        vesselName: sqlExcluded("vessel_name"),
-        euEtsExposure: sqlExcluded("eu_ets_exposure"),
-        fueleuRisk: sqlExcluded("fueleu_risk"),
-        mrvMissingData: sqlExcluded("mrv_missing_data"),
-        ciiRisk: sqlExcluded("cii_risk"),
-        riskScore: sqlExcluded("risk_score"),
-        riskLevel: sqlExcluded("risk_level"),
-        rationale: sqlExcluded("rationale"),
-        lastEvaluatedAt: sqlExcluded("last_evaluated_at"),
-        raw: sqlExcluded("raw"),
-        updatedAt: now,
-      },
-    });
-  return records.length;
-}
-
-async function ingestScenarios(root: string, workspaceId: string) {
-  const records = scenarioSchema.array().parse(await readJson(path.join(root, "scenarios/storylines.json")));
-  const now = new Date();
-  await db
-    .insert(maritimeScenarios)
-    .values(
-      records.map((record) => ({
-        id: record.scenario_id,
-        workspaceId,
-        title: record.title,
-        primaryVoyageId: record.primary_voyage_id,
-        primaryVesselName: record.primary_vessel_name,
-        severity: record.severity,
-        status: record.status,
-        businessProblem: record.business_problem,
-        narrative: record.narrative,
-        recommendedDemoQuestions: record.recommended_demo_questions,
-        expectedInsights: record.expected_insights,
-        evidence: record.evidence,
-        suggestedActions: record.suggested_actions,
-        raw: record,
-        updatedAt: now,
-      })),
-    )
-    .onConflictDoUpdate({
-      target: maritimeScenarios.id,
-      set: {
-        title: sqlExcluded("title"),
-        primaryVoyageId: sqlExcluded("primary_voyage_id"),
-        primaryVesselName: sqlExcluded("primary_vessel_name"),
-        severity: sqlExcluded("severity"),
-        status: sqlExcluded("status"),
-        businessProblem: sqlExcluded("business_problem"),
-        narrative: sqlExcluded("narrative"),
-        recommendedDemoQuestions: sqlExcluded("recommended_demo_questions"),
-        expectedInsights: sqlExcluded("expected_insights"),
-        evidence: sqlExcluded("evidence"),
-        suggestedActions: sqlExcluded("suggested_actions"),
-        raw: sqlExcluded("raw"),
-        updatedAt: now,
-      },
-    });
-  return records.length;
-}
-
 async function ingestMarkdownDocuments(root: string, workspaceId: string, indexDocuments: boolean) {
   const documentsRoot = path.join(root, "documents");
   const fileNames = (await readdir(documentsRoot)).filter((fileName) => fileName.endsWith(".md")).sort();
@@ -993,32 +874,6 @@ function buildBunkerRecordChunk(record: z.infer<typeof bunkerReportSchema>) {
       voyageId: record.voyage_id,
       vesselName: record.vessel,
       entityName: record.invoice_id,
-    },
-  );
-}
-
-function buildComplianceRecordChunk(record: z.infer<typeof complianceFlagSchema>) {
-  return buildStructuredRecordChunk(
-    "compliance_flag",
-    record.flag_id,
-    [
-      `Compliance flag: ${record.flag_id}`,
-      `Vessel: ${record.vessel_name}`,
-      `Voyage: ${record.voyage_id}`,
-      `Risk level: ${record.risk_level}`,
-      `Risk score: ${record.risk_score}`,
-      `EU ETS exposure: ${record.eu_ets_exposure ? "yes" : "no"}`,
-      `FuelEU risk: ${record.fueleu_risk ? "yes" : "no"}`,
-      `MRV missing data: ${record.mrv_missing_data ? "yes" : "no"}`,
-      `CII risk: ${record.cii_risk ? "yes" : "no"}`,
-      `Rationale: ${record.rationale.join("; ")}`,
-      `Last evaluated: ${record.last_evaluated_at}`,
-    ].join("\n"),
-    {
-      ...record,
-      voyageId: record.voyage_id,
-      vesselName: record.vessel_name,
-      entityName: record.flag_id,
     },
   );
 }
