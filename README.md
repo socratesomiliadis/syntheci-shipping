@@ -4,7 +4,7 @@ Maritime operations workspace for shipping teams. Syntheci ingests voyage and op
 
 ## Hackathon
 
-Built for the Florent Venture Partners Hackathon at Panathēnea in Athens, selected from 100+ applicants as one of 25 teams admitted. Advanced to the top 3 finalist stage.
+Built for the Florent Venture Partners Hackathon at Panathēnea in Athens; selected from 100+ applicants as one of 25 admitted teams and advanced to the top 3 finalist stage.
 
 ## Stack
 
