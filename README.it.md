@@ -2,11 +2,13 @@
 
 [English](README.md) | [Ελληνικά](README.el.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
-![Syntheci Shipping banner](assets/syntheci-readme-hero-banner.png)
-
 Spazio di lavoro per le operazioni marittime destinato ai team di shipping. Syntheci acquisisce documenti di viaggio e operativi, li rende ricercabili con un retrieval AI che cita le fonti, monitora il rischio dei viaggi ed esegue automazioni di workflow per documenti mancanti, watchlist, pacchetti di claim, controlli PDA/FDA e rischio di pagamento.
 
 ## Hackathon
+
+<p align="center">
+  <img src="assets/syntheci-readme-hero-banner.png" alt="Syntheci — Florent × Panathēnea Hackathon" width="100%">
+</p>
 
 Realizzato per il Florent Venture Partners Hackathon al Panathēnea di Atene; selezionato tra oltre 100 candidati come uno dei 25 team ammessi e arrivato alla fase finale dei primi 3.
 

@@ -2,11 +2,13 @@
 
 [English](README.md) | [Ελληνικά](README.el.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
-![Syntheci Shipping banner](assets/syntheci-readme-hero-banner.png)
-
 Maritimer Operations-Arbeitsbereich für Reedereiteams. Syntheci erfasst Reise- und Betriebsdokumente, macht sie über KI-gestützte Suche mit Quellenangaben durchsuchbar, verfolgt Reiserisiken und führt Workflow-Automatisierungen für fehlende Dokumente, Watchlists, Claims-Pakete, PDA/FDA-Prüfungen und Zahlungsrisiken aus.
 
 ## Hackathon
+
+<p align="center">
+  <img src="assets/syntheci-readme-hero-banner.png" alt="Syntheci — Florent × Panathēnea Hackathon" width="100%">
+</p>
 
 Entwickelt für den Florent Venture Partners Hackathon im Panathēnea in Athen; aus über 100 Bewerbern als eines von 25 zugelassenen Teams ausgewählt und bis in die Finalrunde der besten 3 vorgerückt.
 

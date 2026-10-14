@@ -2,11 +2,13 @@
 
 [English](README.md) | [Ελληνικά](README.el.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
-![Syntheci Shipping banner](assets/syntheci-readme-hero-banner.png)
-
 面向航运团队的海事运营工作空间。Syntheci 可摄取航次与运营文档,通过带引用的 AI 检索使其可被搜索,跟踪航次风险,并为缺失文档、关注列表、索赔资料包、PDA/FDA 核查和付款风险运行工作流自动化。
 
 ## 黑客松
+
+<p align="center">
+  <img src="assets/syntheci-readme-hero-banner.png" alt="Syntheci — Florent × Panathēnea Hackathon" width="100%">
+</p>
 
 为雅典 Panathēnea 举办的 Florent Venture Partners Hackathon 而构建;从 100 多个申请团队中脱颖而出,入选 25 支获准参赛团队之一,并晋级前 3 名决赛阶段。
 

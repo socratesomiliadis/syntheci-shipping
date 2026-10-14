@@ -2,8 +2,6 @@
 
 [English](README.md) | [Ελληνικά](README.el.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
-![Syntheci Shipping banner](assets/syntheci-readme-hero-banner.png)
-
 Maritime operations workspace for shipping teams. Syntheci ingests voyage and operational documents, makes them searchable with cited AI retrieval, tracks voyage risk, and runs workflow automations for missing documents, watchlists, claims packs, PDA/FDA checks, and payment risk.
 
 ## Hackathon

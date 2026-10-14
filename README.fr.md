@@ -2,11 +2,13 @@
 
 [English](README.md) | [Ελληνικά](README.el.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
-![Syntheci Shipping banner](assets/syntheci-readme-hero-banner.png)
-
 Espace de travail d'opérations maritimes pour les équipes d'armement. Syntheci ingère les documents de voyage et d'exploitation, les rend consultables grâce à une recherche IA avec citations, suit le risque des voyages et exécute des automatisations de flux de travail pour les documents manquants, les listes de surveillance, les dossiers de réclamations, les contrôles PDA/FDA et le risque de paiement.
 
 ## Hackathon
+
+<p align="center">
+  <img src="assets/syntheci-readme-hero-banner.png" alt="Syntheci — Florent × Panathēnea Hackathon" width="100%">
+</p>
 
 Conçu pour le Florent Venture Partners Hackathon au Panathēnea, à Athènes ; sélectionné parmi plus de 100 candidatures comme l'une des 25 équipes admises, puis qualifié pour la finale des 3 meilleures équipes.
 

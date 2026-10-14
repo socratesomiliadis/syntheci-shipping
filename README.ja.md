@@ -2,11 +2,13 @@
 
 [English](README.md) | [Ελληνικά](README.el.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
-![Syntheci Shipping banner](assets/syntheci-readme-hero-banner.png)
-
 海運チーム向けの海事オペレーション用ワークスペースです。Syntheci は航海・運航関連の書類を取り込み、引用付きの AI 検索で横断的に検索できるようにし、航海リスクを追跡し、書類の不足、ウォッチリスト、クレームパック、PDA/FDA チェック、支払いリスクに関するワークフロー自動化を実行します。
 
 ## ハッカソン
+
+<p align="center">
+  <img src="assets/syntheci-readme-hero-banner.png" alt="Syntheci — Florent × Panathēnea Hackathon" width="100%">
+</p>
 
 アテネの Panathēnea で開催された Florent Venture Partners Hackathon のために開発。100 組以上の応募から選ばれた 25 チームの 1 つとして参加し、決勝の上位 3 チームに進出しました。
 
