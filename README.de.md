@@ -94,7 +94,9 @@ pnpm docker:infra    # Postgres, Redis, MinIO und Worker starten
 pnpm docker:down     # Docker-Dienste stoppen
 ```
 
-## Autoren
+## Kontakt
 
-- [Socrates Omiliadis](https://www.linkedin.com/in/socratesomiliadis/)
-- [Apostolos Kakarantzas](https://www.linkedin.com/in/akakarantzas/)
+Fragen, Partnerschaftsanfragen oder Feedback zu diesem Projekt:
+
+- LinkedIn: [Socrates Omiliadis](https://www.linkedin.com/in/socratesomiliadis/) | [Apostolos Kakarantzas](https://www.linkedin.com/in/akakarantzas/)
+- X / Twitter: [@socratesom](https://x.com/socratesom) | [@aevagnarly](https://x.com/aevagnarly)
